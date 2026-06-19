@@ -1,0 +1,350 @@
+
+
+
+
+
+
+
+[{
+  "id": "kz-edx-lite",
+  "nombre": "KZ EDX LITE",
+  "precio": 129,
+  "url": "/in-ears/kz-edx-lite/",
+  "imagen": "/assets/img/productos/kz-edx-lite/01.webp"
+},{
+  "id": "qkz-ak3",
+  "nombre": "QKZ AK3",
+  "precio": 149,
+  "url": "/in-ears/qkz-ak3/",
+  "imagen": "/assets/img/productos/qkz-ak3/qkz-ak3-01.webp"
+},{
+  "id": "kz-edx-pro",
+  "nombre": "KZ EDX PRO",
+  "precio": 175,
+  "url": "/in-ears/kz-edx-pro/",
+  "imagen": "/assets/img/productos/kz-edx-pro/kz-edx-pro-01.webp"
+},{
+  "id": "kz-edx-pro-x",
+  "nombre": "KZ EDX PRO X",
+  "precio": 185,
+  "url": "/in-ears/kz-edx-pro-x/",
+  "imagen": "/assets/img/productos/kz-edx-pro-x/edx-pro-x-01.webp"
+},{
+  "id": "qkz-ak6-aers",
+  "nombre": "QKZ AK6 AERS",
+  "precio": 185,
+  "url": "/in-ears/qkz-ak6-aers/",
+  "imagen": "/assets/img/productos/qkz-ak6-aers/01.webp"
+},{
+  "id": "qkz-zen",
+  "nombre": "QKZ ZEN",
+  "precio": 185,
+  "url": "/in-ears/qkz-zen/",
+  "imagen": "/assets/img/productos/qkz-zen/qkz-zen-01.webp"
+},{
+  "id": "kz-castor",
+  "nombre": "KZ CASTOR",
+  "precio": 229,
+  "url": "/in-ears/kz-castor/",
+  "imagen": "/assets/img/productos/kz-castor/castor-01.webp"
+},{
+  "id": "kz-d-fi",
+  "nombre": "KZ D FI",
+  "precio": 229,
+  "url": "/in-ears/kz-d-fi/",
+  "imagen": "/assets/img/productos/kz-d-fi/kz-d-fi-01.webp"
+},{
+  "id": "kz-angelears",
+  "nombre": "KZ ANGELEARS",
+  "precio": 229,
+  "url": "/in-ears/kz-angelears/",
+  "imagen": "/assets/img/productos/kz-angelears/01.webp"
+},{
+  "id": "kz-zvx",
+  "nombre": "KZ ZVX",
+  "precio": 249,
+  "url": "/in-ears/kz-zvx/",
+  "imagen": "/assets/img/productos/kz-zvx/kz-zvx-01.webp"
+},{
+  "id": "kz-castor-pro",
+  "nombre": "KZ CASTOR PRO",
+  "precio": 250,
+  "url": "/in-ears/kz-castor-pro/",
+  "imagen": "/assets/img/productos/kz-castor-pro/kz-castor-pro-01.webp"
+},{
+  "id": "kz-zsn-pro-2",
+  "nombre": "KZ ZSN PRO 2",
+  "precio": 275,
+  "url": "/in-ears/kz-zsn-pro-2/",
+  "imagen": "/assets/img/productos/kz-zsn-pro-2/kz-zsn-pro-2-01.webp"
+},{
+  "id": "kz-zst",
+  "nombre": "KZ ZST",
+  "precio": 285,
+  "url": "/in-ears/kz-zst/",
+  "imagen": "/assets/img/productos/kz-zst/zst-01.webp"
+},{
+  "id": "kz-zsn-pro-x",
+  "nombre": "KZ ZSN PRO X",
+  "precio": 299,
+  "url": "/in-ears/kz-zsn-pro-x/",
+  "imagen": "/assets/img/productos/kz-zsn-pro-x/kz-zsn-pro-x-01.webp"
+},{
+  "id": "cca-polaris",
+  "nombre": "CCA POLARIS",
+  "precio": 299,
+  "url": "/in-ears/cca-polaris/",
+  "imagen": "/assets/img/productos/cca-polaris/cca-polaris-01.webp"
+},{
+  "id": "kz-zex",
+  "nombre": "KZ ZEX",
+  "precio": 325,
+  "url": "/in-ears/kz-zex/",
+  "imagen": "/assets/img/productos/kz-zex/kz-zex.webp"
+},{
+  "id": "kz-zs10-pro-x",
+  "nombre": "KZ ZS10 PRO X",
+  "precio": 465,
+  "url": "/in-ears/kz-zs10-pro-x/",
+  "imagen": "/assets/img/productos/kz-zs10-pro-x/KZ-ZS10-Pro-X-01.webp"
+},{
+  "id": "kz-zs10-pro-2",
+  "nombre": "KZ ZS10 PRO 2",
+  "precio": 495,
+  "url": "/in-ears/kz-zs10-pro-2/",
+  "imagen": "/assets/img/productos/kz-zs10-pro-2/kz-zs1o-pro-2-01.webp"
+},{
+  "id": "kz-terminator-zsx",
+  "nombre": "KZ TERMINATOR ZSX",
+  "precio": 565,
+  "url": "/in-ears/kz-terminator-zsx/",
+  "imagen": "/assets/img/productos/kz-terminator-zsx/kz-terminator-01.webp"
+},{
+  "id": "kz-zsx-pro-terminator-ii",
+  "nombre": "KZ ZSX Pro Terminator II",
+  "precio": 595,
+  "url": "/in-ears/kz-zsx-pro-terminator-ii/",
+  "imagen": "/assets/img/productos/kz-zsx-pro-terminator-ii/kz-zsx-pro-terminator-ii-01.webp"
+},{
+  "id": "kz-zs12-pro-x",
+  "nombre": "KZ ZS12 PRO X",
+  "precio": 595,
+  "url": "/in-ears/kz-zs12-pro-x/",
+  "imagen": "/assets/img/productos/kz-zs12-pro-x/kz-zs12-pro-x-01.webp"
+},{
+  "id": "kz-as16-pro-x",
+  "nombre": "KZ AS16 PRO X",
+  "precio": 695,
+  "url": "/in-ears/kz-as16-pro-x/",
+  "imagen": "/assets/img/productos/kz-as16-pro-x/kz-as16-pro-x-01.webp"
+},{
+  "id": "kz-zax",
+  "nombre": "KZ ZAX",
+  "precio": 765,
+  "url": "/in-ears/kz-zax/",
+  "imagen": "/assets/img/productos/kz-zax/kz-zax-01.webp"
+},{
+  "id": "kz-as24",
+  "nombre": "KZ AS24",
+  "precio": 1495,
+  "url": "/in-ears/kz-as24/",
+  "imagen": "/assets/img/productos/kz-as24/kz-as24-01.webp"
+},{
+  "id": "kz-sonata",
+  "nombre": "KZ Sonata",
+  "precio": 1795,
+  "url": "/in-ears/kz-sonata/",
+  "imagen": "/assets/img/productos/kz-sonata/kz-sonata-01.webp"
+},{
+  "id": "kz-az09",
+  "nombre": "KZ AZ09",
+  "precio": 295,
+  "url": "/in-ears/accesorios/kz-az09/",
+  "imagen": "/assets/img/productos/kz-az09/kz-az09-01.webp"
+},{
+  "id": "kz-ae01",
+  "nombre": "KZ AE01",
+  "precio": 329,
+  "url": "/in-ears/accesorios/kz-ae01/",
+  "imagen": "/assets/img/productos/kz-ae01/kz-ae01-01.webp"
+},{
+  "id": "kz-az15",
+  "nombre": "KZ AZ15",
+  "precio": 449,
+  "url": "/in-ears/accesorios/kz-az15/",
+  "imagen": "/assets/img/productos/kz-az15/kz-az-15-01.webp"
+},{
+  "id": "cables-repuesto-kz",
+  "nombre": "Cables Repuesto KZ",
+  "precio": 95,
+  "url": "/in-ears/accesorios/cables-repuesto-kz/",
+  "imagen": "/assets/img/productos/cables-repuesto-kz/cable-repuesto-kz-01.webp"
+},{
+  "id": "kz-784-core",
+  "nombre": "KZ 784 CORE | Cable Actualizacion",
+  "precio": 195,
+  "url": "/in-ears/accesorios/kz-784-core/",
+  "imagen": "/assets/img/productos/kz-784-core/kz-784-core-01.webp"
+},{
+  "id": "kz-am02-dac",
+  "nombre": "KZ AM02 DAC Tipo C",
+  "precio": 159,
+  "url": "/in-ears/accesorios/kz-am02-dac/",
+  "imagen": "/assets/img/productos/kz-am02-dac/kz-am02-01.webp"
+},{
+  "id": "qkz-t1-200-core",
+  "nombre": "QKZ T1 200 CORE | Cable Actualizacion KZ/QKZ",
+  "precio": 149,
+  "url": "/in-ears/accesorios/qkz-t1-200-core/",
+  "imagen": "/assets/img/productos/qkz-t1-200-core/01.webp"
+},{
+  "id": "estuche-kz",
+  "nombre": "ESTUCHE KZ",
+  "precio": 30,
+  "url": "/in-ears/accesorios/estuche-kz/",
+  "imagen": "/assets/img/productos/estuche-kz/-1532779181-801809992.jpg.webp"
+},{
+  "id": "estuche-in-ears",
+  "nombre": "ESTUCHE IN EARS",
+  "precio": 25,
+  "url": "/in-ears/accesorios/estuche-in-ears/",
+  "imagen": "/assets/img/productos/estuche-in-ears/estuche-inears1.webp"
+},{
+  "id": "adaptador-tipo-c",
+  "nombre": "Adaptador Tipo C a Jack 3.5mm",
+  "precio": 25,
+  "url": "/in-ears/accesorios/adaptador-tipo-c/",
+  "imagen": "/assets/img/productos/adaptador-tipo-c/adaptador-c-3.5-01.webp"
+},{
+  "id": "ear-tips-espuma",
+  "nombre": "EAR TIPS | Almohadillas Espuma",
+  "precio": 29,
+  "url": "/in-ears/accesorios/ear-tips-espuma/",
+  "imagen": "/assets/img/productos/ear-tips-espuma/eartips-01.webp"
+},{
+  "id": "kz-cable-tipo-c",
+  "nombre": "KZ Cable USB Tipo C",
+  "precio": 149,
+  "url": "/in-ears/accesorios/kz-cable-tipo-c/",
+  "imagen": "/assets/img/productos/kz-cable-tipo-c/kz-cable-tipo-c-01.webp"
+},{
+  "id": "debra-er-mini",
+  "nombre": "Debra ER Mini",
+  "precio": 775,
+  "url": "/audio/sistemas/debra-er-mini/",
+  "imagen": "/assets/img/productos/debra-er-mini/-1088298663-1070663247.jpg.webp"
+},{
+  "id": "sky-monitor",
+  "nombre": "SKY Monitor",
+  "precio": 429,
+  "url": "/audio/sistemas/sky-monitor/",
+  "imagen": "/assets/img/productos/sky-monitor/01.webp"
+},{
+  "id": "amplificador-ha-400",
+  "nombre": "Amplificador HA-400",
+  "precio": 269,
+  "url": "/audio/sistemas/amplificador-ha-400/",
+  "imagen": "/assets/img/productos/amplificador-ha-400/ha-400-amp-01.webp"
+},{
+  "id": "amplificador-ha-800",
+  "nombre": "Amplificador HA-800",
+  "precio": 395,
+  "url": "/audio/sistemas/amplificador-ha-800/",
+  "imagen": "/assets/img/productos/amplificador-ha-800/ha-800-01.webp"
+},{
+  "id": "pm1-monitor-personal",
+  "nombre": "PM1 Monitor Personal",
+  "precio": 249,
+  "url": "/audio/sistemas/pm1-monitor-personal/",
+  "imagen": "/assets/img/productos/pm1-monitor-personal/pm1-01.webp"
+},{
+  "id": "p2-monitor-personal",
+  "nombre": "P2 Monitor Personal",
+  "precio": 295,
+  "url": "/audio/sistemas/p2-monitor-personal/",
+  "imagen": "/assets/img/productos/p2-monitor-personal/p2-monitor-01.webp"
+},{
+  "id": "transmisor-instrumentos-sky",
+  "nombre": "Transmisor Instrumentos SKY",
+  "precio": 275,
+  "url": "/audio/sistemas/transmisor-instrumentos-sky/",
+  "imagen": "/assets/img/productos/transmisor-instrumentos-sky/transmisor-instrumentos-01.webp"
+},{
+  "id": "miwayer-transmisor-instrumentos",
+  "nombre": "Miwayer A8 Transmisor Instrumento",
+  "precio": 249,
+  "url": "/audio/sistemas/miwayer-transmisor-instrumentos/",
+  "imagen": "/assets/img/productos/miwayer-transmisor-instrumentos/01.webp"
+},{
+  "id": "dgnog-transmisor-microfono",
+  "nombre": "DGNOG Transmisor Microfono",
+  "precio": 249,
+  "url": "/audio/sistemas/dgnog-transmisor-microfono/",
+  "imagen": "/assets/img/productos/dgnog-transmisor-microfono/transmisor-microfono-01.webp"
+},{
+  "id": "joyo-momix",
+  "nombre": "Joyo Momix",
+  "precio": 995,
+  "url": "/audio/interfaces/joyo-momix/",
+  "imagen": "/assets/img/productos/joyo-momix/joyo-momix-01.webp"
+},{
+  "id": "joyo-momix-cab",
+  "nombre": "Joyo Momix CAB",
+  "precio": 295,
+  "url": "/audio/interfaces/joyo-momix-cab/",
+  "imagen": "/assets/img/productos/joyo-momix-cab/joyo-momix-cab-01.webp"
+},{
+  "id": "joyo-interface-jw-05r",
+  "nombre": "Joyo Interface JW-05R",
+  "precio": 550,
+  "url": "/audio/interfaces/joyo-interface-jw-05r/",
+  "imagen": "/assets/img/productos/joyo-interface-jw-05r/joyo-jw-05r-01.webp"
+},{
+  "id": "irig-mini-interfaz",
+  "nombre": "Irig Mini Interfaz",
+  "precio": 149,
+  "url": "/audio/interfaces/irig-mini-interfaz/",
+  "imagen": "/assets/img/productos/irig-mini-interfaz/-1088358001-1986582452.jpg.webp"
+},{
+  "id": "microfono-sm57",
+  "nombre": "Microfono SM57",
+  "precio": 299,
+  "url": "/audio/microfonos/microfono-sm57/",
+  "imagen": "/assets/img/productos/microfono-sm57/sm57-01.webp"
+},{
+  "id": "microfono-beta-58a",
+  "nombre": "Microfono BETA 58A",
+  "precio": 299,
+  "url": "/audio/microfonos/microfono-beta-58a/",
+  "imagen": "/assets/img/productos/microfono-beta-58a/beta-58-a-01.webp"
+},{
+  "id": "microfono-sm58",
+  "nombre": "Microfono SM58",
+  "precio": 299,
+  "url": "/audio/microfonos/microfono-sm58/",
+  "imagen": "/assets/img/productos/microfono-sm58/-108827969382592058.jpg.webp"
+},{
+  "id": "microfono-lavariel",
+  "nombre": "Microfono Lavariel",
+  "precio": 195,
+  "url": "/audio/microfonos/microfono-lavariel/",
+  "imagen": "/assets/img/productos/microfono-lavariel/-10357562791201971199.jpg.webp"
+},{
+  "id": "extension-5m-inears",
+  "nombre": "Extensión 5 metros In-Ears",
+  "precio": 115,
+  "url": "/audio/cables/extension-5m-inears/",
+  "imagen": "/assets/img/productos/extension-5m-inears/extension-6.35-to-3.5mm-01.webp"
+},{
+  "id": "extension-10m-inears",
+  "nombre": "Extensión 10 metros In-Ears",
+  "precio": 135,
+  "url": "/audio/cables/extension-10m-inears/",
+  "imagen": "/assets/img/productos/extension-10m-inears/extension-6.35-to-3.5mm-01.webp"
+},{
+  "id": "cable-plug-1-4",
+  "nombre": "Cable Plug 1/4 a Plug 1/4",
+  "precio": 25,
+  "url": "/audio/cables/cable-plug-1-4/",
+  "imagen": "/assets/img/productos/cable-plug-1-4/-1089686133-1243850747.jpg.webp"
+}]

@@ -1,0 +1,12 @@
+{% set svgPartial = "svgs/" + prod.svgTipo + ".njk" %}
+{% if prod.imagenes and prod.imagenes.length > 0 %}
+<img src="/assets/img/productos/{{ prod.imagenes[0] }}" alt="{{ prod.nombre }}"
+  loading="lazy"
+  onerror="this.replaceWith(document.getElementById('svg-tmpl-{{ prod.id }}').content.cloneNode(true))"
+  style="width:100%; height:100%; object-fit:contain;">
+<template id="svg-tmpl-{{ prod.id }}">
+  {% include svgPartial %}
+</template>
+{% else %}
+{% include svgPartial %}
+{% endif %}

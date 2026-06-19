@@ -1,0 +1,187 @@
+{# ================================================================
+   HERO SLIDESHOW — Impact style
+   Imágenes: src/assets/img/home/hero-[1,2,3].jpg
+   Requiere: arms-slideshow.js + arms.css
+================================================================= #}
+
+<x-slideshow
+  class="slideshow slideshow--boxed slideshow--multiple-slides"
+  allow-transparent-header=""
+  style="--slideshow-controls-color: 255 255 255; --slideshow-background: linear-gradient(90deg, rgba(26,26,26,1) 0%, rgba(60,60,60,1) 100%);"
+>
+  <span class="slideshow__slide-background" style="opacity: 0;"></span>
+
+  <slideshow-carousel
+    id="slideshow-arms-home"
+    class="slideshow__carousel"
+    reveal-on-scroll="true"
+    selector=".slideshow__slide"
+    transition="fade_with_text"
+    autoplay="6"
+    role="region"
+    aria-label="Slideshow principal"
+    style="opacity: 0;"
+  >
+
+    <custom-cursor class="slideshow__cursor circle-button circle-button--lg circle-button--fill" aria-hidden="true">
+      <svg class="icon icon-chevron-right" width="7" height="10" viewBox="0 0 7 10" fill="none">
+        <path d="m1 9 4-4-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="butt" stroke-linejoin="miter"></path>
+      </svg>
+      <svg class="slideshow__cursor-ring" width="56" height="56" viewBox="-28 -28 56 56" fill="none" stroke="currentColor" stroke-width="2">
+        <circle r="27"></circle>
+      </svg>
+    </custom-cursor>
+
+    {# ── Slide 1 — In-Ears KZ ── #}
+    <div
+      class="slideshow__slide is-selected"
+      role="group"
+      aria-label="Slide 1 de 3"
+      style="
+        --slideshow-slide-background: linear-gradient(90deg, rgba(26,26,26,1) 0%, rgba(60,60,60,1) 100%);
+        --slideshow-slide-controls-color: 255 255 255;
+      "
+    >
+      <div
+        class="content-over-media content-over-media--lg rounded"
+        style="--content-over-media-content-max-width: 640px; --content-over-media-overlay: 0 0 0 / 0.3;"
+      >
+        <picture>
+          <source media="(max-width: 699px)" srcset="/assets/img/home/hero-1-mobile.webp">
+          <img
+            src="/assets/img/home/hero-1.jpg"
+            alt="In-Ears KZ y QKZ en Guatemala"
+            width="2800"
+height="1000"
+            loading="eager"
+            fetchpriority="high"
+            sizes="min(1600px, 100vw)"
+          >
+        </picture>
+        <div class="place-self-center-start text-start sm:place-self-center-start sm:text-start text-custom" style="--text-color: 255 255 255;">
+          <div class="prose">
+            <p class="subheading" data-sequence="subheading">In-Ears KZ y QKZ</p>
+            <p class="h1" data-sequence="heading">
+              <split-lines>Sonido profesional para todos</split-lines>
+            </p>
+            <a class="button button--xl" href="/in-ears/" style="--button-background: 255 255 255 / var(--button-background-opacity, 1); --button-outline-color: 255 255 255; --button-text-color: 26 26 26;">
+              Ver In-Ears
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {# ── Slide 2 — Audio Profesional ── #}
+    <div
+      class="slideshow__slide"
+      role="group"
+      aria-label="Slide 2 de 3"
+      style="
+        --slideshow-slide-background: linear-gradient(90deg, rgba(15,23,42,1) 0%, rgba(30,41,59,1) 100%);
+        --slideshow-slide-controls-color: 255 255 255;
+      "
+    >
+      <div
+        class="content-over-media content-over-media--lg rounded"
+        style="--content-over-media-content-max-width: 560px; --content-over-media-overlay: 0 0 0 / 0.25;"
+      >
+        <picture>
+          <source media="(max-width: 699px)" srcset="/assets/img/home/hero-2-mobile.webp">
+          <img
+            src="/assets/img/home/hero-2.jpg"
+            alt="Audio Profesional ARMS Music Guatemala"
+            width="2800"
+height="1000"
+            loading="lazy"
+            fetchpriority="low"
+            sizes="min(1600px, 100vw)"
+          >
+        </picture>
+        <div class="place-self-center text-center sm:place-self-center-start sm:text-start text-custom" style="--text-color: 255 255 255;">
+          <div class="prose">
+            <p class="subheading" data-sequence="subheading">Sistemas de Monitoreo</p>
+            <p class="h1" data-sequence="heading">
+              <split-lines>Eleva tu experiencia de escucha</split-lines>
+            </p>
+            <a class="button button--xl" href="/audio/" style="--button-background: 255 255 255 / var(--button-background-opacity, 1); --button-outline-color: 255 255 255; --button-text-color: 26 26 26;">
+              Ver Audio Profesional
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {# ── Slide 3 — Envío Guatemala ── #}
+    <div
+      class="slideshow__slide"
+      role="group"
+      aria-label="Slide 3 de 3"
+      style="
+        --slideshow-slide-background: linear-gradient(90deg, rgba(49,66,105,1) 20%, rgba(136,159,185,1) 45%, rgba(183,148,131,1) 98%);
+        --slideshow-slide-controls-color: 255 255 255;
+      "
+    >
+      <div
+        class="content-over-media content-over-media--lg rounded"
+        style="--content-over-media-content-max-width: 780px; --content-over-media-overlay: 0 0 0 / 0.2;"
+      >
+        <picture>
+          <source media="(max-width: 699px)" srcset="/assets/img/home/hero-3-mobile.webp">
+          <img
+            src="/assets/img/home/hero-3.jpg"
+            alt="Envío a toda Guatemala — ARMS Music"
+            width="2800"
+height="1000"
+            loading="lazy"
+            fetchpriority="low"
+            sizes="min(1600px, 100vw)"
+          >
+        </picture>
+        <div class="place-self-center text-center sm:place-self-center-end sm:text-end text-custom" style="--text-color: 255 255 255;">
+          <div class="prose">
+            <p class="subheading" data-sequence="subheading">Envío a toda Guatemala</p>
+            <p class="h1" data-sequence="heading">
+              <split-lines>Pago contra entrega en tu puerta</split-lines>
+            </p>
+            <a class="button button--xl" href="/in-ears/" style="--button-background: 49 63 95 / var(--button-background-opacity, 1); --button-outline-color: 49 63 95; --button-text-color: 255 255 255;">
+              Ver productos
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {# ── Dots numerados ── #}
+    <div class="slideshow__controls">
+      <page-dots class="numbered-dots" aria-controls="slideshow-arms-home">
+
+        <button type="button" class="numbered-dots__item" aria-current="true">
+          <svg width="100%" height="100%" style="--percent: 0">
+            <circle cx="50%" cy="50%" r="15"></circle>
+            <circle cx="50%" cy="50%" r="15"></circle>
+          </svg>
+          <span>1</span>
+        </button>
+
+        <button type="button" class="numbered-dots__item">
+          <svg width="100%" height="100%" style="--percent: 0">
+            <circle cx="50%" cy="50%" r="15"></circle>
+            <circle cx="50%" cy="50%" r="15"></circle>
+          </svg>
+          <span>2</span>
+        </button>
+
+        <button type="button" class="numbered-dots__item">
+          <svg width="100%" height="100%" style="--percent: 0">
+            <circle cx="50%" cy="50%" r="15"></circle>
+            <circle cx="50%" cy="50%" r="15"></circle>
+          </svg>
+          <span>3</span>
+        </button>
+
+      </page-dots>
+    </div>
+
+  </slideshow-carousel>
+</x-slideshow>

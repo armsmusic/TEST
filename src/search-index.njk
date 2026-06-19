@@ -1,0 +1,18 @@
+---
+permalink: /search-index.json
+eleventyExcludeFromCollections: true
+---
+{% set items = [] %}
+{% for prod in productos.inears %}{% set _ = items.push(prod) %}{% endfor %}
+{% for prod in productos['accesorios-inears'] %}{% set _ = items.push(prod) %}{% endfor %}
+{% for prod in productos['audio-sistemas'] %}{% set _ = items.push(prod) %}{% endfor %}
+{% for prod in productos['audio-interfaces'] %}{% set _ = items.push(prod) %}{% endfor %}
+{% for prod in productos['audio-microfonos'] %}{% set _ = items.push(prod) %}{% endfor %}
+{% for prod in productos['audio-cables'] %}{% set _ = items.push(prod) %}{% endfor %}
+[{% for prod in items %}{
+  "id": {{ prod.id | dump | safe }},
+  "nombre": {{ prod.nombre | dump | safe }},
+  "precio": {{ prod.precio }},
+  "url": {{ prod.id | productoUrl | dump | safe }},
+  "imagen": {{ ("/assets/img/productos/" + prod.imagenes[0]) | dump | safe if prod.imagenes and prod.imagenes.length > 0 else '""' }}
+}{% if not loop.last %},{% endif %}{% endfor %}]

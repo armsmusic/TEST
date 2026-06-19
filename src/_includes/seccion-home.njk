@@ -1,0 +1,47 @@
+{#
+  Parámetros requeridos:
+  - seccionId:    string  — "inears", "monitores", "audio", "accesorios-inears"
+  - seccionLabel: string  — "In Ears", "Monitoreo", etc.
+  - seccionEmoji: string  — "🎧", "🎚️", etc.
+  - seccionProds: array   — productos[seccionId]
+#}
+<section class="bg-body-secondary rounded-4" id="{{ seccionId }}" aria-labelledby="{{ seccionId }}-title">
+  <div class="container">
+    <div class="text-center mb-5 reveal" data-section-header>
+      <span class="badge bg-body-tertiary border-gradient-rainbow border-1 text-body p-2 mb-1 fw-semibold small">
+        {{ seccionEmoji }} {{ seccionLabel }}
+      </span>
+      <h2 class="h2 fw-bold" id="{{ seccionId }}-title">{{ seccionLabel }}</h2>
+    </div>
+    <div class="row g-3" id="row-{{ seccionId }}">
+      {% for prod in seccionProds %}
+      {% set prodUrl = prod.id | productoUrl %}
+      {% set varId = ("var-" + prod.nombre) | replace(" ", "-") | replace("/", "-") %}
+      {% set btnId = ("btn-add-" + prod.nombre) | replace(" ", "-") | replace("/", "-") %}
+      <div class="col-6 col-lg-3 reveal{% if prod.extra %} extra-card{% endif %}"{%- if prod.extra %} data-section="{{ seccionId }}" style="display:none;"{% endif %}>
+        {% include "card-producto.njk" %}
+      </div>
+      {% endfor %}
+
+      {% if seccionProds | length == 0 %}
+      <div class="col-12 section-empty visible" role="status">
+        <span class="empty-icon">🔍</span>
+        <p>No hay productos en esta sección.</p>
+      </div>
+      {% endif %}
+
+    </div>
+
+    <div class="col-12 text-center mt-2" id="ver-todo-wrap-{{ seccionId }}">
+      <button onclick="verTodo('{{ seccionId }}')" class="btn btn-ver-todo px-4">
+        Ver Más <i class="fa-solid fa-chevron-down ms-1"></i>
+      </button>
+    </div>
+    <div class="col-12 text-center mt-2" id="ver-menos-wrap-{{ seccionId }}" style="display:none;">
+      <button onclick="verMenos('{{ seccionId }}')" class="btn btn-ver-todo px-4">
+        Ver Menos <i class="fa-solid fa-chevron-up ms-1"></i>
+      </button>
+    </div>
+
+  </div>
+</section>

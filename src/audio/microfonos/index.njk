@@ -1,0 +1,69 @@
+---
+layout: base.njk
+titulo: Micrófonos Profesionales — ARMS Music Guatemala
+seoTitulo: "Micrófonos Profesionales en Guatemala | ARMS Music"
+seoDescripcion: "Micrófonos profesionales en Guatemala para grabación, estudio, escenario y transmisión en vivo. Pago contra entrega, envíos a todo el país."
+ogType: "website"
+permalink: /audio/microfonos/index.html
+descripcion: "Micrófonos dinámicos y de condensador para vocales, instrumentos y streaming. Modelos Shure SM57, SM58 y BETA 58A disponibles en Guatemala con pago contra entrega y envío a todo el país."
+---
+
+<div class="categoria-page">
+
+  <!-- HERO -->
+  <section class="categoria-hero">
+    <div class="container">
+      <nav aria-label="Ruta de navegación" style="margin-bottom:1rem;">
+        <ol class="breadcrumb-arms">
+          <li><a href="/">Inicio</a></li>
+          <li><span aria-hidden="true">›</span></li>
+          <li><a href="/audio/">Audio</a></li>
+          <li><span aria-hidden="true">›</span></li>
+          <li aria-current="page">Micrófonos</li>
+        </ol>
+      </nav>
+      <div class="categoria-hero-inner">
+        <div>
+          <h1 class="categoria-titulo">Micrófonos</h1>
+          <p class="categoria-subtitulo">Micrófonos dinámicos y de condensador para voz, instrumentos y locución</p>
+        </div>
+        <div class="categoria-stats">
+          <span class="categoria-count">{{ productos["audio-microfonos"] | length }} productos</span>
+        </div>
+      </div>
+      <a href="/audio/" class="categoria-banner-accesorio">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        <span>Ver todo <strong>Audio Profesional</strong></span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- DESCRIPCIÓN -->
+  <section style="padding-bottom:1.5rem;">
+    <div class="container">
+      <p style="color:rgba(255,255,255,0.5); font-size:0.95rem; max-width:680px; line-height:1.7;">
+        {{ descripcion }}
+      </p>
+    </div>
+  </section>
+
+  <!-- GRID -->
+  <section class="categoria-grid-section">
+    <div class="container">
+
+      <div class="row g-3" id="row-categoria-audio-microfonos">
+        {% for prod in productos["audio-microfonos"] %}
+        {% set varId  = ("var-cat-" + prod.nombre) | replace(" ", "-") | replace("/", "-") %}
+        {% set btnId  = ("btn-cat-" + prod.nombre) | replace(" ", "-") | replace("/", "-") %}
+        {% set prodUrl = prod.id | productoUrl %}
+        <div class="col-6 col-lg-3">
+            {% include "card-producto.njk" %}
+        </div>
+        {% endfor %}
+      </div>
+
+    </div>
+  </section>
+
+</div>

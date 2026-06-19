@@ -1,0 +1,47 @@
+<article data-lazy-card class="card-categoria">
+
+  <a href="{{ prodUrl }}" class="card-categoria-img" style="background:linear-gradient(135deg,{{ prod.g1 }},{{ prod.g2 }});">
+    {% include "product-img.njk" %}
+    {% if prod.descuento %}<span class="card-categoria-badge">{{ prod.descuento }}</span>{% endif %}
+  </a>
+
+  <div class="card-categoria-body">
+    <a href="{{ prodUrl }}" class="card-categoria-nombre">{{ prod.nombre }}{% if prod.subtitulo %}<small class="d-block" style="font-size:0.72rem;color:rgba(255,255,255,0.45);">{{ prod.subtitulo }}</small>{% endif %}</a>
+
+    <div class="card-categoria-precio">
+      {% if prod.precioOriginal %}<span class="card-cat-precio-original">{{ prod.precioOriginal | gtq }}</span>{% endif %}
+      <span class="card-cat-precio-actual">{{ prod.precio | gtq }}</span>
+    </div>
+
+    {% if prod.variantes %}
+    <div class="d-flex flex-wrap gap-1 mb-2" id="{{ varId }}">
+      {% for varName in prod.variantes %}
+      <button onclick="seleccionarVariante(this, '{{ prod.nombre }}', '{{ varName }}', {{ prod.precio }})"
+        data-img="/assets/img/productos/{{ prod.imagenesVariantes[varName] if prod.imagenesVariantes[varName] else prod.imagenes[0] }}"
+        style="padding:0.15rem 0.4rem; border-radius:0.35rem; font-size:0.52rem; font-weight:600; cursor:pointer; {{ vs[varName] }}; transition:all .15s ease;{% if loop.first %} border-width:2px;{% endif %}"
+        {% if loop.first %}class="var-btn-active"{% endif %}>{{ varName }}</button>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="stock-indicator" style="margin-bottom:0.4rem; font-size:0.7rem;"></div>
+
+    {% if prod.variantes %}
+    <button class="btn-cat-agregar btn-agregar"
+      id="{{ btnId }}"
+      data-product-name="{{ prod.nombre }} - {{ prod.variantes[0] }}"
+      data-img="/assets/img/productos/{{ prod.imagenesVariantes[prod.variantes[0]] if prod.imagenesVariantes[prod.variantes[0]] else prod.imagenes[0] }}"
+      onclick="agregarAlCarrito('{{ prod.nombre }} - {{ prod.variantes[0] }}', {{ prod.precio }}, this)">
+      <i class="fa-solid fa-cart-plus"></i> Agregar
+    </button>
+    {% else %}
+    <button class="btn-cat-agregar btn-agregar"
+      data-product-name="{{ prod.nombre }}"
+      data-img="/assets/img/productos/{{ prod.imagenes[0] }}"
+      onclick="agregarAlCarrito('{{ prod.nombre }}', {{ prod.precio }}, this)">
+      <i class="fa-solid fa-cart-plus"></i> Agregar
+    </button>
+    {% endif %}
+
+  </div>
+</article>

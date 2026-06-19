@@ -1,0 +1,233 @@
+---
+layout: base.njk
+titulo: Audio Profesional — ARMS Music Guatemala
+seoTitulo: "Equipo de Audio Profesional en Guatemala | ARMS Music"
+seoDescripcion: "Interfaces, micrófonos, monitores y cables de audio profesional en Guatemala. Pago contra entrega, envíos a todo el país."
+ogType: "website"
+permalink: /audio/index.html
+descripcion: "En ARMS Music encontrarás todo lo que necesitas para tu setup de audio profesional — desde interfaces de grabación y micrófonos hasta sistemas de monitoreo inalámbrico y cables para escenario. Todo disponible en Guatemala con pago contra entrega y envío a todo el país."
+---
+
+<div class="categoria-page">
+
+  <!-- HERO -->
+  <section class="categoria-hero">
+    <div class="container">
+      <nav aria-label="Ruta de navegación" style="margin-bottom:1rem;">
+        <ol class="breadcrumb-arms">
+          <li><a href="/">Inicio</a></li>
+          <li><span aria-hidden="true">›</span></li>
+          <li aria-current="page">Audio</li>
+        </ol>
+      </nav>
+      <div class="categoria-hero-inner">
+        <div>
+          <h1 class="categoria-titulo">Audio Profesional</h1>
+          <p class="categoria-subtitulo">Interfaces, micrófonos, sistemas de monitoreo y cables para tu setup</p>
+        </div>
+        <div class="categoria-stats">
+          {% set totalAudio = productos["audio-sistemas"] | length + productos["audio-interfaces"] | length + productos["audio-microfonos"] | length + productos["audio-cables"] | length %}
+          <span class="categoria-count">{{ totalAudio }} productos</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DESCRIPCIÓN -->
+  <section style="padding-bottom:2rem;">
+    <div class="container">
+      <p style="color:rgba(255,255,255,0.5); font-size:0.95rem; max-width:680px; line-height:1.7;">
+        {{ descripcion }}
+      </p>
+    </div>
+  </section>
+
+  <!-- SLIDER DE SUBPILARES -->
+  <section style="padding-bottom:3rem;">
+    <div class="container">
+      <h2 style="font-size:1.1rem; font-weight:700; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:1.25rem;">Explorar por categoría</h2>
+
+      <div style="overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none; margin:0 -1rem; padding:0 1rem 0.5rem;">
+        <div style="display:flex; gap:1rem; width:max-content;">
+
+          <!-- Sistemas -->
+          <a href="/audio/sistemas/" style="text-decoration:none; flex-shrink:0; width:160px;">
+            <div class="audio-hub-card">
+              <div class="audio-hub-img" style="background:linear-gradient(135deg,{{ productos['audio-sistemas'][0].g1 }},{{ productos['audio-sistemas'][0].g2 }});">
+                {% set prod = productos["audio-sistemas"][0] %}
+                {% include "product-img.njk" %}
+              </div>
+              <div class="audio-hub-body">
+                <p class="audio-hub-nombre">Sistemas</p>
+                <p class="audio-hub-count">{{ productos["audio-sistemas"] | length }} productos</p>
+              </div>
+            </div>
+          </a>
+
+          <!-- Interfaces -->
+          <a href="/audio/interfaces/" style="text-decoration:none; flex-shrink:0; width:160px;">
+            <div class="audio-hub-card">
+              <div class="audio-hub-img" style="background:linear-gradient(135deg,{{ productos['audio-interfaces'][0].g1 }},{{ productos['audio-interfaces'][0].g2 }});">
+                {% set prod = productos["audio-interfaces"][0] %}
+                {% include "product-img.njk" %}
+              </div>
+              <div class="audio-hub-body">
+                <p class="audio-hub-nombre">Interfaces</p>
+                <p class="audio-hub-count">{{ productos["audio-interfaces"] | length }} productos</p>
+              </div>
+            </div>
+          </a>
+
+          <!-- Micrófonos -->
+          <a href="/audio/microfonos/" style="text-decoration:none; flex-shrink:0; width:160px;">
+            <div class="audio-hub-card">
+              <div class="audio-hub-img" style="background:linear-gradient(135deg,{{ productos['audio-microfonos'][0].g1 }},{{ productos['audio-microfonos'][0].g2 }});">
+                {% set prod = productos["audio-microfonos"][0] %}
+                {% include "product-img.njk" %}
+              </div>
+              <div class="audio-hub-body">
+                <p class="audio-hub-nombre">Micrófonos</p>
+                <p class="audio-hub-count">{{ productos["audio-microfonos"] | length }} productos</p>
+              </div>
+            </div>
+          </a>
+
+          <!-- Cables -->
+          <a href="/audio/cables/" style="text-decoration:none; flex-shrink:0; width:160px;">
+            <div class="audio-hub-card">
+              <div class="audio-hub-img" style="background:linear-gradient(135deg,{{ productos['audio-cables'][0].g1 }},{{ productos['audio-cables'][0].g2 }});">
+                {% set prod = productos["audio-cables"][0] %}
+                {% include "product-img.njk" %}
+              </div>
+              <div class="audio-hub-body">
+                <p class="audio-hub-nombre">Cables</p>
+                <p class="audio-hub-count">{{ productos["audio-cables"] | length }} productos</p>
+              </div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GRID COMPLETO -->
+  <section class="categoria-grid-section">
+    <div class="container">
+
+      {% set vs = {
+        "Negro":   "background:#1a1a1a;border:1.5px solid #555;color:#fff",
+        "Verde":   "background:#064e3b;border:1.5px solid #10B981;color:#6ee7b7",
+        "Crystal": "background:#e0f2fe;border:1.5px solid #38bdf8;color:#0369a1",
+        "Gray":    "background:#374151;border:1.5px solid #9ca3af;color:#d1d5db",
+        "Purple":  "background:#2e1065;border:1.5px solid #a855f7;color:#d8b4fe",
+        "Silver":  "background:#1e293b;border:1.5px solid #94a3b8;color:#cbd5e1",
+        "Blue":    "background:#1e3a5f;border:1.5px solid #3b82f6;color:#93c5fd",
+        "Dorado":  "background:#451a03;border:1.5px solid #d97706;color:#fcd34d",
+        "Blanco":  "background:#f8fafc;border:1.5px solid #cbd5e1;color:#1e293b"
+      } %}
+
+      {% set todosAudio = productos["audio-sistemas"]
+        .concat(productos["audio-interfaces"])
+        .concat(productos["audio-microfonos"])
+        .concat(productos["audio-cables"]) %}
+
+      <div class="row g-3" id="row-categoria-audio">
+        {% for prod in todosAudio %}
+        {% set varId  = ("var-cat-" + prod.nombre) | replace(" ", "-") | replace("/", "-") %}
+        {% set btnId  = ("btn-cat-" + prod.nombre) | replace(" ", "-") | replace("/", "-") %}
+        {% set prodUrl = prod.id | productoUrl %}
+        <div class="col-6 col-lg-3">
+          <article class="card-categoria">
+
+            <a href="{{ prodUrl }}" class="card-categoria-img" style="background:linear-gradient(135deg,{{ prod.g1 }},{{ prod.g2 }});">
+              {% include "product-img.njk" %}
+              {% if prod.descuento %}
+              <span class="card-categoria-badge">{{ prod.descuento }}</span>
+              {% endif %}
+            </a>
+
+            <div class="card-categoria-body">
+              <a href="{{ prodUrl }}" class="card-categoria-nombre">{{ prod.nombre }}</a>
+
+              <div class="card-categoria-precio">
+                {% if prod.precioOriginal %}
+                <span class="card-cat-precio-original">{{ prod.precioOriginal | gtq }}</span>
+                {% endif %}
+                <span class="card-cat-precio-actual">{{ prod.precio | gtq }}</span>
+              </div>
+
+              {% if prod.variantes %}
+              <div class="d-flex flex-wrap gap-1 mb-2" id="{{ varId }}">
+                {% for varName in prod.variantes %}
+                <button onclick="seleccionarVariante(this, '{{ prod.nombre }}', '{{ varName }}', {{ prod.precio }})"
+                  style="padding:0.15rem 0.4rem; border-radius:0.35rem; font-size:0.52rem; font-weight:600; cursor:pointer; {{ vs[varName] }}; transition:all .15s ease;{% if loop.first %} border-width:2px;{% endif %}"
+                  {% if loop.first %}class="var-btn-active"{% endif %}>{{ varName }}</button>
+                {% endfor %}
+              </div>
+              {% endif %}
+
+              <div class="stock-indicator" style="margin-bottom:0.4rem; font-size:0.7rem;"></div>
+
+              {% if prod.variantes %}
+              <button class="btn-cat-agregar btn-agregar"
+                id="{{ btnId }}"
+                data-product-name="{{ prod.nombre }} - {{ prod.variantes[0] }}"
+                onclick="agregarAlCarrito('{{ prod.nombre }} - {{ prod.variantes[0] }}', {{ prod.precio }}, this)">
+                <i class="fa-solid fa-cart-plus"></i> Agregar
+              </button>
+              {% else %}
+              <button class="btn-cat-agregar btn-agregar"
+                data-product-name="{{ prod.nombre }}"
+                onclick="agregarAlCarrito('{{ prod.nombre }}', {{ prod.precio }}, this)">
+                <i class="fa-solid fa-cart-plus"></i> Agregar
+              </button>
+              {% endif %}
+
+            </div>
+          </article>
+        </div>
+        {% endfor %}
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<style>
+.audio-hub-card {
+  background: var(--bs-secondary-bg);
+  border: 1px solid var(--bs-border-color);
+  border-radius: 1rem;
+  overflow: hidden;
+  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+.audio-hub-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(102,0,255,0.45);
+  box-shadow: 0 0 0 1px rgba(102,0,255,0.2), 0 8px 28px rgba(0,0,0,0.4);
+}
+.audio-hub-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+.audio-hub-body {
+  padding: 0.75rem;
+}
+.audio-hub-nombre {
+  margin: 0 0 0.2rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #fff;
+}
+.audio-hub-count {
+  margin: 0;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.4);
+}
+div::-webkit-scrollbar { display: none; }
+</style>

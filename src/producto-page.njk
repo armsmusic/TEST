@@ -1,0 +1,16 @@
+---
+pagination:
+  data: collections.productosPages
+  size: 1
+  alias: prod
+permalink: "{{ prod.permalink }}"
+layout: base.njk
+eleventyComputed:
+  titulo: "{{ prod.nombre }} — ARMS Music"
+  seoTitulo: "{{ prod.seoTitulo if prod.seoTitulo else prod.nombre + ' Guatemala | ARMS Music' }}"
+  seoDescripcion: "{{ prod.seoDescripcion if prod.seoDescripcion else 'Compra ' + prod.nombre + ' Guatemala. Pago contra entrega, envíos a todo el país.' }}"
+  ogType: "product"
+  ogImagen: "/assets/img/productos/{{ prod.ogImagenProducto if prod.ogImagenProducto else prod.imagenes[0] }}"
+  schemaJson: "{ \"@context\": \"https://schema.org\", \"@type\": \"Product\", \"name\": \"{{ prod.nombre }}\", \"description\": \"{{ prod.seoDescripcion if prod.seoDescripcion else prod.nombre }}\", \"image\": \"https://armsmusic.com/assets/img/productos/{{ prod.imagenes[0] }}\", \"url\": \"https://armsmusic.com/{{ prod.pilar }}/{{ prod.id }}/\", \"offers\": { \"@type\": \"Offer\", \"price\": {{ prod.precio }}, \"priceCurrency\": \"GTQ\", \"availability\": \"https://schema.org/InStock\", \"url\": \"https://armsmusic.com/{{ prod.pilar }}/{{ prod.id }}/\", \"seller\": { \"@type\": \"Organization\", \"name\": \"ARMS Music\" } } }"
+---
+{% include "producto.njk" %}

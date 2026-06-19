@@ -1,0 +1,58 @@
+---
+layout: base.njk
+titulo: In-Ears KZ y QKZ — ARMS Music Guatemala
+seoTitulo: "In-Ears KZ en Guatemala — KZ, QKZ y CCA | ARMS Music"
+seoDescripcion: "In-ears KZ y QKZ en Guatemala. Los mejores IEMs al mejor precio. Pago contra entrega, envíos a todo el país."
+ogType: "website"
+permalink: /in-ears/index.html
+---
+
+<div class="categoria-page">
+
+  <!-- HERO DE CATEGORÍA -->
+  <section class="categoria-hero">
+    <div class="container">
+      <nav aria-label="Ruta de navegación" style="margin-bottom:1rem;">
+        <ol class="breadcrumb-arms">
+          <li><a href="/">Inicio</a></li>
+          <li><span aria-hidden="true">›</span></li>
+          <li aria-current="page">In-Ears</li>
+        </ol>
+      </nav>
+      <div class="categoria-hero-inner">
+        <div>
+          <h1 class="categoria-titulo">In-Ears</h1>
+          <p class="categoria-subtitulo">Audífonos KZ y QKZ de alta fidelidad para monitoreo y uso cotidiano</p>
+        </div>
+        <div class="categoria-stats">
+          <span class="categoria-count">{{ productos.inears | length }} productos</span>
+        </div>
+      </div>
+      <!-- Banner accesorios -->
+      <a href="/in-ears/accesorios/" class="categoria-banner-accesorio">
+        <span>⚡</span>
+        <span>¿Buscas cables, tips o estuches? Ver <strong>Accesorios In-Ears</strong></span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- GRID DE PRODUCTOS -->
+  <section class="categoria-grid-section">
+    <div class="container">
+
+      <div class="row g-3" id="row-categoria-inears">
+        {% for prod in productos.inears %}
+        {% set varId = ("var-cat-" + prod.nombre) | replace(" ", "-") | replace("/", "-") %}
+        {% set btnId = ("btn-cat-" + prod.nombre) | replace(" ", "-") | replace("/", "-") %}
+        {% set prodUrl = prod.id | productoUrl %}
+        <div class="col-6 col-lg-3">
+            {% include "card-producto.njk" %}
+        </div>
+        {% endfor %}
+      </div>
+
+    </div>
+  </section>
+
+</div>
