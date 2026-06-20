@@ -39,6 +39,7 @@ class Player extends EventTarget {
   resume(restart = false) {
     if (restart) this._elapsed = 0;
     if (!this._paused && !restart) return;
+    clearTimeout(this._timer);
     this._paused   = false;
     this._startTime = Date.now();
     const remaining = this._duration - this._elapsed;
@@ -98,9 +99,18 @@ class BaseCarousel extends HTMLElement {
 
     if (this.items.length > 1) {
       this.addEventListener('carousel:filter',  this._filterItems,   { signal: this._abortController.signal });
-      this.addEventListener('control:prev',     this.previous,       { signal: this._abortController.signal });
-      this.addEventListener('control:next',     this.next,           { signal: this._abortController.signal });
-      this.addEventListener('control:select',   (e) => this.select(e.detail.index), { signal: this._abortController.signal });
+      this.addEventListener('control:prev', () => {
+        this._player?.resume(true);
+        this.previous();
+      }, { signal: this._abortController.signal });
+      this.addEventListener('control:next', () => {
+        this._player?.resume(true);
+        this.next();
+      }, { signal: this._abortController.signal });
+      this.addEventListener('control:select', (e) => {
+        this._player?.resume(true);
+        this.select(e.detail.index);
+      }, { signal: this._abortController.signal });
       this.addEventListener('carousel:select',  this._preloadImages, { signal: this._abortController.signal });
     }
 
@@ -202,7 +212,7 @@ class EffectCarousel extends BaseCarousel {
       this._player = new Player(this.getAttribute('autoplay'));
       this._player.addEventListener('player:end', this.next.bind(this));
 
-      // Pausar cuando la página no es visible
+      // Pausar cuando la página no es visible; al volver, continuar exactamente donde se quedó
       document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'hidden') this._player.pause();
         else this._player.resume();
@@ -219,8 +229,8 @@ class EffectCarousel extends BaseCarousel {
 
     if (this.items.length > 1 && this.swipeable) {
       new GestureArea(this, { signal: this._abortController.signal });
-      this.addEventListener('swipeleft',  this.next.bind(this),     { signal: this._abortController.signal });
-      this.addEventListener('swiperight', this.previous.bind(this), { signal: this._abortController.signal });
+      this.addEventListener('swipeleft',  () => { this._player?.resume(true); this.next(); },     { signal: this._abortController.signal });
+      this.addEventListener('swiperight', () => { this._player?.resume(true); this.previous(); }, { signal: this._abortController.signal });
     }
   }
 
@@ -357,7 +367,8 @@ class SlideshowCarousel extends EffectCarousel {
 
     if (this._player && this.hasAttribute('autoplay')) {
       this._player.addEventListener('player:start', (e) => {
-        this._animateNumberedDots(e.detail.duration);
+        const startProgress = this._player._elapsed / this._player._duration;
+        this._animateNumberedDots(e.detail.duration, startProgress);
       });
     }
   }
@@ -491,7 +502,7 @@ class SlideshowCarousel extends EffectCarousel {
     }
   }
 
-  _animateNumberedDots(duration) {
+  _animateNumberedDots(duration, startProgress = 0) {
     const circles = Array.from(this.querySelectorAll('.numbered-dots__item'));
     circles.forEach(item => {
       const circle = item.querySelector('circle:last-child');
@@ -504,9 +515,10 @@ class SlideshowCarousel extends EffectCarousel {
 
       const len = circle.getTotalLength();
       if (item.getAttribute('aria-current') === 'true') {
+        const startLen = len * startProgress;
         circle.animate(
           [
-            { strokeDasharray: `0px, ${len}px` },
+            { strokeDasharray: `${startLen}px, ${len}px` },
             { strokeDasharray: `${len}px, ${len}px` }
           ],
           { duration: duration * 1000, easing: 'linear', fill: 'forwards' }
@@ -518,8 +530,8 @@ class SlideshowCarousel extends EffectCarousel {
   }
 
   async _onSlideSelected(event) {
-    // Resetear animaciones de dots
-    this._animateNumberedDots(this._player?._duration / 1000 || 6);
+    // Resetear animaciones de dots (nuevo slide → progreso siempre arranca en 0)
+    this._animateNumberedDots(this._player?._duration / 1000 || 6, 0);
   }
 }
 
@@ -569,7 +581,7 @@ class CustomCursor extends HTMLElement {
 
     this._container.addEventListener('pointermove', this._onPointerMove.bind(this), { signal });
     this._container.addEventListener('pointerleave', this._onPointerLeave.bind(this), { signal });
-    this.addEventListener('click', this._onClick.bind(this), { signal });
+    this._container.addEventListener('click', this._onContainerClick.bind(this), { signal });
   }
 
   disconnectedCallback() {
@@ -603,9 +615,14 @@ class CustomCursor extends HTMLElement {
     this._stopProgressLoop();
   }
 
-  _onClick() {
-    const isHalfStart = this.classList.contains('is-half-start');
-    (this.controlledElement ?? this._container)?.dispatchEvent(
+  _onContainerClick(event) {
+    // Si el click fue sobre un elemento interactivo real (botón, link, dot), no interceptarlo
+    if (event.target.closest('a, button, [role="button"]')) return;
+
+    const rect = this._container.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const isHalfStart = x < rect.width / 2;
+    this._container.dispatchEvent(
       new CustomEvent(isHalfStart ? 'control:prev' : 'control:next', { bubbles: true })
     );
   }
@@ -630,12 +647,6 @@ class CustomCursor extends HTMLElement {
       cancelAnimationFrame(this._rafId);
       this._rafId = null;
     }
-  }
-
-  get controlledElement() {
-    return this.hasAttribute('aria-controls')
-      ? document.getElementById(this.getAttribute('aria-controls'))
-      : null;
   }
 }
 

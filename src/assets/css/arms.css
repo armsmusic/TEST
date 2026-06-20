@@ -1044,7 +1044,7 @@ custom-cursor {
   border-radius: var(--rounded-sm);
 }
 
-.rounded {
+.arms-rounded {
   border-radius: var(--rounded);
 }
 

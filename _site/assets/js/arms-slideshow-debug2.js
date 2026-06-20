@@ -37,14 +37,19 @@ class Player extends EventTarget {
   }
 
   resume(restart = false) {
+    window.__timerCounter = (window.__timerCounter || 0) + 1;
+    const myId = window.__timerCounter;
+    console.log('[DEBUG resume]', {id: myId, restart, before_elapsed: this._elapsed, before_paused: this._paused, hadPendingTimer: !!this._timer, time: Date.now()});
     if (restart) this._elapsed = 0;
-    if (!this._paused && !restart) return;
+    if (!this._paused && !restart) { console.log('[DEBUG resume SKIPPED - guard]', {id: myId}); return; }
     clearTimeout(this._timer);
     this._paused   = false;
     this._startTime = Date.now();
     const remaining = this._duration - this._elapsed;
+    console.log('[DEBUG resume_after]', {id: myId, elapsed: this._elapsed, remaining, duration: this._duration});
     this.dispatchEvent(new CustomEvent('player:start', { detail: { duration: remaining / 1000 } }));
     this._timer = setTimeout(() => {
+      console.log('[DEBUG player:end fired]', {id: myId, time: Date.now()});
       this._elapsed = 0;
       this.dispatchEvent(new CustomEvent('player:end'));
       this.resume(true);
@@ -52,10 +57,12 @@ class Player extends EventTarget {
   }
 
   pause() {
-    if (this._paused) return;
+    console.log('[DEBUG pause]', {before_paused: this._paused, before_elapsed: this._elapsed, time: Date.now()});
+    if (this._paused) { console.log('[DEBUG pause SKIPPED - already paused]'); return; }
     this._paused = true;
     this._elapsed += Date.now() - this._startTime;
     clearTimeout(this._timer);
+    console.log('[DEBUG pause_after]', {elapsed: this._elapsed});
     this.dispatchEvent(new CustomEvent('player:pause'));
   }
 
@@ -214,13 +221,17 @@ class EffectCarousel extends BaseCarousel {
 
       // Pausar cuando la página no es visible; al volver, continuar exactamente donde se quedó
       document.addEventListener('visibilitychange', () => {
+        console.log('[DEBUG visibilitychange]', {state: document.visibilityState, time: Date.now()});
         if (document.visibilityState === 'hidden') this._player.pause();
         else this._player.resume();
       });
 
       // Iniciar cuando entra en viewport
       const io = new IntersectionObserver(entries => {
-        entries.forEach(e => e.isIntersecting ? this._player.resume(true) : this._player.pause());
+        entries.forEach(e => {
+          console.log('[DEBUG IO]', {isIntersecting: e.isIntersecting, ratio: e.intersectionRatio, time: Date.now()});
+          e.isIntersecting ? this._player.resume(true) : this._player.pause();
+        });
       }, { threshold: 0.1 });
       io.observe(this);
     }
@@ -367,8 +378,7 @@ class SlideshowCarousel extends EffectCarousel {
 
     if (this._player && this.hasAttribute('autoplay')) {
       this._player.addEventListener('player:start', (e) => {
-        const startProgress = this._player._elapsed / this._player._duration;
-        this._animateNumberedDots(e.detail.duration, startProgress);
+        this._animateNumberedDots(e.detail.duration);
       });
     }
   }
@@ -502,7 +512,7 @@ class SlideshowCarousel extends EffectCarousel {
     }
   }
 
-  _animateNumberedDots(duration, startProgress = 0) {
+  _animateNumberedDots(duration) {
     const circles = Array.from(this.querySelectorAll('.numbered-dots__item'));
     circles.forEach(item => {
       const circle = item.querySelector('circle:last-child');
@@ -515,10 +525,9 @@ class SlideshowCarousel extends EffectCarousel {
 
       const len = circle.getTotalLength();
       if (item.getAttribute('aria-current') === 'true') {
-        const startLen = len * startProgress;
         circle.animate(
           [
-            { strokeDasharray: `${startLen}px, ${len}px` },
+            { strokeDasharray: `0px, ${len}px` },
             { strokeDasharray: `${len}px, ${len}px` }
           ],
           { duration: duration * 1000, easing: 'linear', fill: 'forwards' }
@@ -530,8 +539,8 @@ class SlideshowCarousel extends EffectCarousel {
   }
 
   async _onSlideSelected(event) {
-    // Resetear animaciones de dots (nuevo slide → progreso siempre arranca en 0)
-    this._animateNumberedDots(this._player?._duration / 1000 || 6, 0);
+    // Resetear animaciones de dots
+    this._animateNumberedDots(this._player?._duration / 1000 || 6);
   }
 }
 
