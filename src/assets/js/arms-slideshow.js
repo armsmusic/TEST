@@ -175,12 +175,20 @@ class BaseCarousel extends HTMLElement {
   }
 
   async select(index, { animate: shouldAnimate = true, force = false, direction } = {}) {
+    // Si ya hay una transición en curso, esperar a que termine antes de
+    // procesar esta nueva — evita que dos transiciones corran en paralelo
+    // y se pisen entre sí (causa real del "flasheo" del botón/texto).
+    if (this._transitionPromise) {
+      await this._transitionPromise;
+    }
     if (!force && this._selectedIndex === index) return;
     const fromSlide = this.selectedSlide;
     this._selectedIndex = index;
     const toSlide = this.selectedSlide;
     if (fromSlide && toSlide && fromSlide !== toSlide) {
-      await this._transitionTo(fromSlide, toSlide, { direction, animate: shouldAnimate });
+      this._transitionPromise = this._transitionTo(fromSlide, toSlide, { direction, animate: shouldAnimate });
+      await this._transitionPromise;
+      this._transitionPromise = null;
     }
     this._dispatchEvent('carousel:select', index);
     this._dispatchEvent('carousel:settle', index);
@@ -409,18 +417,20 @@ class SlideshowCarousel extends EffectCarousel {
     // Animar subheading — fade + deslizamiento sutil desde arriba
     subheading.forEach(el => {
       el.getAnimations().forEach(a => a.cancel());
+      el.style.opacity = '0';
       el.animate(
         [{ opacity: 0, transform: 'translateY(-0.4em)' }, { opacity: 1, transform: 'translateY(0)' }],
-        { duration: 300, delay: 100, easing: 'ease-out', fill: 'forwards' }
+        { duration: 300, delay: 100, easing: 'ease-out', fill: 'both' }
       );
     });
 
     // Animar botón — fade simple, sin movimiento
     boton.forEach(el => {
       el.getAnimations().forEach(a => a.cancel());
+      el.style.opacity = '0';
       el.animate(
         [{ opacity: 0 }, { opacity: 1 }],
-        { duration: 300, delay: 150, easing: 'ease-out', fill: 'forwards' }
+        { duration: 300, delay: 150, easing: 'ease-out', fill: 'both' }
       );
     });
 
@@ -523,23 +533,26 @@ class SlideshowCarousel extends EffectCarousel {
 
     subheading.forEach(el => {
       el.getAnimations().forEach(a => a.cancel());
+      el.style.opacity = '0';
       el.animate(
         [{ opacity: 0, transform: 'translateY(-0.4em)' }, { opacity: 1, transform: 'translateY(0)' }],
-        { duration, delay: 50, easing: 'ease-out', fill: 'forwards' }
+        { duration, delay: 50, easing: 'ease-out', fill: 'both' }
       );
     });
 
     boton.forEach(el => {
       el.getAnimations().forEach(a => a.cancel());
+      el.style.opacity = '0';
       el.animate(
         [{ opacity: 0 }, { opacity: 1 }],
-        { duration, delay: 100, easing: 'ease-out', fill: 'forwards' }
+        { duration, delay: 100, easing: 'ease-out', fill: 'both' }
       );
     });
 
     if (head) {
       const splitEl = head.querySelector('split-lines');
       const words = splitEl ? splitEl.words : [head];
+      words.forEach(w => { w.getAnimations().forEach(a => a.cancel()); w.style.opacity = '0'; });
       animate(
         words,
         {
