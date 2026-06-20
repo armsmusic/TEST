@@ -74,62 +74,14 @@
 <body>
 
   <!-- ============================================================
-       NAVBAR
+       ANNOUNCEMENT BAR
   ============================================================ -->
-  <header>
-    <div class="navbar-wrapper">
-      <nav class="navbar navbar-expand-lg navbar-floating" aria-label="Navegación principal">
+  {% include "announcement-bar.njk" %}
 
-        <a class="navbar-brand py-0 text-body text-decoration-none" href="/" aria-label="ARMS Music">
-          <img src="/logo-navbar.svg" alt="ARMS Music" height="40" style="display:block;" />
-        </a>
-
-        <!-- Mobile: lupa + hamburger -->
-        <div class="d-lg-none d-flex align-items-center ms-auto gap-2">
-          <button id="navbar-search-btn-mobile" aria-label="Buscar" style="
-            background:none; border:none; color:rgba(255,255,255,0.6);
-            cursor:pointer; padding:0.35rem; border-radius:0.5rem;
-            display:flex; align-items:center; transition:color .15s ease;
-          ">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          </button>
-          <button class="navbar-toggler" type="button" onclick="abrirMenuNav()"
-            aria-label="Abrir menú">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-        </div>
-
-        <div class="navbar-collapse justify-content-between d-none d-lg-flex" id="navbarNav">
-          <ul class="navbar-nav mx-auto">
-            <li class="nav-item"><a class="nav-link text-body" href="/in-ears/">In-Ears</a></li>
-            <li class="nav-item"><a class="nav-link text-body" href="/in-ears/accesorios/">Accesorios</a></li>
-            <li class="nav-item"><a class="nav-link text-body" href="/audio/sistemas/">Monitoreo</a></li>
-            <li class="nav-item"><a class="nav-link text-body" href="/audio/">Audio</a></li>
-            <li class="nav-item"><a class="nav-link text-body" href="https://wa.me/50234646667" target="_blank" rel="noopener">WhatsApp</a></li>
-          </ul>
-
-          <!-- Desktop: search + carrito -->
-          <div class="d-none d-lg-inline-flex align-items-center gap-2">
-            <div class="navbar-search-wrap" id="navbar-search-wrap-desktop">
-              <button id="navbar-search-btn" aria-label="Buscar productos">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              </button>
-              <input id="search-input" type="search" placeholder="Buscar producto..." autocomplete="off" autocorrect="off" spellcheck="false" aria-label="Buscar productos" />
-              <button id="search-clear" aria-label="Limpiar búsqueda" title="Limpiar">✕</button>
-            </div>
-            <!-- Carrito desktop -->
-            <button onclick="abrirCarrito()" aria-label="Ver carrito" style="position:relative; background:var(--bs-primary); border:none; border-radius:0.75rem; width:40px; height:40px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#fff; box-shadow:0 4px 14px rgba(102,0,255,0.45); transition:all .2s ease;"
-              onmouseover="this.style.background='#7c74ff'; this.style.boxShadow='0 6px 20px rgba(102,0,255,0.6)'"
-              onmouseout="this.style.background='var(--bs-primary)'; this.style.boxShadow='0 4px 14px rgba(102,0,255,0.45)'">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-              <span id="cart-count-desktop" style="display:none; position:absolute; top:-6px; right:-6px; background:#ef4444; color:#fff; border-radius:50%; width:18px; height:18px; font-size:10px; font-weight:700; align-items:center; justify-content:center;">0</span>
-            </button>
-          </div>
-        </div>
-
-      </nav>
-    </div>
-  </header>
+  <!-- ============================================================
+       HEADER
+  ============================================================ -->
+  {% include "header.njk" %}
 
   <!-- ============================================================
        PANEL DE BÚSQUEDA
@@ -341,7 +293,9 @@
   <div id="bottom-nav-spacer" style="display:none; height:70px;"></div>
 
 
-  <!-- JS propios — orden importa: store → drawer → ui → buscar -->
+  <!-- JS propios — orden importa: announcement → header → slideshow → store → drawer → ui → buscar -->
+  <script src="/assets/js/arms-announcement.js" defer></script>
+  <script src="/assets/js/arms-header.js" defer></script>
   <script type="module" src="/assets/js/arms-slideshow.js"></script>
   <script src="/assets/js/cart-store.js" defer></script>
   <script src="/assets/js/cart-drawer.js" defer></script>

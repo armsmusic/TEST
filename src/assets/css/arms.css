@@ -184,6 +184,8 @@ button, label, summary, [role="button"], [type="checkbox"], [type="radio"], [typ
     --product-card-text: 26 26 26;
     --header-background: 240 240 240;
     --header-text: 26 26 26;
+    --header-transparent-text-color: 255 255 255;
+    --header-logo-width: 90px;
     --footer-background: 255 255 255;
     --footer-text: 26 26 26;
     --rounded-xs: 0.25rem;
@@ -202,7 +204,7 @@ button, label, summary, [role="button"], [type="checkbox"], [type="radio"], [typ
 
     /* Header/Announcement heights — usadas por sticky y slideshow */
     --header-height: 58px;
-    --announcement-bar-height: 39px;
+    --announcement-bar-height: 48px;
     --sticky-header-enabled: 1;
     --sticky-announcement-bar-enabled: 0;
     --section-is-first: 0;
@@ -1108,6 +1110,288 @@ custom-cursor {
   .sm\:arms-text-end {
     text-align: end;
   }
+}
+
+/* ── Announcement bar ── */
+.bg-custom {
+  background: rgb(var(--background));
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.text-xs {
+  font-size: var(--text-xs);
+  line-height: 1.7;
+}
+
+.shape-circle, .shape-square, .shape-diamond {
+  --size: var(--spacing-1-5);
+  width: var(--size);
+  height: var(--size);
+  background-color: currentColor;
+  display: block;
+}
+
+.shape-circle {
+  border-radius: 100%;
+}
+
+.shape--sm {
+  --size: var(--spacing-1);
+}
+
+.announcement-bar {
+  padding-block: var(--spacing-2-5);
+}
+
+.announcement-bar__wrapper {
+  max-width: 450px;
+  margin-inline: auto;
+  display: flex;
+}
+
+.announcement-bar__scrolling-list {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.announcement-bar__item {
+  display: grid;
+  grid-auto-flow: column;
+  align-items: center;
+  justify-items: center;
+  column-gap: var(--spacing-10);
+}
+
+.announcement-bar__item p {
+  margin: 0;
+}
+
+.announcement-bar__item a {
+  text-decoration: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .announcement-bar__item {
+    animation: translateFull var(--marquee-animation-duration, 0s) linear infinite;
+  }
+}
+
+@keyframes translateFull {
+  0%   { transform: translate(0); }
+  100% { transform: translate(-100%); }
+}
+
+/* ── Header ── */
+:root {
+  --header-background-opacity: 1;
+  --header-logo-opacity: 1;
+  --header-background-blur-radius: 0px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.header {
+  --background: var(--header-background);
+  --text-color: var(--header-text);
+  --header-grid-template: "main-nav logo secondary-nav" / minmax(0, 1fr) auto minmax(0, 1fr);
+  --header-padding-block: var(--spacing-4-5);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: block;
+  margin-inline: auto;
+  will-change: transform;
+  transition: background 0.25s ease;
+}
+
+@media screen and (min-width: 700px) {
+  .header {
+    --header-padding-block: var(--spacing-8-5);
+  }
+}
+
+@media screen and (min-width: 1150px) {
+  .header {
+    --header-grid-template: "logo main-nav secondary-nav" / minmax(0, 1fr) fit-content(55%) minmax(0, 1fr);
+  }
+}
+
+.header[allow-transparency] {
+  transition: color 0.25s ease, background 0.25s ease, backdrop-filter 0.25s ease;
+}
+
+.header[allow-transparency]:not(.is-filled) {
+  --header-background-opacity: 0;
+  --header-logo-opacity: 0;
+  --header-background-blur-radius: 0px;
+  --text-color: var(--header-transparent-text-color, 255 255 255);
+}
+
+.header__wrapper {
+  display: grid;
+  grid-template: var(--header-grid-template);
+  align-items: center;
+  column-gap: var(--header-part-gap, var(--spacing-3));
+  padding-block: var(--header-padding-block);
+  padding-inline: var(--container-gutter);
+  color: rgb(var(--text-color));
+  background-color: rgb(var(--background) / var(--header-background-opacity, 1));
+  backdrop-filter: blur(var(--header-background-blur-radius));
+}
+
+.header__main-nav {
+  grid-area: main-nav;
+  display: flex;
+  align-items: center;
+  gap: var(--header-link-list-spacing, var(--spacing-6));
+}
+
+.header__icon-list {
+  display: flex;
+  align-items: center;
+  gap: var(--header-icon-list-spacing, var(--spacing-4));
+}
+
+.header__icon-list--secondary {
+  grid-area: secondary-nav;
+  justify-self: end;
+}
+
+.header__icon-button {
+  background: none;
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header__cart-button {
+  position: relative;
+}
+
+.header__cart-count {
+  display: none;
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #ef4444;
+  color: #fff;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  font-size: 10px;
+  font-weight: 700;
+  align-items: center;
+  justify-content: center;
+}
+
+.header__link-list {
+  display: none;
+}
+
+@media screen and (min-width: 1150px) {
+  .header__link-list {
+    display: block;
+  }
+}
+
+.header__link-list .contents {
+  display: flex;
+  align-items: center;
+  gap: var(--header-link-list-spacing, var(--spacing-6));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.header__link {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
+}
+
+.header__link-list-item--dropdown {
+  position: relative;
+}
+
+.header__dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 180px;
+  margin-top: var(--spacing-2);
+  padding: var(--spacing-2);
+  border-radius: var(--rounded);
+  background: rgb(var(--background-primary));
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  flex-direction: column;
+  gap: var(--spacing-1);
+  z-index: 20;
+}
+
+.header__dropdown.is-open {
+  display: flex;
+}
+
+.header__dropdown-link {
+  display: block;
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: var(--rounded-sm);
+  color: rgb(var(--text-primary));
+  text-decoration: none;
+  font-size: var(--text-sm);
+}
+
+.header__logo {
+  grid-area: logo;
+  margin: 0;
+  justify-self: center;
+}
+
+@media screen and (min-width: 1150px) {
+  .header__logo {
+    justify-self: start;
+  }
+}
+
+.header__logo a {
+  display: inline-block;
+  position: relative;
+}
+
+.header__logo-image {
+  width: var(--header-logo-width, 90px);
+  height: auto;
+  display: block;
+  opacity: var(--header-logo-opacity, 1);
+  transition: opacity 0.25s ease;
+}
+
+.header__logo-image--transparent {
+  opacity: calc(1 - var(--header-logo-opacity, 1));
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .subheading {

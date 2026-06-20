@@ -1,0 +1,39 @@
+{# ===============================================================
+   ARMS Music — announcement-bar.njk
+   Barra de anuncios con texto deslizante (marquee), igual a Impact.
+   Estructura real: height-observer > .announcement-bar > marquee-text
+   con el contenido duplicado para loop continuo sin salto visible.
+================================================================ #}
+
+<height-observer variable="announcement-bar">
+  <div class="announcement-bar bg-custom text-custom" style="--background: 26 26 26; --text-color: 255 255 255;">
+    <div class="announcement-bar__wrapper">
+      <marquee-text class="announcement-bar__scrolling-list">
+        <span class="announcement-bar__item">
+          <p class="bold text-xs">Envío a toda Guatemala</p>
+          <span class="shape-circle shape--sm"></span>
+          <p class="bold text-xs">Pago contra entrega disponible</p>
+          <span class="shape-circle shape--sm"></span>
+          <p class="bold text-xs">
+            <a href="https://wa.me/50234646667" target="_blank" rel="noopener">¿Dudas? Escríbenos por WhatsApp</a>
+          </p>
+          <span class="shape-circle shape--sm"></span>
+          <p class="bold text-xs">In-Ears KZ y QKZ 100% originales</p>
+          <span class="shape-circle shape--sm"></span>
+        </span>
+        <span class="announcement-bar__item">
+          <p class="bold text-xs">Envío a toda Guatemala</p>
+          <span class="shape-circle shape--sm"></span>
+          <p class="bold text-xs">Pago contra entrega disponible</p>
+          <span class="shape-circle shape--sm"></span>
+          <p class="bold text-xs">
+            <a href="https://wa.me/50234646667" target="_blank" rel="noopener">¿Dudas? Escríbenos por WhatsApp</a>
+          </p>
+          <span class="shape-circle shape--sm"></span>
+          <p class="bold text-xs">In-Ears KZ y QKZ 100% originales</p>
+          <span class="shape-circle shape--sm"></span>
+        </span>
+      </marquee-text>
+    </div>
+  </div>
+</height-observer>
