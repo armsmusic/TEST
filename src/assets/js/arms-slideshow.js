@@ -394,8 +394,9 @@ class SlideshowCarousel extends EffectCarousel {
     this.style.opacity = '1';
     if (prefersReducedMotion()) return;
 
-    const imgs  = slide.querySelectorAll('img, video');
-    const sub   = slide.querySelectorAll('[data-sequence="subheading"], .button');
+    const imgs       = slide.querySelectorAll('img, video');
+    const subheading  = slide.querySelectorAll('[data-sequence="subheading"]');
+    const boton       = slide.querySelectorAll('.button');
     const head  = slide.querySelector('[data-sequence="heading"]');
     const ctrls = this.querySelector('.slideshow__controls');
 
@@ -405,11 +406,23 @@ class SlideshowCarousel extends EffectCarousel {
       { duration: 300, easing: 'ease-out', fill: 'forwards' }
     ));
 
-    // Animar subheading y botón
-    sub.forEach(el => el.animate(
-      [{ opacity: 0 }, { opacity: 1 }],
-      { duration: 300, delay: 150, easing: 'ease-out', fill: 'forwards' }
-    ));
+    // Animar subheading — fade + deslizamiento sutil desde arriba
+    subheading.forEach(el => {
+      el.getAnimations().forEach(a => a.cancel());
+      el.animate(
+        [{ opacity: 0, transform: 'translateY(-0.4em)' }, { opacity: 1, transform: 'translateY(0)' }],
+        { duration: 300, delay: 100, easing: 'ease-out', fill: 'forwards' }
+      );
+    });
+
+    // Animar botón — fade simple, sin movimiento
+    boton.forEach(el => {
+      el.getAnimations().forEach(a => a.cancel());
+      el.animate(
+        [{ opacity: 0 }, { opacity: 1 }],
+        { duration: 300, delay: 150, easing: 'ease-out', fill: 'forwards' }
+      );
+    });
 
     // Animar heading con split-lines — Motion One anima cada palabra con stagger real
     if (head) {
@@ -461,20 +474,38 @@ class SlideshowCarousel extends EffectCarousel {
   }
 
   async _fadeWithText(fromSlide, toSlide, shouldAnimate = true) {
-    fromSlide.classList.remove('is-selected');
     const duration = shouldAnimate ? 300 : 0;
 
-    fromSlide.animate(
+    await imageLoaded(toSlide.querySelectorAll('img'));
+
+    // toSlide entra en position:absolute (igual que fromSlide en ese instante),
+    // superpuesto sobre el mismo espacio — evita que ambos ocupen flujo normal
+    // de bloque a la vez, que causaría un salto de layout al cambiar entre
+    // alineaciones distintas (ej. slide izquierda → centrado).
+    //
+    // CRÍTICO: fijamos opacity inline ANTES de tocar is-selected. Sin esto,
+    // el navegador puede pintar un frame con opacity:1 (porque is-selected
+    // ya quita la regla CSS .slideshow__slide:not(.is-selected){opacity:0})
+    // antes de que la animación WAAPI siguiente tome control — produciendo
+    // el "flash" de ambos slides sólidos y superpuestos al mismo tiempo.
+    toSlide.style.opacity = '0';
+    toSlide.style.position = 'absolute';
+    toSlide.style.top = '0';
+    toSlide.style.left = '0';
+    toSlide.style.right = '0';
+    toSlide.style.bottom = '0';
+    toSlide.classList.add('is-selected');
+
+    // Cross-fade real: ambos slides animan opacity en los mismos `duration` ms,
+    // en paralelo, para que el cruce se vea como una transición pareja en vez
+    // de que el nuevo aparezca de golpe mientras el viejo aún está sólido.
+    const aFrom = fromSlide.animate(
       [{ opacity: 1, visibility: 'visible', zIndex: 1 }, { opacity: 0, visibility: 'hidden', zIndex: 0 }],
       { duration, easing: 'ease-in', fill: 'forwards' }
     );
-
-    await imageLoaded(toSlide.querySelectorAll('img'));
-    toSlide.classList.add('is-selected');
-
-    toSlide.animate(
+    const aTo = toSlide.animate(
       [{ opacity: 0, visibility: 'hidden' }, { opacity: 1, visibility: 'visible' }],
-      { duration: 0, fill: 'forwards' }
+      { duration, easing: 'ease-out', fill: 'forwards' }
     );
 
     // Animar imagen del slide entrante
@@ -486,13 +517,25 @@ class SlideshowCarousel extends EffectCarousel {
     );
 
     // Animar texto
-    const sub  = toSlide.querySelectorAll('[data-sequence="subheading"], .button');
-    const head = toSlide.querySelector('[data-sequence="heading"]');
+    const subheading = toSlide.querySelectorAll('[data-sequence="subheading"]');
+    const boton      = toSlide.querySelectorAll('.button');
+    const head       = toSlide.querySelector('[data-sequence="heading"]');
 
-    sub.forEach(el => el.animate(
-      [{ opacity: 0 }, { opacity: 1 }],
-      { duration, delay: 100, easing: 'ease-out', fill: 'forwards' }
-    ));
+    subheading.forEach(el => {
+      el.getAnimations().forEach(a => a.cancel());
+      el.animate(
+        [{ opacity: 0, transform: 'translateY(-0.4em)' }, { opacity: 1, transform: 'translateY(0)' }],
+        { duration, delay: 50, easing: 'ease-out', fill: 'forwards' }
+      );
+    });
+
+    boton.forEach(el => {
+      el.getAnimations().forEach(a => a.cancel());
+      el.animate(
+        [{ opacity: 0 }, { opacity: 1 }],
+        { duration, delay: 100, easing: 'ease-out', fill: 'forwards' }
+      );
+    });
 
     if (head) {
       const splitEl = head.querySelector('split-lines');
@@ -506,6 +549,17 @@ class SlideshowCarousel extends EffectCarousel {
         { duration: 0.5, delay: stagger(0.04, { startDelay: 0.1 }), easing: 'ease' }
       );
     }
+
+    await aFrom.finished;
+    fromSlide.style.opacity = '0';
+    fromSlide.classList.remove('is-selected');
+    fromSlide.style.opacity = '';
+    toSlide.style.opacity = '';
+    toSlide.style.position = '';
+    toSlide.style.top = '';
+    toSlide.style.left = '';
+    toSlide.style.right = '';
+    toSlide.style.bottom = '';
   }
 
   _animateNumberedDots(duration, startProgress = 0) {

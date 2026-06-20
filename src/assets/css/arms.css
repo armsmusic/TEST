@@ -1072,16 +1072,42 @@ custom-cursor {
   place-self: center end;
 }
 
-.sm\:place-self-center {
-  place-self: center;
+.arms-text-start {
+  text-align: start;
 }
 
-.sm\:place-self-center-start {
-  place-self: center start;
+.arms-text-center {
+  text-align: center;
 }
 
-.sm\:place-self-center-end {
-  place-self: center end;
+.arms-text-end {
+  text-align: end;
+}
+
+@media screen and (min-width: 700px) {
+  .sm\:place-self-center {
+    place-self: center;
+  }
+
+  .sm\:place-self-center-start {
+    place-self: center start;
+  }
+
+  .sm\:place-self-center-end {
+    place-self: center end;
+  }
+
+  .sm\:arms-text-start {
+    text-align: start;
+  }
+
+  .sm\:arms-text-center {
+    text-align: center;
+  }
+
+  .sm\:arms-text-end {
+    text-align: end;
+  }
 }
 
 .subheading {
