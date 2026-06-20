@@ -1,11 +1,15 @@
 /* =============================================================
    ARMS Music — arms-slideshow.js
    Web Components del hero slideshow de Impact
-   Reescritos sin dependencias de Shopify ni de vendor (Motion One)
-   Usa Web Animations API nativa del navegador
+   Reescritos sin dependencias de Shopify ni de su Ajax API.
+   Usa Web Animations API nativa, salvo SplitLines que usa
+   Motion One (animate + stagger) para el efecto de entrada
+   de texto palabra por palabra, igual que el Impact real.
 ============================================================= */
 
 'use strict';
+
+import { animate, stagger } from 'https://cdn.jsdelivr.net/npm/motion@12/+esm';
 
 // ── Utilidades ────────────────────────────────────────────────
 
@@ -170,13 +174,13 @@ class BaseCarousel extends HTMLElement {
     this.select(this.items.indexOf(this.nextSlide), { direction: 'next' });
   }
 
-  async select(index, { animate = true, force = false, direction } = {}) {
+  async select(index, { animate: shouldAnimate = true, force = false, direction } = {}) {
     if (!force && this._selectedIndex === index) return;
     const fromSlide = this.selectedSlide;
     this._selectedIndex = index;
     const toSlide = this.selectedSlide;
     if (fromSlide && toSlide && fromSlide !== toSlide) {
-      await this._transitionTo(fromSlide, toSlide, { direction, animate });
+      await this._transitionTo(fromSlide, toSlide, { direction, animate: shouldAnimate });
     }
     this._dispatchEvent('carousel:select', index);
     this._dispatchEvent('carousel:settle', index);
@@ -342,11 +346,17 @@ class SplitLines extends HTMLElement {
     });
 
     this.shadowRoot.innerHTML = Array.from(lines.values())
-      .map(line => `<span style="display:inline-block"><span style="display:block">${line}</span></span>`)
+      .map(line => {
+        const words = line.split(' ').filter(w => w.length > 0).map((w, i, arr) =>
+          `<span class="word" style="display:inline-block">${w}</span>` + (i < arr.length - 1 ? ' ' : '')
+        ).join('');
+        return `<span style="display:inline-block"><span style="display:block">${words}</span></span>`;
+      })
       .join('');
   }
 
   get lines() { return Array.from(this.shadowRoot.children); }
+  get words() { return Array.from(this.shadowRoot.querySelectorAll('.word')); }
 }
 
 // ── SlideshowCarousel ─────────────────────────────────────────
@@ -401,30 +411,18 @@ class SlideshowCarousel extends EffectCarousel {
       { duration: 300, delay: 150, easing: 'ease-out', fill: 'forwards' }
     ));
 
-    // Animar heading con split-lines
-    // Estructura real medida en Impact: el "delay" de cada línea va codificado dentro
-    // de los propios offsets del keyframe (no como delay separado), con un primer tramo
-    // sin movimiento (mismo punto de inicio repetido) y el easing definido por-keyframe
-    // (no como array en las options — Chrome no lo permite ahí).
+    // Animar heading con split-lines — Motion One anima cada palabra con stagger real
     if (head) {
       const splitEl = head.querySelector('split-lines');
-      const lines = splitEl ? splitEl.lines : [head];
-      const stagger = [
-        { offset: [0, 0.57, 1],       easing: ['linear', 'ease'] },
-        { offset: [0, 0.43, 0.86, 1], easing: ['linear', 'ease', 'ease'] },
-      ];
-      lines.forEach((line, i) => {
-        const inner = line.querySelector('span') || line;
-        const { offset, easing } = stagger[i % stagger.length];
-        const from = { opacity: 0, transform: 'translateY(0.5em) rotateZ(5deg)' };
-        const to   = { opacity: 1, transform: 'translateY(0) rotateZ(0)' };
-        const keyframes = offset.map((o, idx) => ({
-          ...(idx === offset.length - 1 ? to : from),
-          offset: o,
-          ...(idx < easing.length ? { easing: easing[idx] } : {}),
-        }));
-        inner.animate(keyframes, { duration: 700, fill: 'both' });
-      });
+      const words = splitEl ? splitEl.words : [head];
+      animate(
+        words,
+        {
+          opacity: [0, 1],
+          transform: ['translateY(0.5em) rotateZ(5deg)', 'translateY(0) rotateZ(0)'],
+        },
+        { duration: 0.5, delay: stagger(0.04, { startDelay: 0.15 }), easing: 'ease' }
+      );
     }
 
     // Animar controles
@@ -434,21 +432,21 @@ class SlideshowCarousel extends EffectCarousel {
     );
   }
 
-  async _transitionTo(fromSlide, toSlide, { animate = true } = {}) {
+  async _transitionTo(fromSlide, toSlide, { animate: shouldAnimate = true, direction } = {}) {
     const type = this.transitionType;
 
     if (type === 'fade_with_text') {
-      await this._fadeWithText(fromSlide, toSlide, animate);
+      await this._fadeWithText(fromSlide, toSlide, shouldAnimate);
     } else {
-      await this._fade(fromSlide, toSlide, animate);
+      await this._fade(fromSlide, toSlide, shouldAnimate);
     }
   }
 
-  _fade(fromSlide, toSlide, animate = true) {
+  _fade(fromSlide, toSlide, shouldAnimate = true) {
     fromSlide.classList.remove('is-selected');
     toSlide.classList.add('is-selected');
 
-    const duration = animate ? 300 : 0;
+    const duration = shouldAnimate ? 300 : 0;
 
     const aFrom = fromSlide.animate(
       [{ opacity: 1, visibility: 'visible', zIndex: 1 }, { opacity: 0, visibility: 'hidden', zIndex: 0 }],
@@ -462,9 +460,9 @@ class SlideshowCarousel extends EffectCarousel {
     return aFrom.finished;
   }
 
-  async _fadeWithText(fromSlide, toSlide, animate = true) {
+  async _fadeWithText(fromSlide, toSlide, shouldAnimate = true) {
     fromSlide.classList.remove('is-selected');
-    const duration = animate ? 300 : 0;
+    const duration = shouldAnimate ? 300 : 0;
 
     fromSlide.animate(
       [{ opacity: 1, visibility: 'visible', zIndex: 1 }, { opacity: 0, visibility: 'hidden', zIndex: 0 }],
@@ -498,23 +496,15 @@ class SlideshowCarousel extends EffectCarousel {
 
     if (head) {
       const splitEl = head.querySelector('split-lines');
-      const lines = splitEl ? splitEl.lines : [head];
-      const stagger = [
-        { offset: [0, 0.57, 1],       easing: ['linear', 'ease'] },
-        { offset: [0, 0.43, 0.86, 1], easing: ['linear', 'ease', 'ease'] },
-      ];
-      lines.forEach((line, i) => {
-        const inner = line.querySelector('span') || line;
-        const { offset, easing } = stagger[i % stagger.length];
-        const from = { opacity: 0, transform: 'translateY(0.5em) rotateZ(5deg)' };
-        const to   = { opacity: 1, transform: 'translateY(0) rotateZ(0)' };
-        const keyframes = offset.map((o, idx) => ({
-          ...(idx === offset.length - 1 ? to : from),
-          offset: o,
-          ...(idx < easing.length ? { easing: easing[idx] } : {}),
-        }));
-        inner.animate(keyframes, { duration: 700, fill: 'both' });
-      });
+      const words = splitEl ? splitEl.words : [head];
+      animate(
+        words,
+        {
+          opacity: [0, 1],
+          transform: ['translateY(0.5em) rotateZ(5deg)', 'translateY(0) rotateZ(0)'],
+        },
+        { duration: 0.5, delay: stagger(0.04, { startDelay: 0.1 }), easing: 'ease' }
+      );
     }
   }
 
