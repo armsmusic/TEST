@@ -402,18 +402,28 @@ class SlideshowCarousel extends EffectCarousel {
     ));
 
     // Animar heading con split-lines
+    // Estructura real medida en Impact: el "delay" de cada línea va codificado dentro
+    // de los propios offsets del keyframe (no como delay separado), con un primer tramo
+    // sin movimiento (mismo punto de inicio repetido) y el easing definido por-keyframe
+    // (no como array en las options — Chrome no lo permite ahí).
     if (head) {
       const splitEl = head.querySelector('split-lines');
       const lines = splitEl ? splitEl.lines : [head];
+      const stagger = [
+        { offset: [0, 0.57, 1],       easing: ['linear', 'ease'] },
+        { offset: [0, 0.43, 0.86, 1], easing: ['linear', 'ease', 'ease'] },
+      ];
       lines.forEach((line, i) => {
         const inner = line.querySelector('span') || line;
-        inner.animate(
-          [
-            { opacity: 0, transform: 'translateY(0.5em) rotateZ(5deg)' },
-            { opacity: 1, transform: 'translateY(0) rotateZ(0)' }
-          ],
-          { duration: 700, delay: 150 + i * 100, easing: 'ease', fill: 'forwards' }
-        );
+        const { offset, easing } = stagger[i % stagger.length];
+        const from = { opacity: 0, transform: 'translateY(0.5em) rotateZ(5deg)' };
+        const to   = { opacity: 1, transform: 'translateY(0) rotateZ(0)' };
+        const keyframes = offset.map((o, idx) => ({
+          ...(idx === offset.length - 1 ? to : from),
+          offset: o,
+          ...(idx < easing.length ? { easing: easing[idx] } : {}),
+        }));
+        inner.animate(keyframes, { duration: 700, fill: 'both' });
       });
     }
 
@@ -489,15 +499,21 @@ class SlideshowCarousel extends EffectCarousel {
     if (head) {
       const splitEl = head.querySelector('split-lines');
       const lines = splitEl ? splitEl.lines : [head];
+      const stagger = [
+        { offset: [0, 0.57, 1],       easing: ['linear', 'ease'] },
+        { offset: [0, 0.43, 0.86, 1], easing: ['linear', 'ease', 'ease'] },
+      ];
       lines.forEach((line, i) => {
         const inner = line.querySelector('span') || line;
-        inner.animate(
-          [
-            { opacity: 0, transform: 'translateY(0.5em) rotateZ(5deg)' },
-            { opacity: 1, transform: 'translateY(0) rotateZ(0)' }
-          ],
-          { duration: 700, delay: 100 + i * 100, easing: 'ease', fill: 'forwards' }
-        );
+        const { offset, easing } = stagger[i % stagger.length];
+        const from = { opacity: 0, transform: 'translateY(0.5em) rotateZ(5deg)' };
+        const to   = { opacity: 1, transform: 'translateY(0) rotateZ(0)' };
+        const keyframes = offset.map((o, idx) => ({
+          ...(idx === offset.length - 1 ? to : from),
+          offset: o,
+          ...(idx < easing.length ? { easing: easing[idx] } : {}),
+        }));
+        inner.animate(keyframes, { duration: 700, fill: 'both' });
       });
     }
   }
