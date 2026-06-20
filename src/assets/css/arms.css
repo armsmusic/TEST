@@ -473,7 +473,7 @@ picture img {
   --content-over-media-height: calc(100vh - var(--sticky-area-height));
 }
 
-.shopify-section:first-child [allow-transparent-header] .content-over-media--fill {
+x-slideshow[allow-transparent-header] .content-over-media--fill {
   --content-over-media-height: calc(100vh - var(--announcement-bar-height, 0px));
 }
 
@@ -481,7 +481,7 @@ picture img {
   --content-over-media-height: calc(100svh - var(--sticky-area-height));
 }
 
-.shopify-section:first-child [allow-transparent-header] .content-over-media--fill {
+x-slideshow[allow-transparent-header] .content-over-media--fill {
   --content-over-media-height: calc(100svh - var(--announcement-bar-height, 0px));
 }
 
@@ -1002,7 +1002,7 @@ custom-cursor {
   padding-block-start: 0 !important;
 }
 
-.shopify-section:first-child .slideshow--boxed[allow-transparent-header] {
+.slideshow--boxed[allow-transparent-header] {
   padding-block-start: max(var(--section-inner-max-spacing-block), var(--header-height));
 }
 
@@ -1206,14 +1206,20 @@ custom-cursor {
   border: 0;
 }
 
+height-observer[variable="header"] {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: block;
+}
+
 .header {
   --background: var(--header-background);
   --text-color: var(--header-text);
   --header-grid-template: "main-nav logo secondary-nav" / minmax(0, 1fr) auto minmax(0, 1fr);
   --header-padding-block: var(--spacing-4-5);
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  position: relative;
+  z-index: 1;
   display: block;
   margin-inline: auto;
   will-change: transform;
@@ -1365,6 +1371,8 @@ custom-cursor {
 .header__logo {
   grid-area: logo;
   margin: 0;
+  font-size: 0;
+  line-height: 0;
   justify-self: center;
 }
 
@@ -1450,8 +1458,10 @@ body {
   position: relative;
 }
 
-/* Primera sección — margin negativo para que el slideshow quede debajo del header transparente */
-.shopify-section:first-child {
+/* Hero con allow-transparent-header — margin negativo para que quede
+   debajo del header transparente. Aplica directo al elemento real
+   (x-slideshow no tiene wrapper .shopify-section como en Shopify). */
+x-slideshow[allow-transparent-header] {
   --section-is-first: 1;
   margin-block-start: calc(-1 * var(--header-height) * var(--section-is-first));
 }

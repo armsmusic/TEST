@@ -18,8 +18,11 @@ function prefersReducedMotion() {
 // ── HeightObserver ───────────────────────────────────────────
 class HeightObserver extends HTMLElement {
   connectedCallback() {
+    this.style.display = 'block';
+    this._setHeight(); // medición inmediata, no depende del primer callback async
+
     if (!window.ResizeObserver) return;
-    this._observer = new ResizeObserver(this._onResize.bind(this));
+    this._observer = new ResizeObserver(() => this._setHeight());
     this._observer.observe(this);
   }
 
@@ -27,17 +30,12 @@ class HeightObserver extends HTMLElement {
     this._observer?.disconnect();
   }
 
-  _onResize(entries) {
-    entries.forEach(entry => {
-      if (entry.target !== this) return;
-      const height = entry.borderBoxSize?.length > 0
-        ? entry.borderBoxSize[0].blockSize
-        : entry.target.clientHeight;
-      document.documentElement.style.setProperty(
-        `--${this.getAttribute('variable')}-height`,
-        `${Math.round(height)}px`
-      );
-    });
+  _setHeight() {
+    const height = this.getBoundingClientRect().height || this.clientHeight;
+    document.documentElement.style.setProperty(
+      `--${this.getAttribute('variable')}-height`,
+      `${Math.round(height)}px`
+    );
   }
 }
 
