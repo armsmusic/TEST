@@ -412,7 +412,7 @@ class SlideshowCarousel extends EffectCarousel {
             { opacity: 0, transform: 'translateY(0.5em) rotateZ(5deg)' },
             { opacity: 1, transform: 'translateY(0) rotateZ(0)' }
           ],
-          { duration: 400, delay: 150 + i * 100, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'forwards' }
+          { duration: 700, delay: 150 + i * 100, easing: 'ease', fill: 'forwards' }
         );
       });
     }
@@ -496,7 +496,7 @@ class SlideshowCarousel extends EffectCarousel {
             { opacity: 0, transform: 'translateY(0.5em) rotateZ(5deg)' },
             { opacity: 1, transform: 'translateY(0) rotateZ(0)' }
           ],
-          { duration: 400, delay: 100 + i * 100, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'forwards' }
+          { duration: 700, delay: 100 + i * 100, easing: 'ease', fill: 'forwards' }
         );
       });
     }
