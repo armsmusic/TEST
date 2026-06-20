@@ -186,6 +186,7 @@ class BaseCarousel extends HTMLElement {
     this._selectedIndex = index;
     const toSlide = this.selectedSlide;
     if (fromSlide && toSlide && fromSlide !== toSlide) {
+      this._dispatchEvent('carousel:select-start', index);
       this._transitionPromise = this._transitionTo(fromSlide, toSlide, { direction, animate: shouldAnimate });
       await this._transitionPromise;
       this._transitionPromise = null;
@@ -612,11 +613,16 @@ class SlideshowCarousel extends EffectCarousel {
 class Slideshow extends HTMLElement {
   constructor() {
     super();
+    this._lastHandledIndex = -1;
+    this.addEventListener('carousel:select-start', this._onSlideSelected.bind(this));
     this.addEventListener('carousel:select', this._onSlideSelected.bind(this));
   }
 
   async _onSlideSelected(event) {
     if (!event.detail?.slide) return;
+    if (this._lastHandledIndex === event.detail.index) return;
+    this._lastHandledIndex = event.detail.index;
+
     const slideStyles = getComputedStyle(event.detail.slide);
     this.style.setProperty('--slideshow-controls-color',
       slideStyles.getPropertyValue('--slideshow-slide-controls-color'));
