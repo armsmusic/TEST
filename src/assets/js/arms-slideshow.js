@@ -634,10 +634,10 @@ class Slideshow extends HTMLElement {
     if (!bgEl || !bg) return;
 
     bgEl.style.background = bg;
-    const anim = bgEl.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200, fill: 'forwards' });
+    const anim = bgEl.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200, easing: 'ease', fill: 'both' });
     await anim.finished;
     this.style.setProperty('--slideshow-background', bg);
-    bgEl.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 0, fill: 'forwards' });
+    bgEl.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 0, easing: 'ease', fill: 'both' });
   }
 }
 
