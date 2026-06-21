@@ -1,0 +1,77 @@
+{# ================================================================
+   MULTIPLE-IMAGES-WITH-TEXT — "Sobre Nosotros" con 2 imágenes
+   dispersas + 2 bloques de texto navegables (prev/next)
+   Requiere: arms.css (.multiple-images-with-text*, .reveal,
+   .reveal-invisible, .prev-next-buttons) y el Web Component
+   <multiple-images-with-text> en arms-home.js
+
+   ⚠️ TODO — CONTENIDO GENÉRICO: los 2 bloques de texto de abajo
+   son placeholder ("Quiénes somos" / "Qué hacemos"). Reemplázalos
+   con la historia real de ARMS Music cuando la tengas lista.
+   Busca "TODO: contenido real" en cada bloque.
+
+   Imágenes: src/assets/img/home/about-1.jpg y about-2.jpg
+   (pendientes de subir — fotos de marca/equipo/producto en mano,
+   formato vertical ~1000x1200px, estilo "lifestyle").
+================================================================= #}
+
+<div class="section section-blends section-full">
+  <multiple-images-with-text class="multiple-images-with-text" style="--multiple-images-with-text-max-width: 580px; --multiple-images-with-text-images-grid-template: repeat(1, auto) / minmax(0, 0.75fr) minmax(0, 1fr); --multiple-images-with-text-images-alignment: center;">
+
+    <multiple-images-with-text-image-list reversed swipeable="false" layout="scattered" class="multiple-images-with-text__image-list">
+      <img
+        src="/assets/img/home/about-1.jpg"
+        alt="ARMS Music Guatemala"
+        width="1000" height="1200"
+        loading="lazy"
+        id="image-about-0"
+        style="--image-rotation: 2deg;"
+        sizes="min(100vw, 500px)"
+        class="rounded-sm shadow-sm reveal"
+      >
+      <img
+        src="/assets/img/home/about-2.jpg"
+        alt="ARMS Music Guatemala"
+        width="1000" height="1200"
+        loading="lazy"
+        id="image-about-1"
+        style="--image-rotation: -2deg;"
+        sizes="min(100vw, 500px)"
+        class="rounded-sm shadow-sm reveal"
+      >
+    </multiple-images-with-text-image-list>
+
+    <div class="multiple-images-with-text__content-with-nav">
+      <multiple-images-with-text-content-list swipeable="false" class="multiple-images-with-text__content-list">
+
+        {# TODO: contenido real — reemplazar texto sobre la historia de ARMS #}
+        <div class="prose is-selected" image-id="image-about-0">
+          <p class="subheading">Quiénes somos</p>
+          <p class="h1" reveal-on-scroll="true"><split-lines>Audio de calidad, sin intermediarios</split-lines></p>
+          <p>ARMS Music nació de la idea de traer a Guatemala equipo de audio KZ y QKZ con precios justos y atención directa. Sin vueltas, sin sobreprecios — solo el sonido que buscas, al alcance de tu mano.</p>
+        </div>
+
+        {# TODO: contenido real — reemplazar texto sobre qué hace ARMS #}
+        <div class="prose reveal-invisible" image-id="image-about-1">
+          <p class="subheading">Qué hacemos</p>
+          <p class="h1" reveal-on-scroll="true"><split-lines>Cada producto, probado y respaldado</split-lines></p>
+          <p>Seleccionamos cada in-ear, cable y accesorio que vendemos. Atención por WhatsApp antes y después de tu compra, envíos a toda Guatemala y la garantía de comprarle a alguien que realmente conoce el producto.</p>
+        </div>
+
+      </multiple-images-with-text-content-list>
+
+      <div class="prev-next-buttons">
+        <button is="prev-button" class="circle-button ring group">
+          <span class="sr-only">Anterior</span>
+          <span class="animated-arrow animated-arrow--reverse"></span>
+        </button>
+
+        <button is="next-button" class="circle-button ring group">
+          <span class="sr-only">Siguiente</span>
+          <span class="animated-arrow"></span>
+        </button>
+      </div>
+    </div>
+
+  </multiple-images-with-text>
+</div>

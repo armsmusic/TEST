@@ -2481,3 +2481,818 @@ video-media[loaded] > img {
 .ring {
   box-shadow: 0 0 0 1px rgb(var(--text-color) / .12);
 }
+
+/* ============================================================
+   HOT-SPOTS — puntos clickeables sobre imagen de producto
+   ============================================================ */
+
+.hot-spot {
+  --hot-spot-dot-size: var(--spacing-8);
+  --hot-spot-dot-shadow-size: var(--spacing-2-5);
+  top: var(--hot-spot-vertical-position);
+  left: var(--hot-spot-horizontal-position);
+  position: absolute;
+}
+
+.hot-spot__dot {
+  width: var(--hot-spot-dot-size);
+  height: var(--hot-spot-dot-size);
+  border-radius: var(--rounded-full);
+  background: rgb(var(--hot-spot-background, 255 255 255));
+  color: rgb(var(--hot-spot-text-color, 0 0 0));
+  place-items: center;
+  transition: transform .2s ease-in-out;
+  display: grid;
+  position: relative;
+}
+
+.hot-spot__dot:after {
+  content: "";
+  box-sizing: content-box;
+  top: calc(-1 * var(--hot-spot-dot-shadow-size));
+  left: calc(-1 * var(--hot-spot-dot-shadow-size));
+  width: 100%;
+  height: 100%;
+  padding: var(--hot-spot-dot-shadow-size);
+  background: radial-gradient(50% 50% at 50% 50%, rgb(var(--hot-spot-background, 255 255 255) / 0) 0%, rgb(var(--hot-spot-background, 255 255 255) / .3) 100%);
+  border-radius: inherit;
+  animation: 2s ease-in-out infinite alternate ping;
+  position: absolute;
+}
+
+.hot-spot__dot[aria-expanded="true"] {
+  transform: rotate(45deg);
+}
+
+/* ── arms-popover — versión propia simplificada (sin Shadow DOM),
+   visualmente equivalente al ::part(content)/::part(body) de Impact.
+   Móvil: modal fullscreen con overlay. Desktop (≥1000px): popover
+   anclado junto al punto, sin overlay. ── */
+.arms-popover {
+  display: none;
+}
+
+.arms-popover[open] {
+  display: grid;
+}
+
+.arms-popover__overlay {
+  background: rgb(0 0 0 / .4);
+  cursor: pointer;
+  z-index: 999;
+  position: fixed;
+  inset: 0;
+}
+
+.arms-popover__content {
+  width: min(380px, calc(100vw - var(--spacing-8)));
+  max-height: 75vh;
+  background: rgb(var(--hot-spot-content-background, 255 255 255) / var(--hot-spot-content-opacity, 1));
+  color: rgb(var(--hot-spot-content-text-color, 0 0 0));
+  border-radius: var(--rounded-input);
+  padding: var(--spacing-6);
+  text-align: start;
+  z-index: 1000;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  overflow-y: auto;
+}
+
+@media screen and (min-width: 1000px) {
+  .hot-spot {
+    --hot-spot-dot-size: var(--spacing-12);
+    --hot-spot-dot-shadow-size: var(--spacing-4);
+  }
+
+  .hot-spot__dot svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .arms-popover__overlay {
+    display: none;
+  }
+
+  .arms-popover__content {
+    width: max-content;
+    max-width: 380px;
+    max-height: 350px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgb(var(--border-color));
+    -webkit-backdrop-filter: blur(var(--hot-spot-content-blur-radius, 0px));
+    backdrop-filter: blur(var(--hot-spot-content-blur-radius, 0px));
+    position: absolute;
+    top: 50%;
+    left: calc(100% + var(--spacing-4-5));
+    transform: translateY(-50%);
+  }
+}
+
+/* ── shape-line / bg-gradient — usados por impact-text #2 (variante
+   de 2 columnas con fondo de gradiente y separador vertical) ── */
+.shape-line {
+  background: rgb(var(--text-color) / .1);
+  width: 1px;
+  height: 100%;
+}
+
+.bg-gradient {
+  background-image: var(--gradient);
+}
+
+/* ── reveal / reveal-invisible / [reveal-js] / [reveal-on-scroll] —
+   estado inicial vía CSS puro (no esperan a que cargue el JS), con
+   resiliencia: si scripting está deshabilitado, se muestran de
+   inmediato; si el usuario pide reducir movimiento, no se ocultan. ── */
+.reveal {
+  opacity: 0;
+}
+
+.reveal-invisible {
+  opacity: 0;
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [reveal-js], [reveal-on-scroll="true"] {
+    opacity: 0;
+  }
+}
+
+@media (scripting: none) {
+  [reveal-js], [reveal-on-scroll="true"] {
+    opacity: 1;
+  }
+}
+
+/* ── prev-next-buttons — usado por multiple-images-with-text y press ── */
+.prev-next-buttons {
+  gap: var(--spacing-4);
+  justify-content: center;
+  display: flex;
+}
+
+/* ============================================================
+   MULTIPLE-IMAGES-WITH-TEXT — "Sobre Nosotros" con 2 imágenes
+   dispersas + texto que cambia con prev/next
+   ============================================================ */
+
+.multiple-images-with-text {
+  grid-template-columns: var(--multiple-images-with-text-grid-template-columns, none);
+  gap: var(--section-stack-spacing-block, var(--spacing-8)) var(--multiple-images-with-text-column-gap, 0px);
+  max-width: var(--multiple-images-with-text-max-width);
+  isolation: isolate;
+  justify-content: center;
+  place-items: center;
+  margin-inline-start: auto;
+  margin-inline-end: auto;
+  display: grid;
+}
+
+.multiple-images-with-text__content-with-nav {
+  row-gap: var(--spacing-8);
+  text-align: var(--multiple-images-with-text-alignment, center);
+  justify-items: var(--multiple-images-with-text-alignment, center);
+  justify-self: start;
+  width: 100%;
+  max-width: 600px;
+  display: grid;
+}
+
+.multiple-images-with-text__content-list {
+  place-items: end start;
+  width: 100%;
+  display: grid;
+}
+
+.multiple-images-with-text__content-list > * {
+  grid-area: 1 / -1;
+  width: 100%;
+}
+
+.multiple-images-with-text__image-list {
+  grid-template: var(--multiple-images-with-text-images-grid-template, none);
+  align-items: var(--multiple-images-with-text-images-alignment, center);
+  width: 100%;
+  display: grid;
+}
+
+.multiple-images-with-text__image-list > img {
+  width: 100%;
+  max-width: var(--multiple-images-with-text-image-max-width, 390px);
+  will-change: transform;
+  outline: 1px solid #0000;
+  margin-inline-start: auto;
+  margin-inline-end: auto;
+}
+
+.multiple-images-with-text__image-list > img:first-child {
+  grid-area: 1 / 2 / -1;
+  margin-block-start: var(--multiple-images-with-text-main-image-offset, 0px);
+}
+
+@media screen and (max-width: 699px) {
+  .multiple-images-with-text__content-with-nav .circle-button {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}
+
+@media screen and (min-width: 700px) {
+  .multiple-images-with-text__content-with-nav {
+    row-gap: var(--spacing-12);
+  }
+}
+
+@media screen and (min-width: 1150px) {
+  .multiple-images-with-text {
+    --multiple-images-with-text-image-max-width: 500px;
+  }
+}
+
+/* ── divide-y / line-clamp — usados por feature-chart ── */
+.divide-y > :not([hidden]) ~ :not([hidden]) {
+  border-block-start-width: 1px;
+}
+
+.line-clamp {
+  -webkit-line-clamp: var(--line-clamp-count, 2);
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  overflow: hidden;
+}
+
+/* ============================================================
+   FEATURE-CHART — tabla comparativa de 2 productos
+   (simplificada: sin fila sticky de Impact, no aporta valor real
+   aquí y agrega complejidad de scroll-tracking innecesaria)
+   ============================================================ */
+
+.feature-chart {
+  padding: 0 var(--container-gutter);
+  scroll-padding-top: var(--sticky-area-height, 0px);
+  display: block;
+}
+
+.feature-chart__table-row {
+  --feature-chart-heading-width: 140px;
+  grid-template-columns: var(--feature-chart-heading-width) repeat(var(--feature-chart-values-columns-count), minmax(140px, 1fr));
+  gap: var(--spacing-1) var(--spacing-5);
+  min-width: min-content;
+  padding-block-start: var(--spacing-4);
+  padding-block-end: var(--spacing-4);
+  display: grid;
+}
+
+.feature-chart__product {
+  --feature-chart-product-image-width: 80px;
+  gap: var(--spacing-5);
+  place-content: start;
+  display: grid;
+  position: relative;
+}
+
+.feature-chart__product :is(img, svg) {
+  width: var(--feature-chart-product-image-width);
+}
+
+.feature-chart__product .badge {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+@media screen and (max-width: 699px) {
+  .feature-chart, .feature-chart__table {
+    margin-inline-start: calc(-1 * var(--container-gutter));
+    margin-inline-end: calc(-1 * var(--container-gutter));
+    padding-inline-start: var(--container-gutter);
+    padding-inline-end: var(--container-gutter);
+    display: grid;
+  }
+
+  .feature-chart__table-row {
+    grid-template-columns: repeat(var(--feature-chart-values-columns-count), minmax(140px, 1fr));
+  }
+
+  .feature-chart__table--multi-columns .feature-chart__table-row {
+    grid-template-columns: repeat(var(--feature-chart-values-columns-count), 150px);
+  }
+
+  .feature-chart__heading {
+    position: sticky;
+    left: 0;
+  }
+
+  .feature-chart__value {
+    grid-row: 2;
+  }
+}
+
+@media screen and (min-width: 700px) {
+  .feature-chart {
+    border-radius: var(--rounded);
+  }
+
+  .feature-chart__table-row--product > :first-child {
+    grid-column-start: 2;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .feature-chart {
+    padding: var(--spacing-4) var(--spacing-12);
+  }
+
+  .feature-chart__table-row {
+    --feature-chart-heading-width: 180px;
+    column-gap: var(--spacing-6);
+    padding-block-start: var(--spacing-6);
+    padding-block-end: var(--spacing-6);
+  }
+
+  .feature-chart__table-row--product {
+    padding-block-end: var(--spacing-10);
+  }
+}
+
+/* ============================================================
+   REVEALED-IMAGE — imagen que se revela progresivamente con scroll
+   ============================================================ */
+
+.revealed-image {
+  z-index: -1;
+  display: inline;
+  position: relative;
+}
+
+.revealed-image__scroll-tracker {
+  height: 100%;
+  position: absolute;
+  top: 0;
+}
+
+.revealed-image__scroller {
+  height: 180vh;
+  height: 180lvh;
+  display: block;
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+}
+
+.revealed-image__wrapper {
+  height: 100vh;
+  height: 100lvh;
+  top: calc(var(--sticky-area-height, 0px) / 2);
+  grid-auto-rows: minmax(0, 1fr);
+  place-items: center;
+  display: grid;
+  position: relative;
+}
+
+.revealed-image__wrapper > * {
+  grid-area: 1 / -1;
+}
+
+.revealed-image__wrapper img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.revealed-image__wrapper > .revealed-image__image-clipper,
+.revealed-image__wrapper > .revealed-image__content--inside {
+  clip-path: inset(var(--reveal-inset, 37% 37% 41%));
+  width: 100%;
+  height: 100%;
+}
+
+.revealed-image__content {
+  width: 100%;
+  height: 100%;
+  padding-inline: max(var(--container-gutter), 50% - var(--container-max-width) / 2);
+  text-align: center;
+  z-index: 1;
+  opacity: var(--reveal-content-opacity, 0);
+  place-content: center;
+  display: grid;
+}
+
+.revealed-image__content-inner {
+  max-width: 1300px;
+  margin-inline-start: auto;
+  margin-inline-end: auto;
+}
+
+/* ── relative — usado por timeline (y disponible para otras secciones) ── */
+.relative {
+  position: relative;
+}
+
+/* ============================================================
+   TIMELINE — historia de marca por hitos, con navegación por año
+   ============================================================ */
+
+.timeline {
+  gap: var(--spacing-8);
+  grid-template-columns: minmax(0, 1fr);
+  display: grid;
+}
+
+.timeline__slider {
+  align-items: start;
+  display: grid;
+}
+
+.timeline__slider > * {
+  grid-area: 1 / -1;
+}
+
+.timeline__slide {
+  gap: var(--spacing-6);
+  text-align: center;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  display: grid;
+}
+
+.timeline__image {
+  width: 100%;
+  max-width: 410px;
+  margin-inline-start: auto;
+  margin-inline-end: auto;
+  position: relative;
+}
+
+.timeline__controls {
+  --timeline-dot-size: var(--spacing-4);
+  --timeline-dot-padding-inline-end: var(--spacing-4);
+  padding-block-start: calc((var(--timeline-dot-size) / 2));
+}
+
+.timeline__nav {
+  grid: auto / repeat(var(--timeline-nav-item-count), minmax(0, 1fr));
+  width: max-content;
+  min-width: 100%;
+  display: grid;
+}
+
+.timeline__nav-bar {
+  background-color: rgb(var(--text-color) / .12);
+  width: 100%;
+  height: 2px;
+  position: absolute;
+  top: -1px;
+  left: 0;
+}
+
+.timeline__nav-item {
+  gap: var(--spacing-3);
+  align-content: flex-start;
+  min-width: 100px;
+  max-width: 200px;
+  padding-inline-end: var(--timeline-dot-padding-inline-end);
+  display: grid;
+  position: relative;
+}
+
+.timeline__nav-item:before {
+  content: "";
+  width: var(--timeline-dot-size);
+  height: var(--timeline-dot-size);
+  border-radius: var(--rounded-full);
+  background-color: rgb(var(--background));
+  border-width: 2px;
+  margin-block-start: calc((var(--timeline-dot-size) / 2) * -1);
+  transition: border-color .2s ease-in-out, background-color .2s ease-in-out;
+}
+
+.timeline__nav-item[aria-current="true"]:before {
+  border-color: rgb(var(--text-color));
+  background-color: rgb(var(--text-color));
+}
+
+.timeline__nav-label {
+  opacity: .5;
+  transition: opacity .2s ease-in-out;
+}
+
+.timeline__nav-item[aria-current="true"] .timeline__nav-label {
+  opacity: 1;
+}
+
+@media screen and (min-width: 700px) {
+  .timeline {
+    gap: var(--spacing-14);
+  }
+
+  .timeline__slide {
+    gap: var(--spacing-10);
+  }
+
+  .timeline__slide > .prose {
+    padding-inline-start: var(--spacing-14);
+    padding-inline-end: var(--spacing-14);
+  }
+
+  .timeline__controls {
+    --timeline-dot-size: var(--spacing-5);
+    --timeline-dot-padding-inline-end: var(--spacing-5);
+  }
+
+  .timeline__nav-item {
+    min-width: 160px;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .timeline__slide {
+    text-align: start;
+    grid: auto / repeat(2, minmax(0, 1fr));
+    gap: 0;
+  }
+
+  .timeline__slide > .timeline__image-wrapper {
+    padding-inline-end: 16.5%;
+  }
+
+  .timeline__slide > .prose {
+    z-index: 1;
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+    position: relative;
+  }
+
+  .timeline__image {
+    max-width: initial;
+  }
+
+  .timeline__image-wrapper {
+    position: relative;
+  }
+
+  .timeline__controls {
+    align-items: flex-start;
+    gap: var(--spacing-10);
+    display: flex;
+  }
+
+  .timeline__controls.scroll-area {
+    overflow: visible;
+  }
+}
+
+.timeline__buttons {
+  gap: var(--spacing-4);
+  display: flex;
+}
+
+@media screen and (max-width: 999px) {
+  .md-max\:hidden {
+    display: none;
+  }
+}
+
+/* ============================================================
+   FAQ — acordeón de preguntas frecuentes
+   ============================================================ */
+
+summary {
+  -webkit-user-select: none;
+  user-select: none;
+  list-style-type: none;
+  cursor: pointer;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+.accordion {
+  --accordion-spacing: var(--spacing-5);
+  box-sizing: content-box;
+  border-block-start-width: 1px;
+  border-block-end-width: 1px;
+  border-color: rgb(var(--text-color) / .12);
+}
+
+.accordion__toggle {
+  gap: var(--spacing-2);
+  flex-grow: 1;
+  justify-content: space-between;
+  align-items: center;
+  padding-block-start: var(--accordion-spacing);
+  padding-block-end: var(--accordion-spacing);
+  display: flex;
+}
+
+.accordion__content {
+  margin-block-end: var(--accordion-spacing);
+  padding-inline-end: var(--spacing-6);
+}
+
+.accordion-box {
+  padding: var(--spacing-1) var(--spacing-6);
+}
+
+.accordion-box > :first-child {
+  border-block-start-width: 0;
+}
+
+.accordion-box > :last-child {
+  border-block-end-width: 0;
+}
+
+@media screen and (min-width: 1000px) {
+  .accordion-box {
+    padding: var(--spacing-5) var(--spacing-12);
+  }
+}
+
+.faq-availability {
+  gap: var(--spacing-6);
+  text-align: center;
+  justify-items: center;
+  display: grid;
+}
+
+.faq-availability > * {
+  justify-items: inherit;
+}
+
+.section-stack__intro .faq-availability {
+  text-align: start;
+  justify-items: start;
+}
+
+/* ============================================================
+   TEXT-WITH-ICONS — 4 trust badges con ícono (envíos, pago,
+   soporte, garantía) — usa <scroll-carousel> y <page-dots> ya
+   registrados, no necesita JS nuevo.
+   ============================================================ */
+
+.text-with-icons {
+  gap: var(--spacing-8);
+  text-align: var(--text-with-icons-text-align);
+  justify-content: var(--text-with-icons-justify);
+  display: grid;
+}
+
+.text-with-icons__list {
+  grid: auto / var(--text-with-icons-template);
+  row-gap: var(--spacing-6);
+  align-items: start;
+  min-width: 0;
+  display: grid;
+}
+
+.text-with-icons__item {
+  gap: var(--text-with-icons-gap);
+  justify-items: var(--text-with-icons-justify);
+  padding-inline-start: var(--spacing-6);
+  padding-inline-end: var(--spacing-6);
+  display: grid;
+}
+
+@media screen and (min-width: 1000px) {
+  :not(.is-scrollable) .text-with-icons__list {
+    gap: var(--spacing-6);
+  }
+
+  :not(.is-scrollable) .text-with-icons__item {
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  :not(.is-scrollable) .text-with-icons__list {
+    gap: var(--spacing-10);
+  }
+}
+
+/* ── peer-not-scrollable — oculta los page-dots cuando el carrusel
+   no tiene contenido suficiente para hacer scroll (ej. desktop
+   donde los 4 íconos ya caben sin necesitar scroll) ── */
+:not(.is-scrollable) ~ .peer-not-scrollable\:hidden {
+  display: none;
+}
+
+/* ============================================================
+   FOOTER — rediseño visual (HTML/JS/IDs sin tocar, solo se
+   reemplazan clases Bootstrap rotas por el sistema arms-/Impact)
+   ============================================================ */
+
+.footer {
+  --background: var(--footer-background);
+  --text-color: var(--footer-text);
+  --footer-padding-block: var(--spacing-12);
+  --footer-part-gap: var(--spacing-10);
+  --footer-block-list-gap: var(--spacing-10);
+  --footer-block-gap: var(--spacing-4);
+  --footer-aside-gap: var(--spacing-10);
+  background: rgb(var(--background));
+  color: rgb(var(--text-color));
+  padding-block-start: var(--footer-padding-block);
+  padding-block-end: var(--footer-padding-block);
+}
+
+.footer__wrapper {
+  gap: var(--footer-part-gap);
+  display: grid;
+}
+
+.footer__block-list {
+  gap: var(--footer-block-list-gap);
+  align-items: start;
+  justify-content: var(--footer-block-list-justify-content, start);
+  grid: auto-flow dense / repeat(2, minmax(0, 1fr));
+  display: grid;
+}
+
+.footer__block {
+  gap: var(--footer-block-gap);
+  display: grid;
+}
+
+.footer__block--text {
+  grid-column: span 2;
+}
+
+.footer__block--menu {
+  max-width: 250px;
+}
+
+.footer__aside {
+  gap: var(--footer-aside-gap);
+  display: grid;
+}
+
+.footer__aside-top, .footer__aside-bottom {
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-8);
+  display: grid;
+}
+
+/* ── social-media / link-faded — íconos sociales del footer ── */
+.social-media {
+  gap: var(--spacing-3) var(--spacing-6);
+  flex-wrap: wrap;
+  display: flex;
+}
+
+.link-faded {
+  opacity: .7;
+  transition: opacity .2s ease-in-out;
+}
+
+@media screen and (pointer: fine) {
+  .link-faded:hover {
+    opacity: 1;
+  }
+}
+
+@media screen and (min-width: 700px) {
+  .footer {
+    --footer-padding-block: var(--spacing-16);
+    --footer-part-gap: var(--spacing-16);
+    --footer-block-list-gap: var(--spacing-10) var(--spacing-24);
+    --footer-block-gap: var(--spacing-6);
+    --footer-aside-gap: var(--spacing-12);
+  }
+
+  .footer__block-list {
+    flex-wrap: wrap;
+    display: flex;
+  }
+
+  .footer__block--text {
+    flex-basis: 25%;
+  }
+
+  .footer__block--menu {
+    flex-shrink: 0;
+  }
+
+  .footer__aside-top, .footer__aside-bottom {
+    display: flex;
+  }
+
+  .footer__copyright {
+    order: -1;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .footer {
+    --footer-block-list-gap: var(--spacing-10) var(--spacing-12);
+  }
+
+  .footer__block-list {
+    flex-wrap: nowrap;
+  }
+}

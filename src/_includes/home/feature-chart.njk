@@ -1,0 +1,103 @@
+{# ================================================================
+   FEATURE-CHART — tabla comparativa: KZ ZS10 Pro X vs KZ ZSN Pro 2
+   Requiere: arms.css (.feature-chart*, .divide-y, .line-clamp,
+   .price-list, .section-stack--horizontal/__intro/__main).
+   No necesita JS — es una tabla estática (se omitió la fila
+   "sticky" de Impact, que solo aporta valor en tablas muy largas
+   con scroll, no aplica con 2 productos y 4 filas de spec).
+================================================================= #}
+
+<div class="section section-blends section-full">
+  <div class="section-stack section-stack--horizontal">
+
+    <div class="section-stack__intro">
+      <div class="prose">
+        <p class="subheading">Compara</p>
+        <h2 class="h2">¿Cuál in-ear híbrido es para ti?</h2>
+        <p>Dos de nuestros monitores híbridos más populares, lado a lado. Compáralos y elige la configuración que mejor se adapta a tu oído.</p>
+        <a class="button button--lg" href="/in-ears/">Ver todos los in-ears</a>
+      </div>
+    </div>
+
+    <div class="section-stack__main">
+      <feature-chart max-rows="5" class="feature-chart bg-custom text-custom" style="--background: 229 229 229; --text-color: 26 26 26; --feature-chart-values-columns-count: 2;">
+        <div class="feature-chart__table feature-chart__table--multi-columns feature-chart__table--product divide-y scroll-area">
+
+          <div class="feature-chart__table-row feature-chart__table-row--product">
+
+            <div class="feature-chart__product">
+              <a href="{{ 'kz-zs10-pro-x' | productoUrl }}">
+                <img src="/assets/img/productos/kz-zs10-pro-x/1.jpg" alt="KZ ZS10 Pro X" width="800" height="800" loading="lazy" sizes="(max-width: 699px) 80px, 150px">
+              </a>
+              <div class="v-stack gap-6">
+                <div class="v-stack gap-2">
+                  <div class="v-stack sm:gap-0.5">
+                    <a href="{{ 'kz-zs10-pro-x' | productoUrl }}" class="bold line-clamp">KZ ZS10 Pro X</a>
+                    <price-list class="price-list">
+                      <span class="text-subdued">{{ 565 | gtq }}</span>
+                    </price-list>
+                  </div>
+                </div>
+                <div class="feature-chart__view-button-container hidden justify-self-start md:block">
+                  <a class="button button--subdued" href="{{ 'kz-zs10-pro-x' | productoUrl }}">Ver</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="feature-chart__product">
+              <a href="{{ 'kz-zsn-pro-2' | productoUrl }}">
+                <img src="/assets/img/productos/kz-zsn-pro-2/1.jpg" alt="KZ ZSN Pro 2" width="800" height="800" loading="lazy" sizes="(max-width: 699px) 80px, 150px">
+              </a>
+              <div class="v-stack gap-6">
+                <div class="v-stack gap-2">
+                  <div class="v-stack sm:gap-0.5">
+                    <a href="{{ 'kz-zsn-pro-2' | productoUrl }}" class="bold line-clamp">KZ ZSN Pro 2</a>
+                    <price-list class="price-list">
+                      <span class="text-subdued">{{ 275 | gtq }}</span>
+                    </price-list>
+                  </div>
+                </div>
+                <div class="feature-chart__view-button-container hidden justify-self-start md:block">
+                  <a class="button button--subdued" href="{{ 'kz-zsn-pro-2' | productoUrl }}">Ver</a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="feature-chart__table-row">
+            <div class="feature-chart__heading bold">Configuración</div>
+            <div class="feature-chart__value prose text-subdued"><p>10 drivers (1DD + 4BA)</p></div>
+            <div class="feature-chart__value prose text-subdued"><p>4 drivers (1DD + 1BA)</p></div>
+          </div>
+
+          <div class="feature-chart__table-row">
+            <div class="feature-chart__heading bold">Driver</div>
+            <div class="feature-chart__value prose text-subdued"><p>Dinámico 10mm + 4 BA 50024</p></div>
+            <div class="feature-chart__value prose text-subdued"><p>Dinámico super lineal + 1 BA</p></div>
+          </div>
+
+          <div class="feature-chart__table-row">
+            <div class="feature-chart__heading bold">Respuesta de frecuencia</div>
+            <div class="feature-chart__value prose text-subdued"><p>20 Hz – 40,000 Hz</p></div>
+            <div class="feature-chart__value prose text-subdued"><p>20 Hz – 40,000 Hz</p></div>
+          </div>
+
+          <div class="feature-chart__table-row">
+            <div class="feature-chart__heading bold">Impedancia</div>
+            <div class="feature-chart__value prose text-subdued"><p>29Ω</p></div>
+            <div class="feature-chart__value prose text-subdued"><p>26Ω</p></div>
+          </div>
+
+          <div class="feature-chart__table-row">
+            <div class="feature-chart__heading bold">Sensibilidad</div>
+            <div class="feature-chart__value prose text-subdued"><p>112 dB</p></div>
+            <div class="feature-chart__value prose text-subdued"><p>108 dB</p></div>
+          </div>
+
+        </div>
+      </feature-chart>
+    </div>
+
+  </div>
+</div>

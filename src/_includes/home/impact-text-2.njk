@@ -1,0 +1,57 @@
+{# ================================================================
+   IMPACT-TEXT (#2) — variante de 2 columnas con count-up y fondo
+   de gradiente. Producto destacado: KZ AE01 (módulo Bluetooth).
+   Requiere: arms.css (.impact-text*, .shape-line, .bg-gradient,
+   .text-gradient) y la lógica count-up dentro de ImpactTextEl en
+   arms-home.js (anima el número de 0 al valor objetivo en viewport).
+================================================================= #}
+
+<div class="section section-full bg-gradient text-custom" style="--gradient: linear-gradient(90deg, rgba(77, 82, 60, 1), rgba(133, 141, 103, 1) 100%); --background: 133 141 103; --text-color: 255 255 255;">
+  <style>
+    #impact-text-ae01 {
+      --impact-text-font-size: calc(min(20vw, 65px) * 1.5);
+      --impact-text-auto-columns: 48vw auto;
+    }
+
+    @media screen and (min-width: 700px) {
+      #impact-text-ae01 {
+        --impact-text-font-size: calc(min(15vw, var(--container-max-width) * 0.15) / 2 * 1.5);
+        --impact-text-auto-columns: minmax(0, 1fr) auto;
+      }
+    }
+  </style>
+
+  <div class="impact-text impact-text--center" id="impact-text-ae01">
+
+    <div class="snap-center">
+      <h2 class="impact-text__text heading break-all">
+        <impact-text count-up="5.4" reveal-js>
+          <span class="text-custom" style="--text-color: 255 255 255;">0</span>
+        </impact-text>
+      </h2>
+      <div class="impact-text__content">
+        <div class="prose">
+          <h3 class="h4">Bluetooth de última generación</h3>
+          <p>Chip Bluetooth 5.4 con cancelación de ruido ENC en llamadas — conexión estable y voz clara incluso en ambientes ruidosos.</p>
+        </div>
+      </div>
+    </div>
+
+    <span class="shape-line hidden sm:block"></span>
+
+    <div class="snap-center">
+      <h2 class="impact-text__text heading break-all">
+        <impact-text count-up="20" reveal-js>
+          <span class="text-custom" style="--text-color: 255 255 255;">0</span>
+        </impact-text>
+      </h2>
+      <div class="impact-text__content">
+        <div class="prose">
+          <h3 class="h4">Horas de batería totales</h3>
+          <p>6 horas por módulo más el estuche de carga — hasta 20 horas de reproducción sin buscar un enchufe.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

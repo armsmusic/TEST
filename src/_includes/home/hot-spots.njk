@@ -1,0 +1,106 @@
+{# ================================================================
+   HOT-SPOTS — puntos clickeables sobre foto de producto
+   Impact style. Producto destacado: KZ Castor Pro.
+   Requiere: arms.css (.hot-spot*, .arms-popover*, .content-over-media)
+   y la función initHotSpots() en arms-home.js (abre/cierra popover
+   sin Shadow DOM — versión propia simplificada, ver arms.css).
+
+   Imagen: src/assets/img/home/hotspots-castor-pro.jpg (pendiente
+   de subir — foto amplia del producto donde se puedan ubicar los
+   3 puntos sobre zonas reales: cuerpo/driver, switches, conector).
+================================================================= #}
+
+<div class="section section-blends section-full">
+  <div class="section-stack">
+
+    <div class="section-header md:hidden">
+      <div class="prose">
+        <h2 class="h2">KZ Castor Pro: control total sobre tu sonido</h2>
+        <p>Doble driver dinámico, 16 perfiles de afinación y compatibilidad Bluetooth — todo en un in-ear diseñado para músicos exigentes.</p>
+        <a class="button button--lg" href="{{ 'kz-castor-pro' | productoUrl }}">Ver KZ Castor Pro</a>
+      </div>
+    </div>
+
+    <div
+      class="content-over-media full-bleed bg-gradient text-custom"
+      style="--gradient: linear-gradient(90deg, rgba(77, 82, 60, 1), rgba(133, 141, 103, 1) 100%); --text-color: 255 255 255; overflow: visible;"
+    >
+      <img
+        src="/assets/img/home/hotspots-castor-pro.jpg"
+        alt="KZ Castor Pro"
+        width="2500" height="1200"
+        loading="lazy"
+        sizes="100vw"
+      >
+
+      <div class="place-self-start text-start hidden md:block">
+        <div class="prose">
+          <h2 class="h2">KZ Castor Pro: control total sobre tu sonido</h2>
+          <p>Doble driver dinámico, 16 perfiles de afinación y compatibilidad Bluetooth — todo en un in-ear diseñado para músicos exigentes.</p>
+          <a class="button button--lg" style="--button-background: 255 255 255 / var(--button-background-opacity, 1); --button-outline-color: 255 255 255; --button-text-color: 77 82 60;" href="{{ 'kz-castor-pro' | productoUrl }}">Ver KZ Castor Pro</a>
+        </div>
+      </div>
+
+      {# ── Hot-spot 1: doble driver ── #}
+      <div class="hot-spot" style="--hot-spot-horizontal-position: 37%; --hot-spot-vertical-position: 88%;">
+        <button type="button" aria-controls="popover-castor-pro-0" aria-expanded="false" class="hot-spot__dot tap-area">
+          <span class="sr-only">Leer más</span>
+          <svg role="presentation" focusable="false" stroke-width="2" width="8" height="8" class="icon icon-plus" viewBox="0 0 12 12">
+            <path d="M6 0V12" fill="none" stroke="currentColor"></path>
+            <path d="M0 6L12 6" fill="none" stroke="currentColor"></path>
+          </svg>
+        </button>
+        <div id="popover-castor-pro-0" class="arms-popover">
+          <div class="arms-popover__overlay"></div>
+          <div class="arms-popover__content">
+            <div class="prose">
+              <p class="h6">Doble driver dinámico 10mm + 10mm</p>
+              <p>Dos drivers de igual tamaño — uno para graves, otro dedicado a medios y agudos — para mayor sensibilidad y claridad en todo el espectro.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {# ── Hot-spot 2: switches de afinación ── #}
+      <div class="hot-spot" style="--hot-spot-horizontal-position: 43%; --hot-spot-vertical-position: 24%;">
+        <button type="button" aria-controls="popover-castor-pro-1" aria-expanded="false" class="hot-spot__dot tap-area">
+          <span class="sr-only">Leer más</span>
+          <svg role="presentation" focusable="false" stroke-width="2" width="8" height="8" class="icon icon-plus" viewBox="0 0 12 12">
+            <path d="M6 0V12" fill="none" stroke="currentColor"></path>
+            <path d="M0 6L12 6" fill="none" stroke="currentColor"></path>
+          </svg>
+        </button>
+        <div id="popover-castor-pro-1" class="arms-popover">
+          <div class="arms-popover__overlay"></div>
+          <div class="arms-popover__content">
+            <div class="prose">
+              <p class="h6">4 switches — 16 perfiles de sonido</p>
+              <p>Ajusta graves y agudos en tiempo real sin apps ni software. Cambia de jazz a EDM sin cambiar de in-ear.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {# ── Hot-spot 3: compatibilidad Bluetooth ── #}
+      <div class="hot-spot" style="--hot-spot-horizontal-position: 47%; --hot-spot-vertical-position: 56%;">
+        <button type="button" aria-controls="popover-castor-pro-2" aria-expanded="false" class="hot-spot__dot tap-area">
+          <span class="sr-only">Leer más</span>
+          <svg role="presentation" focusable="false" stroke-width="2" width="8" height="8" class="icon icon-plus" viewBox="0 0 12 12">
+            <path d="M6 0V12" fill="none" stroke="currentColor"></path>
+            <path d="M0 6L12 6" fill="none" stroke="currentColor"></path>
+          </svg>
+        </button>
+        <div id="popover-castor-pro-2" class="arms-popover">
+          <div class="arms-popover__overlay"></div>
+          <div class="arms-popover__content">
+            <div class="prose">
+              <p class="h6">Compatible con módulos Bluetooth KZ</p>
+              <p>Conviértelo en inalámbrico sin cambiar el audífono — solo actualizas el cable.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

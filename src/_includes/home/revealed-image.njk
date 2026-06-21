@@ -1,0 +1,53 @@
+{# ================================================================
+   REVEALED-IMAGE — imagen que se revela con scroll
+   Texto de marca: "ARMS Music x KZ".
+   Requiere: arms.css (.revealed-image*, .subheading) y el Web
+   Component <revealed-image> en arms-home.js (anima clip-path
+   según progreso de scroll, ver comentario en arms-home.js).
+
+   Imagen: src/assets/img/home/revealed-armsxkz.jpg (+ versión
+   -mobile.jpg), pendiente de subir — foto amplia de producto/marca,
+   2500x1023px desktop, 1023x1023px mobile aprox.
+================================================================= #}
+
+<div class="section section-full">
+  <revealed-image class="revealed-image bg-custom">
+    <span class="revealed-image__scroll-tracker"></span>
+    <div class="revealed-image__scroller bg-custom" style="--background: 240 240 240">
+      <div class="revealed-image__wrapper">
+
+        <div class="revealed-image__image-clipper">
+          <img
+            src="/assets/img/home/revealed-armsxkz.jpg"
+            alt="ARMS Music x KZ"
+            width="2500" height="1023"
+            loading="lazy"
+            class="hidden md:block"
+          >
+          <img
+            src="/assets/img/home/revealed-armsxkz-mobile.jpg"
+            alt="ARMS Music x KZ"
+            width="1023" height="1023"
+            loading="lazy"
+            class="md:hidden"
+          >
+        </div>
+
+        <div class="revealed-image__content revealed-image__content--outside prose text-custom" style="--text-color: 0 0 0;">
+          <div class="revealed-image__content-inner">
+            <p class="subheading">ARMS Music x KZ</p>
+            <p class="h0">Calidad de audio en la que puedes confiar</p>
+          </div>
+        </div>
+
+        <div aria-hidden="true" class="revealed-image__content revealed-image__content--inside prose text-custom" style="--text-color: 255 255 255;">
+          <div class="revealed-image__content-inner">
+            <p class="subheading">ARMS Music x KZ</p>
+            <p class="h0">Calidad de audio en la que puedes confiar</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </revealed-image>
+</div>

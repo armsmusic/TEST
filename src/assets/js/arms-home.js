@@ -189,10 +189,31 @@ class MarqueeText extends HTMLElement {
 }
 
 // ── ImpactText — el texto gigante con gradiente de impact-text.njk.
-// No necesita lógica propia más allá de existir como elemento
-// reconocido; la animación de entrada la maneja initRevealOnScroll()
-// vía su atributo reveal-js (igual que collection-card). ──
-class ImpactTextEl extends HTMLElement {}
+// Soporta el atributo count-up="N" (ej. count-up="5.4"): anima el
+// número desde 0 hasta N cuando entra en viewport, respetando
+// decimales si el valor objetivo los tiene. Sin count-up, no hace
+// nada propio — la animación de entrada del bloque la maneja
+// initRevealJs() vía su atributo reveal-js (igual que collection-card). ──
+class ImpactTextEl extends HTMLElement {
+  connectedCallback() {
+    const target = parseFloat(this.getAttribute('count-up'));
+    if (Number.isNaN(target)) return;
+
+    const decimals = (this.getAttribute('count-up').split('.')[1] || '').length;
+    const span = this.querySelector('span');
+    if (!span) return;
+
+    inView(this, () => {
+      animate(0, target, {
+        duration: 1.2,
+        easing: 'ease-out',
+        onUpdate: (value) => {
+          span.textContent = value.toFixed(decimals);
+        },
+      });
+    }, { margin: '0px 0px -10% 0px' });
+  }
+}
 
 // ── VideoMedia — wrapper de <video> con autoplay para media-grid.
 // Versión simplificada del video-media de Impact: no implementa el
@@ -309,6 +330,229 @@ class PressCarouselEl extends HTMLElement {
   }
 }
 
+// ── Hot-spots — puntos clickeables sobre imagen de producto.
+// No usa Web Component con Shadow DOM (a diferencia de <x-popover>
+// en Impact); en su lugar, cada <button class="hot-spot__dot">
+// despliega/oculta el <div class="arms-popover"> hermano que le
+// sigue en el DOM. Cierra con click en overlay, botón, o Escape. ──
+function initHotSpots() {
+  const dots = document.querySelectorAll('.hot-spot__dot');
+  if (!dots.length) return;
+
+  dots.forEach((dot) => {
+    const popoverId = dot.getAttribute('aria-controls');
+    const popover = popoverId ? document.getElementById(popoverId) : null;
+    if (!popover) return;
+
+    const close = () => {
+      popover.removeAttribute('open');
+      dot.setAttribute('aria-expanded', 'false');
+    };
+
+    const open = () => {
+      popover.setAttribute('open', '');
+      dot.setAttribute('aria-expanded', 'true');
+    };
+
+    dot.addEventListener('click', () => {
+      const isOpen = dot.getAttribute('aria-expanded') === 'true';
+      // Cierra cualquier otro popover abierto antes de abrir este
+      dots.forEach((other) => {
+        if (other !== dot) {
+          const otherPopover = document.getElementById(other.getAttribute('aria-controls'));
+          otherPopover?.removeAttribute('open');
+          other.setAttribute('aria-expanded', 'false');
+        }
+      });
+      isOpen ? close() : open();
+    });
+
+    const overlay = popover.querySelector('.arms-popover__overlay');
+    overlay?.addEventListener('click', close);
+
+    popover.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') close();
+    });
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      dots.forEach((dot) => {
+        const popover = document.getElementById(dot.getAttribute('aria-controls'));
+        popover?.removeAttribute('open');
+        dot.setAttribute('aria-expanded', 'false');
+      });
+    }
+  });
+}
+
+// ── MultipleImagesWithText — navega entre bloques de texto de
+// multiple-images-with-text.njk. Cada bloque de texto tiene
+// [image-id] apuntando a la imagen correspondiente (no se usa para
+// cambiar imagen visible aquí, ambas imágenes están siempre
+// dispersas en pantalla — solo se usa para mantener el contrato
+// del HTML original de Impact). Comparte el mismo contrato
+// control:prev/control:next que BaseCarousel, así que reutiliza los
+// mismos botones is="prev-button"/is="next-button". ──
+class MultipleImagesWithTextEl extends HTMLElement {
+  connectedCallback() {
+    this._abortController = new AbortController();
+    const signal = this._abortController.signal;
+
+    this.addEventListener('control:prev', () => this._step(-1), { signal });
+    this.addEventListener('control:next', () => this._step(1), { signal });
+  }
+
+  disconnectedCallback() {
+    this._abortController?.abort();
+  }
+
+  get contentList() {
+    return this.querySelector('multiple-images-with-text-content-list');
+  }
+
+  get items() {
+    return this.contentList ? Array.from(this.contentList.children) : [];
+  }
+
+  get selectedIndex() {
+    return this.items.findIndex((item) => item.classList.contains('is-selected'));
+  }
+
+  _step(delta) {
+    const items = this.items;
+    const count = items.length;
+    if (!count) return;
+
+    const current = this.selectedIndex;
+    const next = (current + delta + count) % count;
+
+    items.forEach((item, i) => {
+      item.classList.toggle('is-selected', i === next);
+      item.classList.toggle('reveal-invisible', i !== next);
+    });
+  }
+}
+
+// ── RevealedImage — anima el clip-path de la imagen interior según
+// el progreso de scroll dentro del .revealed-image__scroll-tracker
+// (que mide 100% de la altura del .revealed-image, 180vh definido
+// en arms.css). Progreso 0 = imagen pequeña recortada al centro;
+// progreso 1 = imagen completa, texto "inside" visible. Usa
+// requestAnimationFrame + IntersectionObserver para no calcular
+// nada fuera de vista (mejor performance que un scroll listener
+// global sin throttle). ──
+class RevealedImageEl extends HTMLElement {
+  connectedCallback() {
+    this._tracker = this.querySelector('.revealed-image__scroll-tracker');
+    this._scroller = this.querySelector('.revealed-image__scroller');
+    if (!this._tracker || !this._scroller) return;
+
+    this._ticking = false;
+    this._onScroll = () => {
+      if (this._ticking) return;
+      this._ticking = true;
+      requestAnimationFrame(() => {
+        this._updateProgress();
+        this._ticking = false;
+      });
+    };
+
+    this._observer = new IntersectionObserver((entries) => {
+      const isVisible = entries[0]?.isIntersecting;
+      window[isVisible ? 'addEventListener' : 'removeEventListener']('scroll', this._onScroll, { passive: true });
+      if (isVisible) this._updateProgress();
+    });
+    this._observer.observe(this);
+  }
+
+  disconnectedCallback() {
+    window.removeEventListener('scroll', this._onScroll);
+    this._observer?.disconnect();
+  }
+
+  _updateProgress() {
+    const rect = this._tracker.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    // progreso 0 cuando el tracker entra por abajo, 1 cuando termina
+    // de pasar por arriba — recorrido total = altura del tracker + viewport
+    const total = rect.height + viewportHeight;
+    const scrolled = viewportHeight - rect.top;
+    const progress = Math.min(1, Math.max(0, scrolled / total));
+
+    // inset() de 37%/37%/41% (pequeño) a 0 (pantalla completa)
+    const insetValue = 37 * (1 - progress);
+    const insetBottom = 41 * (1 - progress);
+    this.style.setProperty('--reveal-inset', `${insetValue}% ${insetValue}% ${insetBottom}%`);
+
+    // el texto "outside" se desvanece, el "inside" aparece cuando
+    // el progreso supera ~60% (la imagen ya cubre la mayor parte)
+    const outside = this.querySelector('.revealed-image__content--outside');
+    const inside = this.querySelector('.revealed-image__content--inside');
+    if (outside) outside.style.setProperty('--reveal-content-opacity', progress < 0.5 ? 1 - progress * 2 : 0);
+    if (inside) inside.style.setProperty('--reveal-content-opacity', progress > 0.6 ? Math.min(1, (progress - 0.6) / 0.3) : 0);
+  }
+}
+
+// ── AccordionDisclosure — extiende <details> nativo (is="accordion-disclosure")
+// para animar la apertura/cierre con Motion One en vez del toggle
+// instantáneo por defecto del navegador. Mide la altura real del
+// .accordion__content y anima height + opacity. ──
+class AccordionDisclosureEl extends HTMLDetailsElement {
+  connectedCallback() {
+    this._summary = this.querySelector('summary');
+    this._content = this.querySelector('.accordion__content');
+    if (!this._summary || !this._content) return;
+
+    this._abortController = new AbortController();
+    this._summary.addEventListener('click', (e) => this._handleClick(e), {
+      signal: this._abortController.signal,
+    });
+  }
+
+  disconnectedCallback() {
+    this._abortController?.abort();
+  }
+
+  _handleClick(e) {
+    e.preventDefault();
+    if (this._animating) return;
+
+    this.open ? this._close() : this._open();
+  }
+
+  _open() {
+    this.open = true;
+    this.setAttribute('aria-expanded', 'true');
+    this._animating = true;
+
+    const targetHeight = this._content.scrollHeight;
+    animate(
+      this._content,
+      { height: [0, `${targetHeight}px`], opacity: [0, 1] },
+      { duration: 0.3, easing: 'ease-out' }
+    ).then(() => {
+      this._content.style.height = 'auto';
+      this._animating = false;
+    });
+  }
+
+  _close() {
+    this.setAttribute('aria-expanded', 'false');
+    this._animating = true;
+
+    const currentHeight = this._content.scrollHeight;
+    animate(
+      this._content,
+      { height: [`${currentHeight}px`, 0], opacity: [1, 0] },
+      { duration: 0.25, easing: 'ease-out' }
+    ).then(() => {
+      this.open = false;
+      this._animating = false;
+    });
+  }
+}
+
 // ── Registrar Web Components ──────────────────────────────────
 if (!customElements.get('image-link-blocks')) customElements.define('image-link-blocks', BaseCarousel);
 if (!customElements.get('collection-list'))   customElements.define('collection-list',   BaseCarousel);
@@ -318,6 +562,9 @@ if (!customElements.get('impact-text'))  customElements.define('impact-text',  I
 if (!customElements.get('video-media'))  customElements.define('video-media',  VideoMediaEl);
 if (!customElements.get('split-cursor')) customElements.define('split-cursor', SplitCursorEl);
 if (!customElements.get('press-carousel')) customElements.define('press-carousel', PressCarouselEl);
+if (!customElements.get('multiple-images-with-text')) customElements.define('multiple-images-with-text', MultipleImagesWithTextEl);
+if (!customElements.get('revealed-image')) customElements.define('revealed-image', RevealedImageEl);
+if (!customElements.get('accordion-disclosure')) customElements.define('accordion-disclosure', AccordionDisclosureEl, { extends: 'details' });
 
 // prev-button / next-button ya quedan registrados por arms-slideshow.js
 // (mismo contrato is="prev-button"/is="next-button"). Si este archivo
@@ -329,22 +576,19 @@ if (!customElements.get('next-button')) customElements.define('next-button', Hom
 // Equivalente al atributo "reveal-js" del HTML original de Impact:
 // el elemento entra con fade + leve desplazamiento vertical la
 // primera vez que cruza el viewport, en orden (stagger manual por
-// índice dentro de su propio contenedor). Respeta prefers-reduced-motion.
-// Usado por: collection-card (collection-list.njk) e impact-text
-// (impact-text.njk).
+// índice dentro de su propio contenedor). El opacity inicial (0) ya
+// lo pone arms.css vía [reveal-js] { opacity: 0 } dentro de
+// @media (prefers-reduced-motion: no-preference) — así que con
+// reduced-motion activado el elemento ya nace visible y este JS no
+// necesita tocar nada. Usado por: collection-card, impact-text.
 function initRevealJs() {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReducedMotion) return;
+
   const items = document.querySelectorAll('[reveal-js]');
   if (!items.length) return;
 
   items.forEach((item, index) => {
-    if (prefersReducedMotion) {
-      item.style.opacity = 1;
-      return;
-    }
-
-    item.style.opacity = 0;
-
     inView(item, () => {
       animate(
         item,
@@ -358,21 +602,18 @@ function initRevealJs() {
 // ── Reveal-on-scroll (Motion One) — [reveal-on-scroll="true"] ───
 // Atributo distinto a reveal-js, usado por títulos de section-header
 // (ej. <h2 reveal-on-scroll="true"><split-lines>...) en hero,
-// featured-collection, etc. Mismo efecto fade + translateY, pero sin
-// stagger (un título no necesita escalonarse contra sí mismo).
+// featured-collection, multiple-images-with-text, etc. Mismo efecto
+// fade + translateY, pero sin stagger (un título no necesita
+// escalonarse contra sí mismo). Mismo manejo de opacity inicial vía
+// CSS que initRevealJs (ver comentario arriba).
 function initRevealOnScroll() {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReducedMotion) return;
+
   const items = document.querySelectorAll('[reveal-on-scroll="true"]');
   if (!items.length) return;
 
   items.forEach((item) => {
-    if (prefersReducedMotion) {
-      item.style.opacity = 1;
-      return;
-    }
-
-    item.style.opacity = 0;
-
     inView(item, () => {
       animate(
         item,
@@ -386,5 +627,6 @@ function initRevealOnScroll() {
 document.addEventListener('DOMContentLoaded', () => {
   initRevealJs();
   initRevealOnScroll();
+  initHotSpots();
 });
 

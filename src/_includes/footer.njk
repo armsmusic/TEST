@@ -1,47 +1,96 @@
-{# ===============================================================
-   ARMS Music — footer.njk
-   Pie de página. Extraído de base.njk sin modificar contenido/
-   comportamiento — solo modularización. Todavía usa grid de
-   Bootstrap (.row/.col-*); se reescribirá a estilo Impact cuando
-   le toque turno en la cola de migración.
-================================================================ #}
+{# ================================================================
+   FOOTER — rediseño visual Impact
+   Mismo contenido, links e IDs que el footer.njk original (solo
+   reemplaza clases Bootstrap rotas .row/.col-*/.d-flex por el
+   sistema arms-/Impact: .footer, .footer__wrapper, .footer__block*).
+   Requiere: arms.css (.footer*, .social-media, .link-faded,
+   .v-stack, .h-stack)
+================================================================= #}
 
-<footer class="py-5" aria-label="Pie de página">
+<footer class="footer" aria-label="Pie de página">
   <div class="container">
-    <div class="row g-4 mb-4">
-      <div class="col-12 col-lg-4">
-        <a href="/" class="d-inline-flex align-items-center text-decoration-none mb-3" aria-label="ARMS Music">
-          <img src="/logo-footer.svg" alt="ARMS Music" height="36" style="display:block;" />
-        </a>
-        <p class="text-muted small">Audífonos KZ y equipo de monitoreo profesional. Tu tienda de audio de confianza en Guatemala.</p>
+    <div class="footer__wrapper">
+
+      <div class="footer__block-list">
+
+        <div class="footer__block footer__block--text">
+          <a href="/" class="inline-block" aria-label="ARMS Music">
+            <img src="/logo-footer.svg" alt="ARMS Music" height="36" style="display:block;">
+          </a>
+          <p class="text-subdued text-sm">Audífonos KZ y equipo de monitoreo profesional. Tu tienda de audio de confianza en Guatemala.</p>
+        </div>
+
+        <div class="footer__block footer__block--menu">
+          <p class="bold">Productos</p>
+          <ul class="v-stack gap-3" role="list">
+            <li><a href="/in-ears/" class="inline-block link-faded">In-Ears</a></li>
+            <li><a href="/audio/sistemas/" class="inline-block link-faded">Monitoreo</a></li>
+            <li><a href="/in-ears/accesorios/" class="inline-block link-faded">Accesorios In-Ears</a></li>
+          </ul>
+        </div>
+
+        <div class="footer__block footer__block--menu">
+          <p class="bold">Información</p>
+          <ul class="v-stack gap-3" role="list">
+            <li><a href="/sobre-nosotros/" class="inline-block link-faded">Sobre nosotros</a></li>
+            <li><a href="/politica-envios/" class="inline-block link-faded">Envíos</a></li>
+          </ul>
+        </div>
+
+        <div class="footer__block footer__block--menu">
+          <p class="bold">Contacto</p>
+          <ul class="v-stack gap-3" role="list">
+            <li><a href="mailto:pedidosarms@gmail.com" class="inline-block link-faded break-all">pedidosarms@gmail.com</a></li>
+            <li><a href="https://wa.me/50234646667" target="_blank" rel="noopener" class="inline-block link-faded">WhatsApp</a></li>
+            <li><a href="https://facebook.com/armsmusicgt" target="_blank" rel="noopener" class="inline-block link-faded">Facebook</a></li>
+            <li><a href="/privacidad/" class="inline-block link-faded">Politicas de privacidad</a></li>
+          </ul>
+        </div>
+
       </div>
-      <div class="col-6 col-lg-2 footer-col">
-        <h6>Productos</h6>
-        <a href="/in-ears/">In-Ears</a>
-        <a href="/audio/sistemas/">Monitoreo</a>
-        <a href="/in-ears/accesorios/">Accesorios In-Ears</a>
+
+      <div class="footer__aside">
+        <div class="footer__aside-bottom">
+
+          <span class="text-subdued text-sm">© 2025 <strong class="text-custom" style="--text-color: var(--footer-text);">ARMS Music</strong>. Todos los derechos reservados.</span>
+
+          <ul class="social-media social-media--sm" role="list" aria-label="Redes sociales">
+            <li>
+              <a href="#" class="tap-area link-faded" aria-label="Instagram">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                  <rect x="2" y="2" width="20" height="20" rx="5"></rect>
+                  <circle cx="12" cy="12" r="5"></circle>
+                  <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle>
+                </svg>
+              </a>
+            </li>
+            <li>
+              <a href="https://facebook.com/armsmusicgt" target="_blank" rel="noopener" class="tap-area link-faded" aria-label="Facebook">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                </svg>
+              </a>
+            </li>
+            <li>
+              <a href="https://wa.me/50234646667" target="_blank" rel="noopener" class="tap-area link-faded" aria-label="WhatsApp">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                  <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                </svg>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="tap-area link-faded" aria-label="YouTube">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                  <path d="M22.54 6.42A2.78 2.78 0 0 0 20.6 4.46C18.88 4 12 4 12 4s-6.88 0-8.6.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.4 19.54C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"></path>
+                  <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" stroke="none"></polygon>
+                </svg>
+              </a>
+            </li>
+          </ul>
+
+        </div>
       </div>
-      <div class="col-6 col-lg-2 footer-col">
-        <h6>Información</h6>
-        <a href="/sobre-nosotros/">Sobre nosotros</a>
-        <a href="/politica-envios/">Envíos</a>
-      </div>
-      <div class="col-12 col-lg-4 footer-col">
-        <h6>Contacto</h6>
-        <a href="mailto:pedidosarms@gmail.com">pedidosarms@gmail.com</a>
-        <a href="https://wa.me/50234646667" target="_blank" rel="noopener">WhatsApp</a>
-        <a href="https://facebook.com/armsmusicgt" target="_blank" rel="noopener">Facebook</a>
-        <a href="/privacidad/">Politicas de privacidad</a>
-      </div>
-    </div>
-    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 pt-3 border-top border-opacity-10">
-      <span class="text-muted small">© 2025 <strong class="text-body">ARMS Music</strong>. Todos los derechos reservados.</span>
-      <div class="d-flex gap-2" aria-label="Redes sociales">
-        <a href="#" class="social-btn" aria-label="Instagram"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
-        <a href="https://facebook.com/armsmusicgt" target="_blank" rel="noopener" class="social-btn" aria-label="Facebook"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
-        <a href="https://wa.me/50234646667" target="_blank" rel="noopener" class="social-btn" aria-label="WhatsApp"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></a>
-        <a href="#" class="social-btn" aria-label="YouTube"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42A2.78 2.78 0 0 0 20.6 4.46C18.88 4 12 4 12 4s-6.88 0-8.6.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.4 19.54C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" stroke="none"/></svg></a>
-      </div>
+
     </div>
   </div>
 </footer>

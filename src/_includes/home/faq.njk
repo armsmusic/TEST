@@ -1,0 +1,147 @@
+{# ================================================================
+   FAQ — acordeón de preguntas frecuentes
+   Requiere: arms.css (.accordion*, .faq-availability,
+   .section-stack--horizontal/__intro/__main, .circle-chevron) y el
+   Web Component <details is="accordion-disclosure"> en arms-home.js
+   (anima apertura/cierre con Motion One en vez del toggle nativo
+   instantáneo del navegador).
+================================================================= #}
+
+<div class="section section-boxed bg-custom" style="--background: 255 255 255;">
+  <div class="section-stack section-stack--horizontal" style="--section-stack-intro: 50%; --section-stack-main: 50%;">
+
+    <div class="section-stack__intro">
+      <div class="v-stack gap-10">
+        <div class="prose">
+          <h2 class="h2">¿Tienes alguna duda? Estamos para ayudarte.</h2>
+          <p>Revisa las preguntas más comunes de nuestros clientes. ¿Sigues con dudas? Escríbenos por WhatsApp.</p>
+        </div>
+        <div class="hidden lg:block">
+          <div class="faq-availability">
+            <div class="v-stack gap-4">
+              <div class="v-stack">
+                Atención por WhatsApp todos los días.
+                <span class="text-subdued">Tiempo de respuesta promedio: pocas horas</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-stack__main">
+      <div class="accordion-box rounded bg-secondary">
+
+        <details class="accordion group" aria-expanded="false" is="accordion-disclosure">
+          <summary>
+            <div class="accordion__toggle bold">
+              <span>¿Hacen envíos a todo Guatemala?</span>
+              <span class="circle-chevron group-hover:colors group-expanded:colors group-expanded:rotate">
+                <svg role="presentation" focusable="false" width="8" height="6" class="icon icon-chevron-bottom-small" viewBox="0 0 8 6">
+                  <path d="m1 1.5 3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"></path>
+                </svg>
+              </span>
+            </div>
+          </summary>
+          <div class="accordion__content">
+            <div class="prose">
+              <p>Sí, hacemos envíos a todo el país. El costo de envío se calcula según tu ubicación y se confirma antes de cerrar tu pedido por WhatsApp.</p>
+            </div>
+          </div>
+        </details>
+
+        <details class="accordion group" aria-expanded="false" is="accordion-disclosure">
+          <summary>
+            <div class="accordion__toggle bold">
+              <span>¿Cómo funciona el pago contra entrega?</span>
+              <span class="circle-chevron group-hover:colors group-expanded:colors group-expanded:rotate">
+                <svg role="presentation" focusable="false" width="8" height="6" class="icon icon-chevron-bottom-small" viewBox="0 0 8 6">
+                  <path d="m1 1.5 3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"></path>
+                </svg>
+              </span>
+            </div>
+          </summary>
+          <div class="accordion__content">
+            <div class="prose">
+              <p>Pagas en efectivo cuando recibes tu pedido en la puerta de tu casa — no necesitas pagar nada por adelantado. Así puedes revisar tu producto antes de pagar.</p>
+            </div>
+          </div>
+        </details>
+
+        <details class="accordion group" aria-expanded="false" is="accordion-disclosure">
+          <summary>
+            <div class="accordion__toggle bold">
+              <span>¿Los productos tienen garantía?</span>
+              <span class="circle-chevron group-hover:colors group-expanded:colors group-expanded:rotate">
+                <svg role="presentation" focusable="false" width="8" height="6" class="icon icon-chevron-bottom-small" viewBox="0 0 8 6">
+                  <path d="m1 1.5 3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"></path>
+                </svg>
+              </span>
+            </div>
+          </summary>
+          <div class="accordion__content">
+            <div class="prose">
+              <p>Sí, todos nuestros productos cuentan con garantía contra defectos de fábrica. Si algo no funciona como debería, escríbenos por WhatsApp y te ayudamos a resolverlo.</p>
+            </div>
+          </div>
+        </details>
+
+        <details class="accordion group" aria-expanded="false" is="accordion-disclosure">
+          <summary>
+            <div class="accordion__toggle bold">
+              <span>¿Cuánto tarda el envío?</span>
+              <span class="circle-chevron group-hover:colors group-expanded:colors group-expanded:rotate">
+                <svg role="presentation" focusable="false" width="8" height="6" class="icon icon-chevron-bottom-small" viewBox="0 0 8 6">
+                  <path d="m1 1.5 3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"></path>
+                </svg>
+              </span>
+            </div>
+          </summary>
+          <div class="accordion__content">
+            <div class="prose">
+              <p>En la ciudad capital generalmente entregamos en 1 a 2 días. Para el resto del país el tiempo varía según destino — te confirmamos el estimado al coordinar tu pedido.</p>
+            </div>
+          </div>
+        </details>
+
+        <details class="accordion group" aria-expanded="false" is="accordion-disclosure">
+          <summary>
+            <div class="accordion__toggle bold">
+              <span>¿Puedo cambiar mi producto si no me gusta?</span>
+              <span class="circle-chevron group-hover:colors group-expanded:colors group-expanded:rotate">
+                <svg role="presentation" focusable="false" width="8" height="6" class="icon icon-chevron-bottom-small" viewBox="0 0 8 6">
+                  <path d="m1 1.5 3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"></path>
+                </svg>
+              </span>
+            </div>
+          </summary>
+          <div class="accordion__content">
+            <div class="prose">
+              <p>Sí, aceptamos cambios dentro de los primeros días después de tu compra, siempre que el producto esté en las mismas condiciones en que lo recibiste. Escríbenos por WhatsApp para coordinarlo.</p>
+            </div>
+          </div>
+        </details>
+
+        <details class="accordion group" aria-expanded="false" is="accordion-disclosure">
+          <summary>
+            <div class="accordion__toggle bold">
+              <span>¿Cómo los contacto si tengo dudas?</span>
+              <span class="circle-chevron group-hover:colors group-expanded:colors group-expanded:rotate">
+                <svg role="presentation" focusable="false" width="8" height="6" class="icon icon-chevron-bottom-small" viewBox="0 0 8 6">
+                  <path d="m1 1.5 3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"></path>
+                </svg>
+              </span>
+            </div>
+          </summary>
+          <div class="accordion__content">
+            <div class="prose">
+              <p>La forma más rápida es por WhatsApp al <a href="https://wa.me/50234646667" target="_blank" rel="noopener">+502 3464-6667</a>. También puedes escribirnos a <a href="mailto:armsmusicgt@gmail.com">armsmusicgt@gmail.com</a>.</p>
+            </div>
+          </div>
+        </details>
+
+      </div>
+    </div>
+
+  </div>
+</div>

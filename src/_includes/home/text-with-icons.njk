@@ -1,0 +1,98 @@
+{# ================================================================
+   TEXT-WITH-ICONS — 4 trust badges con ícono
+   Reutiliza <scroll-carousel> y <page-dots>, ya registrados — no
+   necesita JS nuevo. Requiere: arms.css (.text-with-icons*)
+================================================================= #}
+
+<div class="section section-blends section-full text-custom" style="--text-color: 26 26 26;">
+  <div class="section-stack">
+    <div class="text-with-icons" style="--text-with-icons-template: auto-flow 100%; --text-with-icons-justify: center; --text-with-icons-text-align: center; --text-with-icons-gap: var(--spacing-6);">
+
+      <scroll-carousel
+        selector=".text-with-icons__item"
+        class="text-with-icons__list scroll-area full-bleed lg:unbleed"
+        id="carousel-text-with-icons"
+        role="region"
+      >
+
+        <div class="text-with-icons__item snap-center" role="group" aria-label="1 de 4">
+          <div class="text-custom" style="--text-color: 26 26 26;">
+            <svg role="presentation" fill="none" focusable="false" stroke-width="2" width="24" height="24" class="icon icon-picto-pin" viewBox="0 0 24 24">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M20.223 9.51c0 5.526-5.047 10.497-7.233 12.392a1.5 1.5 0 0 1-1.98 0C8.823 20.007 3.776 15.035 3.776 9.51a8.224 8.224 0 0 1 16.447 0Zm-4.855-.484a3.368 3.368 0 1 1-6.736 0 3.368 3.368 0 0 1 6.736 0Z" fill="currentColor" fill-opacity=".12" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </div>
+          <div class="text-with-icons__text-wrapper">
+            <div class="prose">
+              <p class="h6">Envíos a toda Guatemala</p>
+              <p>Llevamos tu pedido hasta la puerta de tu casa, sin importar el departamento.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-with-icons__item snap-center" role="group" aria-label="2 de 4">
+          <div>
+            <svg role="presentation" fill="none" focusable="false" stroke-width="2" width="24" height="24" class="icon icon-picto-credit-card" viewBox="0 0 24 24">
+              <path d="M1.714 16.882c0 1.36 1.063 2.48 2.4 2.71 1.773.307 3.456.714 7.886.714s6.113-.407 7.886-.713c1.337-.232 2.4-1.351 2.4-2.709V6.708c0-1.183-.806-2.203-1.975-2.39A53.325 53.325 0 0 0 12 3.694c-4.43 0-6.114.407-7.887.713-1.337.232-2.4 1.351-2.4 2.709v9.766Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M22.286 9.588H1.714V7.02c0-1.305 1.02-2.378 2.306-2.597.235-.04.466-.08.703-.124 1.584-.288 3.351-.605 7.277-.605 3.69 0 6.617.352 8.39.638 1.12.182 1.896 1.162 1.896 2.297v2.959Z" fill="currentColor" fill-opacity=".12" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M14.666 15.804h3.485" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </div>
+          <div class="text-with-icons__text-wrapper">
+            <div class="prose">
+              <p class="h6">Pago contra entrega</p>
+              <p>Pagas en efectivo al recibir tu pedido — sin adelantos, sin riesgo.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-with-icons__item snap-center" role="group" aria-label="3 de 4">
+          <div>
+            <svg role="presentation" fill="none" focusable="false" stroke-width="2" width="24" height="24" class="icon icon-picto-question" viewBox="0 0 24 24">
+              <path d="M4.695 18.082c-1.532-.144-2.82-1.265-3.032-2.787A38.961 38.961 0 0 1 1.68 4.323c.206-1.422 1.368-2.497 2.798-2.646A72.209 72.209 0 0 1 12 1.286c2.573 0 5.054.145 7.47.394a3.178 3.178 0 0 1 2.845 2.695c.263 1.834.397 3.685.4 5.539 0 1.879-.16 3.704-.41 5.479a3.233 3.233 0 0 1-2.89 2.751c-2.525.264-5.06.397-7.598.398-1.799 2.067-3.177 3.09-5.586 4.172v-4.491l-1.165-.106-.37-.035v0Z" fill="currentColor" fill-opacity=".12" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M11.995 10.987c0-.619.504-1 1.392-1.594.823-.549 1.258-1.264 1.063-2.236a2.55 2.55 0 0 0-1.967-1.968A2.53 2.53 0 0 0 9.49 7.646" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M11.993 14.55a.214.214 0 0 1 0-.428M11.993 14.55a.214.214 0 0 0 0-.428" stroke="currentColor"></path>
+            </svg>
+          </div>
+          <div class="text-with-icons__text-wrapper">
+            <div class="prose">
+              <p class="h6">Atención por WhatsApp</p>
+              <p>Te respondemos rápido, antes y después de tu compra.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-with-icons__item snap-center" role="group" aria-label="4 de 4">
+          <div>
+            <svg role="presentation" fill="none" focusable="false" stroke-width="2" width="24" height="24" class="icon icon-picto-earth" viewBox="0 0 24 24">
+              <path d="M12 22.621c5.866 0 10.621-4.755 10.621-10.621 0-5.866-4.755-10.621-10.621-10.621C6.134 1.379 1.379 6.134 1.379 12c0 5.866 4.755 10.621 10.621 10.621Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M5.055 16.085a2.86 2.86 0 0 0 2.86-2.86v-2.45a2.86 2.86 0 0 1 2.86-2.86 2.86 2.86 0 0 0 2.859-2.86V1.504A10.702 10.702 0 0 0 12 1.379C6.134 1.379 1.379 6.134 1.379 12c0 1.448.29 2.828.814 4.085h2.862ZM22.62 11.836a5.817 5.817 0 0 0-2.646-.653h-3.48a2.86 2.86 0 0 0 0 5.719 2.042 2.042 0 0 1 2.042 2.043v1.421h.008a10.602 10.602 0 0 0 4.077-8.303v-.126l-.001-.1Z" fill="currentColor" fill-opacity=".12" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </div>
+          <div class="text-with-icons__text-wrapper">
+            <div class="prose">
+              <p class="h6">Garantía en todos los productos</p>
+              <p>Contra defectos de fábrica en cada in-ear, cable y accesorio que vendemos.</p>
+            </div>
+          </div>
+        </div>
+
+      </scroll-carousel>
+
+      <page-dots aria-controls="carousel-text-with-icons" class="page-dots peer-not-scrollable:hidden">
+        <button type="button" class="tap-area" aria-current="true">
+          <span class="sr-only">Ir al ítem 1</span>
+        </button>
+        <button type="button" class="tap-area" aria-current="false">
+          <span class="sr-only">Ir al ítem 2</span>
+        </button>
+        <button type="button" class="tap-area" aria-current="false">
+          <span class="sr-only">Ir al ítem 3</span>
+        </button>
+        <button type="button" class="tap-area" aria-current="false">
+          <span class="sr-only">Ir al ítem 4</span>
+        </button>
+      </page-dots>
+
+    </div>
+  </div>
+</div>
