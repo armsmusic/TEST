@@ -129,64 +129,14 @@ class HomeNextButton extends HTMLButtonElement {
   }
 }
 
-// ── MarqueeText — duplica su contenido las veces necesarias para
-// llenar el ancho disponible + 1 copia extra, y calcula la duración
-// de la animación CSS (translateFull, definida en arms.css) según
-// el ancho real medido y el atributo scrolling-speed (px/segundo
-// aproximado: valores más altos = más rápido). ──
-class MarqueeText extends HTMLElement {
-  connectedCallback() {
-    this._originalChildren = Array.from(this.children).map(el => el.cloneNode(true));
-    this._abortController = new AbortController();
-
-    this._measureAndBuild();
-
-    window.addEventListener('resize', () => this._measureAndBuild(), {
-      signal: this._abortController.signal,
-      passive: true,
-    });
-  }
-
-  disconnectedCallback() {
-    this._abortController?.abort();
-  }
-
-  get speed() {
-    // "scrolling-speed" en el HTML es una escala 1–10 (más alto = más rápido).
-    // La convertimos a px/segundo reales para el cálculo de duración.
-    const scale = parseFloat(this.getAttribute('scrolling-speed')) || 5;
-    return scale * 30; // px/segundo aproximados
-  }
-
-  _measureAndBuild() {
-    // Medir el ancho de una sola copia del contenido original
-    const probe = this._originalChildren[0].cloneNode(true);
-    probe.style.visibility = 'hidden';
-    probe.style.position = 'absolute';
-    probe.setAttribute('aria-hidden', 'true');
-    this.appendChild(probe);
-    const singleWidth = probe.getBoundingClientRect().width;
-    probe.remove();
-
-    if (!singleWidth) return;
-
-    const containerWidth = this.parentElement?.clientWidth || window.innerWidth;
-    // Necesitamos suficientes copias para cubrir 2x el contenedor
-    // (una pantalla visible + una de margen para el loop sin cortes)
-    const copiesNeeded = Math.max(2, Math.ceil((containerWidth * 2) / singleWidth));
-
-    this.innerHTML = '';
-    for (let i = 0; i < copiesNeeded; i++) {
-      const clone = this._originalChildren[0].cloneNode(true);
-      if (i > 0) clone.setAttribute('aria-hidden', 'true');
-      this.appendChild(clone);
-    }
-
-    const totalWidth = singleWidth * copiesNeeded;
-    const duration = totalWidth / this.speed;
-    this.style.setProperty('--marquee-animation-duration', `${duration}s`);
-  }
-}
+// NOTA: MarqueeText NO se define aquí. La única implementación real
+// vive en arms-announcement.js, copiada literalmente de theme.js de
+// Impact (js/common/ui/marquee-text.js). Definirla dos veces causó
+// un bug real: carrera de registro de customElements entre dos
+// versiones con lógica distinta, rompiendo el marquee tanto en
+// announcement-bar como en scrolling-text. Si scrolling-text.njk
+// necesita marquee-text, debe cargarse en una página donde
+// arms-announcement.js también esté presente.
 
 // ── ImpactText — el texto gigante con gradiente de impact-text.njk.
 // Soporta el atributo count-up="N" (ej. count-up="5.4"): anima el
@@ -557,7 +507,6 @@ class AccordionDisclosureEl extends HTMLDetailsElement {
 if (!customElements.get('image-link-blocks')) customElements.define('image-link-blocks', BaseCarousel);
 if (!customElements.get('collection-list'))   customElements.define('collection-list',   BaseCarousel);
 if (!customElements.get('scroll-carousel'))   customElements.define('scroll-carousel',   BaseCarousel);
-if (!customElements.get('marquee-text')) customElements.define('marquee-text', MarqueeText);
 if (!customElements.get('impact-text'))  customElements.define('impact-text',  ImpactTextEl);
 if (!customElements.get('video-media'))  customElements.define('video-media',  VideoMediaEl);
 if (!customElements.get('split-cursor')) customElements.define('split-cursor', SplitCursorEl);

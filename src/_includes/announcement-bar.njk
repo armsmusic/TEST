@@ -1,39 +1,31 @@
 {# ===============================================================
    ARMS Music — announcement-bar.njk
-   Barra de anuncios con texto deslizante (marquee), igual a Impact.
-   Estructura real: height-observer > .announcement-bar > marquee-text
-   con el contenido duplicado para loop continuo sin salto visible.
+   Barra de anuncios con texto deslizante (marquee).
+   Reconstruido desde cero a partir del HTML real de Impact
+   (index.html del demo): 10 copias de .announcement-bar__item,
+   solo la primera sin aria-hidden. Esta cantidad de copias es
+   intencional — la fórmula de duración en marquee-text.js calcula
+   la velocidad proporcional al ancho real de UN item contra el
+   ancho total (los 10 juntos), así que el número de copias importa
+   para la fórmula, no es decorativo.
+   Requiere: arms.css (.announcement-bar*, .shape-circle) y
+   height-observer + marquee-text definidos en arms-announcement.js
+   (lógica verificada línea por línea contra theme.js real de Impact).
 ================================================================ #}
+
+{% set itemHtml %}<p class="bold text-xs">Envío a toda Guatemala</p>
+<span class="shape-circle shape--sm"></span><p class="bold text-xs">Pago contra entrega disponible</p>
+<span class="shape-circle shape--sm"></span><p class="bold text-xs"><a href="https://wa.me/50234646667" target="_blank" rel="noopener">¿Dudas? Escríbenos por WhatsApp</a></p>
+<span class="shape-circle shape--sm"></span><p class="bold text-xs">In-Ears KZ y QKZ 100% originales</p>
+<span class="shape-circle shape--sm"></span>{% endset %}
 
 <height-observer variable="announcement-bar">
   <div class="announcement-bar bg-custom text-custom" style="--background: 26 26 26; --text-color: 255 255 255;">
-    <div class="announcement-bar__wrapper">
-      <marquee-text class="announcement-bar__scrolling-list">
-        <span class="announcement-bar__item">
-          <p class="bold text-xs">Envío a toda Guatemala</p>
-          <span class="shape-circle shape--sm"></span>
-          <p class="bold text-xs">Pago contra entrega disponible</p>
-          <span class="shape-circle shape--sm"></span>
-          <p class="bold text-xs">
-            <a href="https://wa.me/50234646667" target="_blank" rel="noopener">¿Dudas? Escríbenos por WhatsApp</a>
-          </p>
-          <span class="shape-circle shape--sm"></span>
-          <p class="bold text-xs">In-Ears KZ y QKZ 100% originales</p>
-          <span class="shape-circle shape--sm"></span>
-        </span>
-        <span class="announcement-bar__item">
-          <p class="bold text-xs">Envío a toda Guatemala</p>
-          <span class="shape-circle shape--sm"></span>
-          <p class="bold text-xs">Pago contra entrega disponible</p>
-          <span class="shape-circle shape--sm"></span>
-          <p class="bold text-xs">
-            <a href="https://wa.me/50234646667" target="_blank" rel="noopener">¿Dudas? Escríbenos por WhatsApp</a>
-          </p>
-          <span class="shape-circle shape--sm"></span>
-          <p class="bold text-xs">In-Ears KZ y QKZ 100% originales</p>
-          <span class="shape-circle shape--sm"></span>
-        </span>
-      </marquee-text>
-    </div>
+    <marquee-text scrolling-speed="10" class="announcement-bar__scrolling-list">
+      <span class="announcement-bar__item">{{ itemHtml | safe }}</span>
+      {% for i in range(9) %}
+      <span class="announcement-bar__item" aria-hidden="true">{{ itemHtml | safe }}</span>
+      {% endfor %}
+    </marquee-text>
   </div>
 </height-observer>

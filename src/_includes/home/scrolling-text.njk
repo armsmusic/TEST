@@ -1,24 +1,26 @@
 {# ================================================================
    SCROLLING-TEXT — marquee de texto con gradiente, loop infinito
    Impact style. Requiere: arms.css (.scrolling-text*, .text-gradient)
-   y el Web Component <marquee-text> en arms-home.js
+   y el Web Component <marquee-text> en arms-announcement.js
+   (única fuente de marquee-text en todo el proyecto — ver nota en
+   ese archivo sobre el bug de doble registro ya resuelto).
+
+   10 copias de .scrolling-text__text, igual al HTML real de Impact
+   (verificado contra index.html del demo) — solo la primera sin
+   aria-hidden. La cantidad de copias no es decorativa: la fórmula
+   de marquee-text.js calcula la velocidad proporcional al ancho de
+   UNA copia contra el ancho total de TODAS las copias juntas.
 ================================================================= #}
+
+{% set textoHtml %}<span class="text-gradient" style="--gradient: linear-gradient(90deg, rgba(77, 82, 60, 1), rgba(133, 141, 103, 1) 100%)">Audio de Alta Fidelidad sin Gastar de más</span>{% endset %}
 
 <div class="section section--tight">
   <div class="scrolling-text scrolling-text--auto">
     <marquee-text scrolling-speed="5" class="scrolling-text__wrapper">
-      <span class="scrolling-text__text heading">
-        <span class="text-gradient" style="--gradient: linear-gradient(90deg, rgba(77, 82, 60, 1), rgba(133, 141, 103, 1) 100%)">Audio de Alta Fidelidad sin Gastar de más</span>
-      </span>
-      <span class="scrolling-text__text heading motion-reduce:hidden" aria-hidden="true">
-        <span class="text-gradient" style="--gradient: linear-gradient(90deg, rgba(77, 82, 60, 1), rgba(133, 141, 103, 1) 100%)">Audio de Alta Fidelidad sin Gastar de más</span>
-      </span>
-      <span class="scrolling-text__text heading motion-reduce:hidden" aria-hidden="true">
-        <span class="text-gradient" style="--gradient: linear-gradient(90deg, rgba(77, 82, 60, 1), rgba(133, 141, 103, 1) 100%)">Audio de Alta Fidelidad sin Gastar de más</span>
-      </span>
-      <span class="scrolling-text__text heading motion-reduce:hidden" aria-hidden="true">
-        <span class="text-gradient" style="--gradient: linear-gradient(90deg, rgba(77, 82, 60, 1), rgba(133, 141, 103, 1) 100%)">Audio de Alta Fidelidad sin Gastar de más</span>
-      </span>
+      <span class="scrolling-text__text heading">{{ textoHtml | safe }}</span>
+      {% for i in range(9) %}
+      <span class="scrolling-text__text heading motion-reduce:hidden" aria-hidden="true">{{ textoHtml | safe }}</span>
+      {% endfor %}
     </marquee-text>
   </div>
 </div>
