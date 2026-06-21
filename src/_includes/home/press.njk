@@ -1,0 +1,67 @@
+{# ================================================================
+   PRESS — carrusel de testimonios (adaptado de Impact: el demo
+   original usa citas de prensa con logo; aquí usamos testimonios
+   de clientes reales, sin logo — solo nombre + fuente).
+   Requiere: arms.css (.press*, .page-dots, .blockquote, .circle-button,
+   .animated-arrow) y el Web Component <press-carousel> en arms-home.js
+
+   ⚠️ TODO — PLACEHOLDERS: los 3 testimonios de abajo son de relleno
+   temporal. Reemplázalos con reseñas reales de clientes (Google
+   Reviews, Facebook, WhatsApp) cuando las tengas. Busca el texto
+   "TODO: testimonio real" en cada bloque.
+================================================================= #}
+
+<div class="section section-stack">
+  <div class="press" style="--press-max-width: 1000px;">
+
+    <press-carousel id="carousel-press-armsmusic" class="press__list text-center" role="region">
+
+      {# ── Testimonio 1 (PLACEHOLDER) ── #}
+      <div class="press__list-item is-selected" role="group" aria-label="Testimonio 1 de 3">
+        {# TODO: testimonio real — reemplazar texto y nombre #}
+        <blockquote class="blockquote h3" reveal-on-scroll="true">Excelente calidad de sonido, mucho mejor de lo que esperaba por el precio. El envío llegó rápido y el pago contra entrega me dio toda la confianza.</blockquote>
+        <p class="text-subdued">— Nombre del Cliente, Google Reviews</p>
+      </div>
+
+      {# ── Testimonio 2 (PLACEHOLDER) ── #}
+      <div class="press__list-item" role="group" aria-label="Testimonio 2 de 3">
+        {# TODO: testimonio real — reemplazar texto y nombre #}
+        <blockquote class="blockquote h3" reveal-on-scroll="true">Compré los KZ Castor Pro y la diferencia con mis audífonos anteriores es enorme. Atención por WhatsApp súper rápida durante todo el proceso.</blockquote>
+        <p class="text-subdued">— Nombre del Cliente, Facebook</p>
+      </div>
+
+      {# ── Testimonio 3 (PLACEHOLDER) ── #}
+      <div class="press__list-item" role="group" aria-label="Testimonio 3 de 3">
+        {# TODO: testimonio real — reemplazar texto y nombre #}
+        <blockquote class="blockquote h3" reveal-on-scroll="true">El cable de repuesto llegó perfecto y se nota la calidad del cobre OFC. Ya es mi segunda compra con ARMS Music.</blockquote>
+        <p class="text-subdued">— Nombre del Cliente, WhatsApp</p>
+      </div>
+
+    </press-carousel>
+
+    <div class="press__controls">
+      <button class="circle-button ring group" is="prev-button" aria-controls="carousel-press-armsmusic">
+        <span class="sr-only">Anterior</span>
+        <span class="animated-arrow animated-arrow--reverse"></span>
+      </button>
+
+      <page-dots aria-controls="carousel-press-armsmusic" class="page-dots">
+        <button type="button" class="tap-area" aria-current="true">
+          <span class="sr-only">Ir al testimonio 1</span>
+        </button>
+        <button type="button" class="tap-area" aria-current="false">
+          <span class="sr-only">Ir al testimonio 2</span>
+        </button>
+        <button type="button" class="tap-area" aria-current="false">
+          <span class="sr-only">Ir al testimonio 3</span>
+        </button>
+      </page-dots>
+
+      <button class="circle-button ring group" is="next-button" aria-controls="carousel-press-armsmusic">
+        <span class="sr-only">Siguiente</span>
+        <span class="animated-arrow"></span>
+      </button>
+    </div>
+
+  </div>
+</div>

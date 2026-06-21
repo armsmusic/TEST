@@ -1,0 +1,94 @@
+{# ================================================================
+   COLLECTION-LIST — 3 tarjetas grandes con scroll
+   Impact style. Imágenes: src/assets/img/home/collection-[slug].jpg
+   Requiere: arms.css (.collection-list*, .collection-card*,
+   .content-over-media) y el Web Component <scroll-carousel>
+   (BaseCarousel) en arms-home.js
+================================================================= #}
+
+<div class="section section-stack">
+  <div class="floating-controls-container">
+    <scroll-carousel
+      selector=".collection-card"
+      id="scroll-area-collection-list"
+      class="scroll-area bleed"
+    >
+      <collection-list class="collection-list">
+
+        <a href="/in-ears/" class="collection-card collection-card--reverse-transition shadow" reveal-js>
+          <div class="content-over-media group rounded-sm" style="--content-over-media-overlay: 0 0 0 / 0.0">
+            <img
+              src="/assets/img/home/collection-in-ears.jpg"
+              alt="In-Ears KZ y QKZ"
+              width="1500" height="1681"
+              loading="lazy"
+              sizes="(max-width: 699px) 73vw, 533px"
+              class="zoom-image"
+            >
+            <div class="collection-card__content-wrapper text-custom place-self-end-start arms-text-start" style="--text-color: 255 255 255">
+              <svg role="presentation" focusable="false" width="40" height="40" class="icon icon-circle-button-right-clipped" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12ZM10.47 9.53 12.94 12l-2.47 2.47 1.06 1.06 3-3 .53-.53-.53-.53-3-3-1.06 1.06Z" fill="currentColor"></path>
+              </svg>
+              <div class="collection-card__content prose">
+                <p class="h3">In-Ears que suenan profesional</p>
+              </div>
+            </div>
+          </div>
+        </a>
+
+        <a href="/audio/cables/" class="collection-card collection-card--reverse-transition shadow" reveal-js>
+          <div class="content-over-media group rounded-sm" style="--content-over-media-overlay: 0 0 0 / 0.0">
+            <img
+              src="/assets/img/home/collection-cables.jpg"
+              alt="Cables de audio"
+              width="1500" height="1681"
+              loading="lazy"
+              sizes="(max-width: 699px) 73vw, 533px"
+              class="zoom-image"
+            >
+            <div class="collection-card__content-wrapper text-custom place-self-end-start arms-text-start" style="--text-color: 255 255 255">
+              <svg role="presentation" focusable="false" width="40" height="40" class="icon icon-circle-button-right-clipped" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12ZM10.47 9.53 12.94 12l-2.47 2.47 1.06 1.06 3-3 .53-.53-.53-.53-3-3-1.06 1.06Z" fill="currentColor"></path>
+              </svg>
+              <div class="collection-card__content prose">
+                <p class="h3">Conexiones que no te fallan</p>
+              </div>
+            </div>
+          </div>
+        </a>
+
+        <a href="/in-ears/accesorios/" class="collection-card collection-card--reverse-transition shadow" reveal-js>
+          <div class="content-over-media group rounded-sm" style="--content-over-media-overlay: 0 0 0 / 0.0">
+            <img
+              src="/assets/img/home/collection-accesorios.jpg"
+              alt="Accesorios para in-ears"
+              width="1500" height="1681"
+              loading="lazy"
+              sizes="(max-width: 699px) 73vw, 533px"
+              class="zoom-image"
+            >
+            <div class="collection-card__content-wrapper text-custom place-self-end-start arms-text-start" style="--text-color: 255 255 255">
+              <svg role="presentation" focusable="false" width="40" height="40" class="icon icon-circle-button-right-clipped" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12ZM10.47 9.53 12.94 12l-2.47 2.47 1.06 1.06 3-3 .53-.53-.53-.53-3-3-1.06 1.06Z" fill="currentColor"></path>
+              </svg>
+              <div class="collection-card__content prose">
+                <p class="h3">Todo lo que tus in-ears necesitan</p>
+              </div>
+            </div>
+          </div>
+        </a>
+
+      </collection-list>
+    </scroll-carousel>
+
+    <button is="prev-button" class="circle-button circle-button--lg circle-button--fill border group" aria-controls="scroll-area-collection-list" disabled>
+      <span class="sr-only">Anterior</span>
+      <span class="animated-arrow animated-arrow--reverse"></span>
+    </button>
+
+    <button is="next-button" class="circle-button circle-button--lg circle-button--fill border group" aria-controls="scroll-area-collection-list">
+      <span class="sr-only">Siguiente</span>
+      <span class="animated-arrow"></span>
+    </button>
+  </div>
+</div>

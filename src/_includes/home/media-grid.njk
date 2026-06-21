@@ -1,0 +1,96 @@
+{# ================================================================
+   MEDIA-GRID — grid asimétrico de 4 tiles (categorías)
+   Impact style. Requiere: arms.css (.media-grid*, .content-over-media,
+   video-media) y el Web Component <video-media> en arms-home.js
+
+   Tile 1 (2x2, grande): In-Ears — listo para video (ver nota abajo)
+   Tile 2 (1x1): Cables
+   Tile 3 (1x1): Accesorios
+   Tile 4 (2x1): Interfaces
+
+   VIDEO PENDIENTE: el tile de In-Ears usa <video-media autoplay>
+   con <video> + poster de respaldo. Falta subir el archivo real a
+   /assets/img/home/video-in-ears.mp4 (+ poster video-in-ears-poster.jpg).
+   Mientras no exista el .mp4, el navegador simplemente no reproduce
+   nada y se queda mostrando el poster — no rompe el layout.
+================================================================= #}
+
+<div class="section section-stack">
+  <media-grid class="media-grid">
+
+    {# ── Tile 1: In-Ears (2x2, con video) ── #}
+    <a href="/in-ears/" class="media-grid__item shadow group" reveal-js style="--media-grid-column-span: 2; --media-grid-row-span: 2">
+      <div class="content-over-media rounded bg-custom text-custom" style="--background: 0 0 0; --text-color: 255 255 255;">
+        <video-media autoplay style="--aspect-ratio: auto">
+          <video playsinline muted loop preload="metadata" class="object-fill" poster="/assets/img/home/video-in-ears-poster.jpg">
+            <source src="/assets/img/home/video-in-ears.mp4" type="video/mp4">
+            <img src="/assets/img/home/video-in-ears-poster.jpg" alt="In-Ears KZ y QKZ">
+          </video>
+        </video-media>
+        <div class="place-self-center text-center sm:place-self-end-start sm:text-start">
+          <div class="prose">
+            <p class="h3">In-Ears KZ y QKZ</p>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    {# ── Tile 2: Cables (1x1) ── #}
+    <a href="/audio/cables/" class="media-grid__item shadow group" reveal-js style="--media-grid-column-span: 1; --media-grid-row-span: 1">
+      <div class="content-over-media rounded bg-custom text-custom" style="--background: 0 0 0; --text-color: 255 255 255;">
+        <img
+          src="/assets/img/home/media-grid-cables.jpg"
+          alt="Cables de audio"
+          width="1500" height="1500"
+          loading="lazy"
+          sizes="(max-width: 699px) 100vw, min(390px, 25vw)"
+          class="content-over-media__media zoom-image"
+        >
+        <div class="place-self-end-start text-start sm:place-self-end-start sm:text-start">
+          <div class="prose">
+            <p class="h5">Cables</p>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    {# ── Tile 3: Accesorios (1x1) ── #}
+    <a href="/in-ears/accesorios/" class="media-grid__item shadow group" reveal-js style="--media-grid-column-span: 1; --media-grid-row-span: 1">
+      <div class="content-over-media rounded bg-custom text-custom" style="--background: 0 0 0; --text-color: 255 255 255;">
+        <img
+          src="/assets/img/home/media-grid-accesorios.jpg"
+          alt="Accesorios para in-ears"
+          width="1500" height="1500"
+          loading="lazy"
+          sizes="(max-width: 699px) 100vw, min(390px, 25vw)"
+          class="content-over-media__media zoom-image"
+        >
+        <div class="place-self-end-start text-start sm:place-self-end-start sm:text-start">
+          <div class="prose">
+            <p class="h5">Accesorios</p>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    {# ── Tile 4: Interfaces (2x1) ── #}
+    <a href="/audio/interfaces/" class="media-grid__item shadow group" reveal-js style="--media-grid-column-span: 2; --media-grid-row-span: 1">
+      <div class="content-over-media rounded bg-custom text-custom" style="--background: 0 0 0; --text-color: 255 255 255;">
+        <img
+          src="/assets/img/home/media-grid-interfaces.jpg"
+          alt="Interfaces de audio"
+          width="1500" height="1000"
+          loading="lazy"
+          sizes="(max-width: 699px) 100vw, min(780px, 50vw)"
+          class="content-over-media__media zoom-image"
+        >
+        <div class="place-self-end-start text-start sm:place-self-end-start sm:text-start">
+          <div class="prose">
+            <p class="h3">Interfaces</p>
+          </div>
+        </div>
+      </div>
+    </a>
+
+  </media-grid>
+</div>

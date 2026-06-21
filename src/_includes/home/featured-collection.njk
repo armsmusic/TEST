@@ -1,0 +1,155 @@
+{# ================================================================
+   FEATURED-COLLECTION — "Más Vendidos" / grid de 8 productos
+   Impact style. Requiere: arms.css (.product-card*, .price-list,
+   .badge*, .rating*, .product-list, .text-with-icon, .scroll-area)
+   y el Web Component <scroll-carousel> (BaseCarousel) en arms-home.js
+
+   Fuente de datos: global data "productos" (ya resuelto por sección,
+   ver .eleventy.js → addGlobalData("productos")). Busca cada ID en
+   productos.inears + productos["accesorios-inears"] + productos["audio-cables"].
+
+   Imagen: usa el partial existente product-img.njk, que ya maneja
+   el fallback foto-real → SVG generativo (g1/g2) automáticamente.
+   El hover de imagen secundaria de Impact (product-card__image--secondary)
+   solo se activa si prod.imagenes tiene 2+ fotos reales.
+
+   IDs incluidos (8, "Más Vendidos"):
+   kz-edx-lite, kz-edx-pro-x, kz-castor-pro, cca-polaris,
+   kz-zsn-pro-x, qkz-t1-200-core, kz-zsn-pro-2, extension-10m-inears
+================================================================= #}
+
+{% set masVendidosIds = [
+  "kz-edx-lite",
+  "kz-edx-pro-x",
+  "kz-castor-pro",
+  "cca-polaris",
+  "kz-zsn-pro-x",
+  "qkz-t1-200-core",
+  "kz-zsn-pro-2",
+  "extension-10m-inears"
+] %}
+
+{% set todosLosProductos = productos.inears
+  .concat(productos["accesorios-inears"])
+  .concat(productos["audio-cables"]) %}
+
+<div class="section section-stack">
+  <style>
+    #scroll-area-featured-collection .product-list {
+      --product-list-gap: var(--product-list-row-gap) var(--product-list-column-gap);
+      --product-list-items-per-row: 2;
+      --product-list-carousel-item-width: 74vw;
+      --product-list-grid: auto / auto-flow var(--product-list-carousel-item-width);
+    }
+
+    @media screen and (min-width: 700px) {
+      #scroll-area-featured-collection .product-list {
+        --product-list-carousel-item-width: 36vw;
+      }
+    }
+
+    @media screen and (min-width: 1000px) {
+      #scroll-area-featured-collection .product-list {
+        --product-list-items-per-row: 4;
+        --product-list-carousel-item-width: calc(var(--container-inner-width) / 4 - (var(--product-list-column-gap) / 4 * 3));
+      }
+    }
+  </style>
+
+  <section-header class="section-header">
+    <div class="prose">
+      <h2 class="h2" reveal-on-scroll="true"><split-lines>Más Vendidos</split-lines></h2>
+    </div>
+    <a href="/in-ears/" class="text-with-icon group">
+      <span class="reversed-link">Ver todo</span>
+      <span class="circle-chevron group-hover:colors">
+        <svg role="presentation" focusable="false" width="5" height="8" class="icon icon-chevron-right-small reverse-icon" viewBox="0 0 5 8">
+          <path d="m.75 7 3-3-3-3" fill="none" stroke="currentColor" stroke-width="1.5"></path>
+        </svg>
+      </span>
+    </a>
+  </section-header>
+
+  <div class="floating-controls-container">
+    <scroll-carousel
+      selector="product-card"
+      id="scroll-area-featured-collection"
+      class="scroll-area bleed"
+    >
+      <product-list class="product-list">
+
+        {% for id in masVendidosIds %}
+          {% for prod in todosLosProductos %}
+            {% if prod.id == id %}
+
+              {% set tieneSegundaFoto = prod.imagenes and prod.imagenes.length > 1 %}
+              {% set prodUrl = prod.id | productoUrl %}
+
+              <product-card
+                handle="{{ prod.id }}"
+                class="product-card {% if tieneSegundaFoto %}product-card--show-secondary-media{% endif %} bg-custom text-custom"
+                style="--background: 255 255 255; --text-color: 26 26 26;"
+              >
+                {% if prod.descuento %}
+                <div class="product-card__badge-list">
+                  <span class="badge badge--on-sale">{{ prod.descuento }}</span>
+                </div>
+                {% endif %}
+
+                <div class="product-card__figure">
+                  <a href="{{ prodUrl }}" style="background:linear-gradient(135deg,{{ prod.g1 }},{{ prod.g2 }}); display:block; aspect-ratio:1;">
+                    {% include "home/product-img-hover.njk" %}
+                  </a>
+                </div>
+
+                <div class="product-card__info">
+                  <div class="v-stack gap-0.5 w-full">
+
+                    {% if prod.rating %}
+                    <div class="rating-with-text">
+                      <a href="{{ prodUrl }}#resenas" class="rating" title="{{ prod.rating }} de 5">
+                        <span class="text-sm">{{ prod.rating }}</span>
+                        <div class="rating__stars" role="img" aria-label="{{ prod.rating }} de 5 estrellas">
+                          <svg role="presentation" fill="none" focusable="false" width="12" height="12" class="rating__star icon" viewBox="0 0 15 15">
+                            <path d="M7.5 0L9.58587 5.2731L15 5.72949L10.875 9.44483L12.1353 15L7.5 12.0231L2.86475 15L4.125 9.44483L0 5.72949L5.41414 5.2731L7.5 0Z" fill="currentColor"></path>
+                          </svg>
+                        </div>
+                      </a>
+                    </div>
+                    {% endif %}
+
+                    <span class="product-card__title">
+                      <a href="{{ prodUrl }}" class="bold">{{ prod.nombre }}</a>
+                    </span>
+
+                    <div class="price-list">
+                      {% if prod.precioOriginal %}
+                        <span class="text-subdued" style="text-decoration: line-through;">{{ prod.precioOriginal | gtq }}</span>
+                        <span class="text-on-sale bold">{{ prod.precio | gtq }}</span>
+                      {% else %}
+                        <span class="bold">{{ prod.precio | gtq }}</span>
+                      {% endif %}
+                    </div>
+
+                  </div>
+                </div>
+              </product-card>
+
+            {% endif %}
+          {% endfor %}
+        {% endfor %}
+
+      </product-list>
+    </scroll-carousel>
+
+    <button is="prev-button" class="circle-button circle-button--fill border group" aria-controls="scroll-area-featured-collection" disabled>
+      <span class="sr-only">Anterior</span>
+      <span class="animated-arrow animated-arrow--reverse"></span>
+    </button>
+
+    <button is="next-button" class="circle-button circle-button--fill border group" aria-controls="scroll-area-featured-collection">
+      <span class="sr-only">Siguiente</span>
+      <span class="animated-arrow"></span>
+    </button>
+  </div>
+</div>

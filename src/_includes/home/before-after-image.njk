@@ -1,0 +1,70 @@
+{# ================================================================
+   BEFORE-AFTER-IMAGE — comparador deslizable
+   Impact style. Compara KZ EDX Lite (entrada) vs KZ EDX Pro (upgrade).
+   Requiere: arms.css (.before-after*, .section-stack--center/__intro/__main)
+   y el Web Component <split-cursor> en arms-home.js
+
+   Imágenes: src/assets/img/home/before-edx-lite.jpg y
+   src/assets/img/home/after-edx-pro.jpg (pendientes de subir,
+   mismo flujo que el resto de imágenes del home).
+================================================================= #}
+
+<div class="section section-stack">
+  <div class="section-stack section-stack--center" style="--section-stack-intro: 50%; --section-stack-main: 66.6667%;">
+
+    <div class="section-stack__intro">
+      <div class="prose text-center">
+        <p class="subheading">KZ EDX Lite vs KZ EDX Pro</p>
+        <h2 class="h2">¿Listo para el siguiente nivel?</h2>
+        <p>Ambos comparten el mismo driver dinámico super lineal. El EDX Pro suma un segundo circuito magnético para graves más profundos y controlados — sin perder la claridad que ya conoces.</p>
+      </div>
+    </div>
+
+    <div class="section-stack__main">
+      <div class="before-after shadow text-custom" style="--text-color: 255 255 255; --before-after-initial-drag-position: 50%;">
+
+        <div class="before-after__before-image text-custom" style="--text-color: 255 255 255;">
+          <picture>
+            <img
+              src="/assets/img/home/before-edx-lite.jpg"
+              alt="KZ EDX Lite"
+              width="2001" height="1200"
+              loading="lazy"
+              sizes="(max-width: 999px) 100vw, 1000px"
+              draggable="false"
+              class="rounded w-full"
+            >
+          </picture>
+          <p class="before-after__label before-after__label--left before-after__label--bottom h5">KZ EDX Lite</p>
+        </div>
+
+        <div class="before-after__after-image text-custom" style="--text-color: 255 255 255;">
+          <picture>
+            <img
+              src="/assets/img/home/after-edx-pro.jpg"
+              alt="KZ EDX Pro"
+              width="2001" height="1200"
+              loading="lazy"
+              sizes="(max-width: 999px) 100vw, 1000px"
+              class="object-fill rounded"
+              draggable="false"
+            >
+          </picture>
+          <p class="before-after__label before-after__label--right before-after__label--bottom h5">KZ EDX Pro</p>
+        </div>
+
+        <div class="before-after__cursor-wrapper">
+          <split-cursor class="before-after__cursor" tabindex="0" role="slider" aria-label="Comparar KZ EDX Lite con KZ EDX Pro" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" style="--background: 255 255 255">
+            <span class="sr-only">Arrastrar para comparar</span>
+            <svg role="presentation" focusable="false" width="28" height="35" viewBox="0 0 32 40">
+              <path d="M0 16C0 7.16344 7.16344 0 16 0C24.8366 0 32 7.16344 32 16V24C32 32.8366 24.8366 40 16 40C7.16344 40 0 32.8366 0 24V16Z" fill="#ffffff"></path>
+              <path fill="#000000" d="M11 14H13V26H11zM15 14H17V26H15zM19 14H21V26H19z"></path>
+            </svg>
+          </split-cursor>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

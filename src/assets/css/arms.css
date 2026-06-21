@@ -1470,3 +1470,1014 @@ x-slideshow[allow-transparent-header] {
 :has(> custom-cursor:not([hidden])) {
   cursor: none;
 }
+
+/* ============================================================
+   UTILIDADES BASE — layout/spacing (Impact)
+   Compartidas por image-link-blocks, scrolling-text,
+   collection-list y todas las secciones futuras del home.
+   ============================================================ */
+
+.container {
+  --container-inner-width: min((100vw - var(--scrollbar-width, 0px)) - var(--container-gutter) * 2, var(--container-max-width));
+  --container-outer-width: calc(((100vw - var(--scrollbar-width, 0px)) - var(--container-inner-width)) / 2);
+  margin-inline-start: max(var(--container-gutter), 50% - var(--container-max-width) / 2);
+  margin-inline-end: max(var(--container-gutter), 50% - var(--container-max-width) / 2);
+}
+
+.container--narrow {
+  --container-max-width: var(--container-narrow-max-width);
+}
+
+@media screen and (min-width: 700px) {
+  .sm\:container {
+    --container-inner-width: min((100vw - var(--scrollbar-width, 0px)) - var(--container-gutter) * 2, var(--container-max-width));
+    --container-outer-width: calc(((100vw - var(--scrollbar-width, 0px)) - var(--container-inner-width)) / 2);
+    margin-inline-start: max(var(--container-gutter), 50% - var(--container-max-width) / 2);
+    margin-inline-end: max(var(--container-gutter), 50% - var(--container-max-width) / 2);
+  }
+}
+
+.bleed {
+  scroll-padding-inline: var(--container-outer-width);
+  margin-inline-start: calc(-1 * var(--container-outer-width));
+  margin-inline-end: calc(-1 * var(--container-outer-width));
+  padding-inline-start: var(--container-outer-width);
+  padding-inline-end: var(--container-outer-width);
+  display: grid;
+}
+
+.full-bleed {
+  margin-inline-start: calc(-1 * var(--container-outer-width));
+  margin-inline-end: calc(-1 * var(--container-outer-width));
+  display: grid;
+}
+
+@media screen and (min-width: 700px) {
+  .sm\:unbleed {
+    margin-inline-start: 0;
+    margin-inline-end: 0;
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+    scroll-padding-inline: 0;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .md\:unbleed {
+    margin-inline-start: 0;
+    margin-inline-end: 0;
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+    scroll-padding-inline: 0;
+  }
+}
+
+@media screen and (min-width: 1150px) {
+  .lg\:unbleed {
+    margin-inline-start: 0;
+    margin-inline-end: 0;
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+    scroll-padding-inline: 0;
+  }
+}
+
+/* ── Sistema de secciones (section/section-stack) — controla el
+   espaciado vertical entre TODAS las secciones del home ── */
+.section {
+  --context-section-spacing-block-start: var(--section-outer-spacing-block);
+  --context-section-spacing-block-end: var(--section-outer-spacing-block);
+  --context-section-spacing-inline: var(--container-gutter);
+  --calculated-section-spacing-block-start: var(--section-spacing-block-start, var(--section-spacing-block, var(--context-section-spacing-block-start)));
+  --calculated-section-spacing-block-end: var(--section-spacing-block-end, var(--section-spacing-block, var(--context-section-spacing-block-end)));
+  --calculated-section-spacing-inline: var(--section-spacing-inline, var(--context-section-spacing-inline));
+  --container-inner-width: min((100vw - var(--scrollbar-width, 0px)) - var(--calculated-section-spacing-inline, 0px) * 2, var(--container-max-width));
+  --container-outer-width: calc(((100vw - var(--scrollbar-width, 0px)) - var(--container-inner-width, 0px)) / 2);
+  --section-stack-spacing-inline: var(--section-inner-spacing-inline, 0px);
+  padding-inline-start: max(var(--calculated-section-spacing-inline), 50% - var(--container-max-width) / 2);
+  padding-inline-end: max(var(--calculated-section-spacing-inline), 50% - var(--container-max-width) / 2);
+  padding-block-start: var(--calculated-section-spacing-block-start);
+  padding-block-end: var(--calculated-section-spacing-block-end);
+}
+
+.section--tight {
+  --calculated-section-spacing-block-start: min(48px, var(--section-spacing-block-start, var(--section-spacing-block, var(--context-section-spacing-block-start))));
+  --calculated-section-spacing-block-end: min(48px, var(--section-spacing-block-end, var(--section-spacing-block, var(--context-section-spacing-block-end))));
+  --calculated-section-spacing-inline: min(48px, var(--section-spacing-inline, var(--context-section-spacing-inline)));
+}
+
+.section--narrow {
+  --container-max-width: var(--container-narrow-max-width);
+}
+
+.section-header {
+  gap: var(--spacing-4);
+  justify-items: start;
+  display: grid;
+}
+
+@media screen and (min-width: 1150px) {
+  .section-header {
+    grid-template-columns: 700px;
+    justify-content: space-between;
+    align-items: end;
+  }
+}
+
+.section-stack {
+  gap: var(--section-stack-spacing-block, 0px) var(--section-stack-spacing-inline, 0px);
+  grid-auto-columns: minmax(0, 1fr);
+  display: grid;
+}
+
+@media screen and (min-width: 700px) {
+  .section--tight {
+    --calculated-section-spacing-block-start: min(48px, var(--section-spacing-block-start, var(--section-spacing-block, var(--context-section-spacing-block-start, 0px))));
+    --calculated-section-spacing-block-end: min(48px, var(--section-spacing-block-end, var(--section-spacing-block, var(--context-section-spacing-block-end, 0px))));
+  }
+}
+
+@media screen and (min-width: 1600px) {
+  .section--tight {
+    --calculated-section-spacing-block-start: min(64px, var(--section-spacing-block-start, var(--section-spacing-block, var(--context-section-spacing-block-start, 0px))));
+    --calculated-section-spacing-block-end: min(64px, var(--section-spacing-block-end, var(--section-spacing-block, var(--context-section-spacing-block-end, 0px))));
+  }
+}
+
+/* ── Flex/grid stacks ── */
+.v-stack {
+  display: grid;
+}
+
+.h-stack {
+  align-items: center;
+  display: flex;
+}
+
+/* ── Utilidades sueltas usadas por las 3 secciones nuevas ── */
+.bg-secondary {
+  background: rgb(var(--text-color) / .05);
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.gap-2 {
+  gap: var(--spacing-2);
+}
+
+/* ── circle-chevron base (los hover states ya existían arriba) ── */
+.circle-chevron {
+  width: var(--spacing-6);
+  height: var(--spacing-6);
+  border-radius: var(--rounded-full);
+  background: rgb(var(--text-color) / .1);
+  flex-shrink: 0;
+  place-items: center;
+  transition: all .2s ease-in-out;
+  display: grid;
+}
+
+.circle-chevron[disabled] {
+  opacity: .5;
+}
+
+/* ── animated-arrow — usado por prev/next buttons en scroll-area ── */
+.animated-arrow {
+  pointer-events: none;
+  place-items: center;
+  display: grid;
+}
+
+.animated-arrow:before, .animated-arrow:after {
+  content: "";
+  grid-area: 1 / -1;
+  transition: all .2s ease-in-out;
+}
+
+.animated-arrow:before {
+  border-block-start-width: 2px;
+  border-inline-end-width: 2px;
+  width: .5rem;
+  height: .5rem;
+  transform: rotate(calc(var(--transform-logical-flip) * 45deg));
+  border-color: currentColor;
+  left: -1px;
+  position: relative;
+}
+
+.animated-arrow:after {
+  width: var(--spacing-2-5);
+  height: var(--spacing-0-5);
+  transform-origin: center;
+  opacity: 0;
+  background: currentColor;
+  transform: scaleX(.5);
+}
+
+@media screen and (pointer: fine) {
+  .group:hover .animated-arrow:before {
+    transform: translateX(calc(var(--transform-logical-flip) * var(--spacing-0-5))) rotate(calc(var(--transform-logical-flip) * 45deg));
+  }
+
+  .group:hover .animated-arrow:after {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+.animated-arrow--reverse {
+  transform: rotate(180deg);
+}
+
+/* ── scroll-area — contenedor con scroll horizontal + snap ── */
+.scroll-area {
+  scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  overflow: auto hidden;
+}
+
+.scroll-area::-webkit-scrollbar {
+  display: none;
+}
+
+/* ============================================================
+   IMAGE-LINK-BLOCKS — 5 tarjetas de categoría con scroll
+   ============================================================ */
+
+.image-link-blocks {
+  --image-link-blocks-item-width: 48vw;
+  --image-link-blocks-grid: auto / auto-flow var(--image-link-blocks-item-width);
+  grid: var(--image-link-blocks-grid);
+  gap: var(--spacing-2);
+  align-items: start;
+  display: grid;
+}
+
+.image-link-blocks__item {
+  position: relative;
+}
+
+.image-link-blocks__inner {
+  gap: var(--spacing-3);
+  padding: var(--spacing-5);
+  grid-template-columns: minmax(0, 1fr);
+  display: grid;
+}
+
+.image-link-blocks__inner .circle-chevron {
+  opacity: 0;
+  transition: opacity .2s ease-in-out;
+}
+
+.image-link-blocks__title {
+  gap: var(--spacing-2-5);
+  justify-content: center;
+  align-items: center;
+  margin-block-end: calc(-1 * var(--spacing-1));
+  display: flex;
+}
+
+.image-link-blocks__title--animate {
+  transform: translateX(calc(var(--transform-logical-flip) * 16px));
+  transition: transform .2s;
+}
+
+@media screen and (min-width: 700px) {
+  .image-link-blocks {
+    --image-link-blocks-item-width: 26vw;
+    gap: var(--grid-gutter);
+  }
+
+  .image-link-blocks__inner {
+    gap: var(--spacing-5);
+    padding: var(--spacing-10);
+  }
+
+  .image-link-blocks__title {
+    margin-block-end: calc(-1 * var(--spacing-4));
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .image-link-blocks {
+    --image-link-blocks-items-per-row: 4;
+    --image-link-blocks-grid: auto / auto-flow calc(var(--container-inner-width) / var(--image-link-blocks-items-per-row) - (var(--grid-gutter) / var(--image-link-blocks-items-per-row) * (var(--image-link-blocks-items-per-row) - 1)));
+  }
+
+  .image-link-blocks__item {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .image-link-blocks {
+    --image-link-blocks-items-per-row: 5;
+  }
+}
+
+@media screen and (pointer: fine) {
+  .image-link-blocks__item:hover .image-link-blocks__title--animate {
+    transform: translateX(0);
+  }
+}
+
+/* ============================================================
+   SCROLLING-TEXT — marquee de texto con gradiente, loop infinito
+   ============================================================ */
+
+.scrolling-text {
+  --scrolling-text-font-size: 5rem;
+  overflow: hidden;
+}
+
+.scrolling-text__wrapper {
+  display: grid;
+}
+
+.scrolling-text__text {
+  line-height: normal;
+  font-size: var(--scrolling-text-font-size);
+  padding-inline-start: min(1em, 2rem);
+  padding-inline-end: min(1em, 2rem);
+}
+
+@supports (overflow: clip) {
+  .scrolling-text {
+    overflow: clip visible;
+  }
+
+  .scrolling-text__text {
+    line-height: 1;
+  }
+}
+
+@media screen and (min-width: 700px) {
+  .scrolling-text {
+    --scrolling-text-font-size: 8.75rem;
+  }
+
+  .scrolling-text__text {
+    padding-inline-start: min(1.5em, 4rem);
+    padding-inline-end: min(1.5em, 4rem);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .scrolling-text__wrapper {
+    grid: auto / auto-flow max-content;
+  }
+
+  .scrolling-text--auto .scrolling-text__text {
+    animation: translateFull var(--marquee-animation-duration, 0s) linear infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scrolling-text {
+    --scrolling-text-font-size: var(--text-h0);
+  }
+
+  .scrolling-text__wrapper {
+    text-align: center;
+    justify-content: center;
+  }
+}
+
+@keyframes translateFull {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-100% * var(--transform-logical-flip)));
+  }
+}
+
+/* ── text-gradient — usado por scrolling-text (y disponible para otras secciones) ── */
+.text-gradient {
+  background-image: var(--gradient);
+  color: #0000;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* ============================================================
+   COLLECTION-LIST — 3 tarjetas grandes con scroll
+   ============================================================ */
+
+.collection-list {
+  --collection-list-grid: auto / auto-flow 73vw;
+  grid: var(--collection-list-grid, none);
+  align-items: start;
+  gap: var(--grid-gutter);
+  display: grid;
+}
+
+.collection-card {
+  --transition-direction: 1;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  overflow: hidden;
+}
+
+.collection-card--reverse-transition {
+  --transition-direction: -1;
+}
+
+.collection-card__content-wrapper svg {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .2s, visibility .2s, transform .2s;
+  display: inline-block;
+}
+
+.collection-card__content + svg {
+  transform: translateY(calc(var(--transition-direction) * 48px));
+}
+
+.collection-card__content {
+  transition: transform .2s;
+}
+
+.collection-card__content:first-child {
+  margin-block-end: -3rem;
+}
+
+@media screen and (min-width: 700px) {
+  .collection-list {
+    --collection-list-grid: auto / auto-flow 36vw;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .collection-list {
+    --collection-list-grid: auto / auto-flow calc(var(--container-inner-width) / 3 - (var(--grid-gutter) / 3 * 2));
+  }
+
+  .collection-card {
+    scroll-snap-align: none;
+  }
+}
+
+@media screen and (pointer: fine) {
+  .collection-card:hover .collection-card__content {
+    transform: translateY(calc(var(--transition-direction) * -8px));
+  }
+
+  .collection-card:hover .collection-card__content-wrapper svg {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-8px);
+  }
+
+  .collection-card:hover .collection-card__content + svg {
+    transform: translateY(56px);
+  }
+}
+
+/* ============================================================
+   FEATURED-COLLECTION — grid de productos "Más Vendidos"
+   ============================================================ */
+
+/* ── badge (sold-out / on-sale) ── */
+.badge {
+  --badge-background: var(--text-color) / .05;
+  --badge-color: var(--text-color);
+  align-items: center;
+  gap: var(--spacing-1-5);
+  padding: 3px var(--spacing-2);
+  background: rgb(var(--badge-background));
+  width: max-content;
+  color: rgb(var(--badge-color));
+  border-radius: var(--rounded-button);
+  font-size: 9px;
+  font-weight: bold;
+  display: flex;
+}
+
+.badge--sold-out {
+  --badge-background: var(--sold-out-badge-background);
+  --badge-color: var(--sold-out-badge-text);
+}
+
+.badge--on-sale {
+  --badge-background: var(--on-sale-badge-background);
+  --badge-color: var(--on-sale-badge-text);
+}
+
+@media screen and (min-width: 700px) {
+  .badge:not(.badge--lg) {
+    font-size: var(--text-xs);
+    padding-block-start: var(--spacing-0-5);
+    padding-block-end: var(--spacing-0-5);
+  }
+}
+
+/* ── product-list (grid contenedor de las cards) ── */
+.product-list {
+  grid: var(--product-list-grid);
+  gap: var(--product-list-gap);
+  scroll-padding-top: calc(var(--sticky-area-height) + 20px);
+  display: grid;
+  position: relative;
+}
+
+/* ── rating (estrellas) — solo se renderiza si el producto tiene prod.rating ── */
+.rating {
+  align-items: center;
+  gap: var(--spacing-1-5);
+  display: flex;
+}
+
+.rating__stars {
+  display: contents;
+}
+
+.rating__star {
+  color: rgb(var(--star-color));
+  position: relative;
+  top: -1px;
+}
+
+.rating__star--empty {
+  filter: grayscale();
+}
+
+@media screen and (min-width: 700px) {
+  .rating__star {
+    width: 15px;
+    height: 15px;
+  }
+}
+
+.rating-with-text {
+  gap: var(--spacing-2);
+  grid-template-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  align-items: baseline;
+  display: grid;
+}
+
+/* ── product-card ── */
+.product-card {
+  --product-card-badge-spacing: var(--spacing-2);
+  --product-card-info-padding: var(--spacing-4);
+  border-radius: var(--rounded-sm);
+  isolation: isolate;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+  align-items: start;
+  display: grid;
+  position: relative;
+}
+
+.product-card__figure {
+  display: block;
+  position: relative;
+}
+
+.product-card__badge-list {
+  gap: var(--spacing-2);
+  pointer-events: none;
+  z-index: 5;
+  display: grid;
+  position: absolute;
+  top: var(--product-card-badge-spacing);
+  left: var(--product-card-badge-spacing);
+}
+
+.product-card__image {
+  object-fit: contain;
+  object-position: center;
+  transition: opacity .2s ease-in-out;
+  border-top-left-radius: var(--rounded-sm);
+  border-top-right-radius: var(--rounded-sm);
+}
+
+.product-card__image--secondary {
+  display: none;
+}
+
+.product-card__title {
+  line-height: 1.5;
+}
+
+.product-card__info {
+  gap: var(--spacing-1);
+  padding: var(--product-card-info-padding);
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: start;
+  display: grid;
+}
+
+@media screen and (min-width: 700px) {
+  .product-card {
+    --product-card-badge-spacing: var(--spacing-4);
+    --product-card-info-padding: var(--spacing-5);
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .product-card__info {
+    --product-card-info-padding: var(--spacing-6) var(--spacing-8) var(--spacing-8) var(--spacing-8);
+  }
+}
+
+/* Hover de imagen secundaria — solo aplica cuando hay 2da foto real */
+@media screen and (pointer: fine) {
+  .product-card--show-secondary-media .product-card__figure:hover .product-card__image--primary {
+    opacity: 0;
+  }
+
+  .product-card--show-secondary-media .product-card__figure:hover .product-card__image--secondary {
+    opacity: 1;
+  }
+
+  .product-card--show-secondary-media .product-card__image--secondary {
+    opacity: 0;
+    display: block;
+  }
+}
+
+/* ── price-list / precios ── */
+.price-list {
+  align-items: baseline;
+  gap: var(--spacing-0-5) var(--spacing-2);
+  flex-wrap: wrap;
+  display: flex;
+}
+
+.text-subdued {
+  color: rgb(var(--text-color) / .7);
+}
+
+.text-on-sale {
+  color: rgb(var(--on-sale-text));
+}
+
+/* ── text-with-icon ("View all" del section-header) ── */
+.text-with-icon {
+  align-items: center;
+  gap: var(--spacing-2);
+  display: inline-flex;
+}
+
+.text-with-icon > svg {
+  flex-shrink: 0;
+}
+
+.reversed-link {
+  background: linear-gradient(to right, currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size .3s ease-in-out;
+}
+
+@media screen and (pointer: fine) {
+  .group:hover .reversed-link {
+    background-size: 100% 1px;
+  }
+}
+
+/* ============================================================
+   IMPACT-TEXT — texto gigante con gradiente + bloque de
+   descripción (image-with-text-overlay no necesita CSS nuevo,
+   reutiliza .content-over-media y .full-bleed ya existentes)
+   ============================================================ */
+
+.impact-text {
+  --impact-text-spacing: var(--spacing-10);
+  gap: var(--impact-text-spacing);
+  align-items: start;
+  display: grid;
+}
+
+.impact-text--scroll {
+  grid: auto / auto-flow var(--impact-text-auto-columns);
+}
+
+.impact-text--center {
+  text-align: center;
+  justify-content: safe center;
+}
+
+.impact-text--end {
+  text-align: end;
+  justify-content: end;
+}
+
+.impact-text__text {
+  font-size: var(--impact-text-font-size);
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.impact-text__text:not(:only-child) {
+  margin-bottom: .2em;
+}
+
+.impact-text__content {
+  max-width: 750px;
+}
+
+.impact-text--center .impact-text__content {
+  margin-inline-start: auto;
+  margin-inline-end: auto;
+}
+
+.impact-text--end .impact-text__content {
+  margin-inline-start: auto;
+}
+
+@media screen and (min-width: 700px) {
+  .impact-text {
+    --impact-text-spacing: var(--spacing-8);
+    grid: auto / auto-flow var(--impact-text-auto-columns);
+  }
+
+  .impact-text--center {
+    justify-content: space-evenly;
+  }
+}
+
+@media screen and (min-width: 1150px) {
+  .impact-text {
+    --impact-text-spacing: var(--spacing-12);
+  }
+}
+
+/* ============================================================
+   MEDIA-GRID — grid asimétrico de 4 tiles (foto/video)
+   ============================================================ */
+
+.media-grid {
+  --media-grid-row-height: 150px;
+  align-items: start;
+  gap: calc(var(--grid-gutter) / 2);
+  grid: auto-flow dense var(--media-grid-row-height) / repeat(2, minmax(0, 1fr));
+  display: grid;
+}
+
+.media-grid__item {
+  grid-area: span min(2, var(--media-grid-row-span)) / span min(2, var(--media-grid-column-span));
+  height: 100%;
+}
+
+.media-grid__item > * {
+  height: 100%;
+}
+
+@media screen and (min-width: 700px) {
+  .media-grid {
+    --media-grid-row-height: 290px;
+    --calculated-row-height: max(150px, min(100vw / 5, var(--media-grid-row-height)));
+    grid: auto-flow dense var(--calculated-row-height) / repeat(4, minmax(0, 1fr));
+  }
+
+  .media-grid__item {
+    grid-area: span var(--media-grid-row-span) / span var(--media-grid-column-span);
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .media-grid {
+    gap: var(--grid-gutter);
+  }
+}
+
+/* ── video-media — wrapper de video con autoplay, sin play-button manual
+   (no se usa el sistema de play/pause de Impact, solo reproducción
+   automática en loop muteado para el tile de media-grid) ── */
+video-media {
+  --default-aspect-ratio: 16 / 9;
+  border-radius: inherit;
+  aspect-ratio: var(--aspect-ratio, var(--default-aspect-ratio));
+  position: relative;
+}
+
+video-media[autoplay] {
+  pointer-events: none;
+}
+
+video-media > :is(video, img) {
+  border-radius: inherit;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: opacity .2s ease-in-out, visibility .2s ease-in-out;
+}
+
+video-media:not([loaded]) > video {
+  opacity: 0;
+  visibility: hidden;
+}
+
+video-media[loaded] > img {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* ============================================================
+   BEFORE-AFTER-IMAGE — comparador deslizable de 2 imágenes
+   ============================================================ */
+
+/* ── section-stack--center / __intro / __main (solo aplica en
+   desktop ≥1150px; en mobile el stack normal ya los apila) ── */
+@media screen and (min-width: 1150px) {
+  .section-stack--center {
+    justify-items: center;
+  }
+
+  .section-stack__intro {
+    width: var(--section-stack-intro, 50%);
+  }
+
+  .section-stack__main {
+    width: var(--section-stack-main, 50%);
+  }
+}
+
+.before-after {
+  --before-after-label-spacing: var(--spacing-5);
+  -webkit-user-select: none;
+  user-select: none;
+  position: relative;
+}
+
+.before-after__label {
+  position: absolute;
+}
+
+.before-after__label--left {
+  left: var(--before-after-label-spacing);
+}
+
+.before-after__label--right {
+  right: var(--before-after-label-spacing);
+}
+
+.before-after__label--top {
+  top: var(--before-after-label-spacing);
+}
+
+.before-after__label--bottom {
+  bottom: var(--before-after-label-spacing);
+}
+
+.before-after__after-image {
+  clip-path: inset(0 0 0 calc(var(--before-after-initial-drag-position, 50%) + var(--clip-path-offset, 0px)));
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.before-after__cursor-wrapper {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.before-after__cursor {
+  touch-action: none;
+  width: max-content;
+  height: 100%;
+  top: 50%;
+  left: var(--before-after-initial-drag-position, 0px);
+  transform: translate(calc(-50% + var(--clip-path-offset, 0px)), -50%);
+  cursor: grab;
+  filter: drop-shadow(0 1px 2px #0000001a) drop-shadow(0 1px 1px #0000000f);
+  will-change: transform;
+  place-items: center;
+  display: grid;
+  position: relative;
+}
+
+.before-after__cursor:before {
+  content: "";
+  height: 100%;
+  width: var(--spacing-0-5);
+  background: rgb(var(--background));
+  z-index: -1;
+  position: absolute;
+}
+
+.before-after__cursor:active {
+  cursor: grabbing;
+}
+
+@media screen and (min-width: 700px) {
+  .before-after {
+    --before-after-label-spacing: var(--spacing-8);
+  }
+
+  .before-after__cursor svg {
+    width: var(--spacing-10);
+    height: var(--spacing-10);
+  }
+}
+
+/* ============================================================
+   PRESS — carrusel de testimonios (adaptado: clientes, no medios)
+   ============================================================ */
+
+.page-dots {
+  justify-content: center;
+  gap: var(--spacing-2-5) var(--spacing-4);
+  flex-wrap: wrap;
+  display: flex;
+}
+
+.page-dots > * {
+  width: var(--spacing-1-5);
+  height: var(--spacing-1-5);
+  border-radius: var(--rounded-full);
+  opacity: .3;
+  background: currentColor;
+  transition: opacity .2s ease-in-out;
+}
+
+.page-dots > *[aria-current="true"] {
+  opacity: 1;
+}
+
+.press {
+  --press-padding-inline: var(--spacing-5);
+  gap: var(--spacing-6);
+  max-width: var(--press-max-width);
+  margin-inline-start: auto;
+  margin-inline-end: auto;
+  padding-inline-start: var(--press-padding-inline);
+  padding-inline-end: var(--press-padding-inline);
+  display: grid;
+}
+
+.press__list {
+  align-items: flex-start;
+  display: grid;
+}
+
+.press__list > * {
+  grid-area: 1 / -1;
+}
+
+.press__list-item {
+  gap: var(--spacing-8);
+  justify-items: center;
+  display: grid;
+}
+
+.press__list-item:not(.is-selected) {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.press__list-item .blockquote:first-child {
+  margin-block-start: 0;
+}
+
+.press__controls {
+  gap: var(--spacing-5);
+  grid: auto / auto-flow;
+  justify-content: center;
+  align-items: center;
+  display: grid;
+}
+
+@media screen and (min-width: 700px) {
+  .press {
+    --press-padding-inline: var(--spacing-8);
+    gap: var(--spacing-10);
+  }
+
+  .press__list-item {
+    gap: var(--spacing-10);
+  }
+}
+
+/* ── tap-area / ring — usados por los dots y botones de press ── */
+.tap-area {
+  position: relative;
+}
+
+.tap-area:before {
+  content: "";
+  inset: calc(-1 * var(--spacing-2-5));
+  position: absolute;
+}
+
+.ring {
+  box-shadow: 0 0 0 1px rgb(var(--text-color) / .12);
+}

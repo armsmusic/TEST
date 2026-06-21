@@ -1,0 +1,49 @@
+{# ================================================================
+   product-img-hover.njk
+   Variante de product-img.njk EXCLUSIVA para featured-collection
+   (Impact product-card con hover de imagen secundaria).
+
+   No reemplaza ni modifica product-img.njk — ese partial sigue
+   intacto para categoría, relacionados, etc. Esta versión:
+   - Si prod.imagenes tiene 2+ fotos: pinta primaria + secundaria
+     con las clases .product-card__image--primary/--secondary que
+     activan el hover-swap definido en arms.css.
+   - Si prod.imagenes tiene 1 foto: solo la primaria, sin hover.
+   - Si prod.imagenes está vacío: fallback al SVG generativo
+     (mismo patrón que product-img.njk, vía svgs/{{ prod.svgTipo }}.njk).
+================================================================= #}
+
+{% set svgPartial = "svgs/" + prod.svgTipo + ".njk" %}
+
+{% if prod.imagenes and prod.imagenes.length > 0 %}
+
+  <img
+    src="/assets/img/productos/{{ prod.imagenes[0] }}"
+    alt="{{ prod.nombre }}"
+    width="800" height="800"
+    loading="lazy"
+    onerror="this.replaceWith(document.getElementById('svg-tmpl-{{ prod.id }}').content.cloneNode(true))"
+    class="product-card__image product-card__image--primary"
+  >
+
+  {% if prod.imagenes.length > 1 %}
+  <img
+    src="/assets/img/productos/{{ prod.imagenes[1] }}"
+    alt="{{ prod.nombre }}"
+    width="800" height="800"
+    loading="lazy"
+    fetchpriority="low"
+    class="product-card__image product-card__image--secondary"
+    aria-hidden="true"
+  >
+  {% endif %}
+
+  <template id="svg-tmpl-{{ prod.id }}">
+    {% include svgPartial %}
+  </template>
+
+{% else %}
+
+  {% include svgPartial %}
+
+{% endif %}

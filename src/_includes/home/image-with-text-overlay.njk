@@ -1,0 +1,29 @@
+{# ================================================================
+   IMAGE-WITH-TEXT-OVERLAY — banner ancho de imagen
+   Impact style. En el demo original esta sección NO lleva texto
+   (image-banner vacío de contenido) — es una imagen ancha de
+   producto/lifestyle entre impact-text y media-grid.
+   Requiere: arms.css (.content-over-media, .full-bleed — ya existentes)
+
+   Imagen: src/assets/img/home/banner-zsx.jpg (pendiente de subir,
+   mismo flujo que las imágenes del hero).
+================================================================= #}
+
+<div class="section section-full text-custom" style="--text-color: 255 255 255;">
+  <div
+    class="content-over-media content-over-media--auto full-bleed text-custom"
+    style="--text-color: 255 255 255; --section-outer-spacing-block: 0; --content-over-media-overlay: 0 0 0 / 0.0;"
+  >
+    <picture>
+      <source media="(max-width: 699px)" srcset="/assets/img/home/banner-zsx-mobile.webp">
+      <img
+        src="/assets/img/home/banner-zsx.jpg"
+        alt="KZ Terminator ZSX en uso"
+        width="1680" height="520"
+        loading="lazy"
+        fetchpriority="low"
+        sizes="100vw"
+      >
+    </picture>
+  </div>
+</div>
