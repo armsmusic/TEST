@@ -1,0 +1,61 @@
+{# ===============================================================
+   ARMS Music — seo.njk
+   Meta tags básicas + Open Graph + Twitter Card.
+
+   QUÉ PUEDES CAMBIAR AQUÍ:
+   - Si quieres ajustar el formato del <title> o el fallback de
+     descripción para TODO el sitio, edita aquí.
+   - Si quieres cambiar cómo se ve un link compartido en WhatsApp/
+     Facebook/Twitter (imagen, título, descripción), edita el
+     bloque OPEN GRAPH / TWITTER CARD aquí.
+   - El día del lanzamiento: cambiar el valor por defecto de
+     "robots" de 'noindex, nofollow' a 'index, follow' (ver abajo).
+
+   QUÉ NO se controla aquí (va en el frontmatter de cada página):
+   - seoTitulo, seoDescripcion, ogType, ogImagen, robots → estas
+     variables se definen por página (ej. en producto-page.njk,
+     index.njk, etc.) y este archivo solo las imprime con un
+     valor de respaldo si la página no las define.
+================================================================ #}
+
+<!-- META BASE -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta name="MobileOptimized" content="320" />
+<meta name="author" content="{{ site.nombre }}" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+
+<!-- TÍTULO SEO -->
+<!-- seoTitulo: definido en el frontmatter de cada página para control total -->
+<!-- Fallback: "Titulo de página | ARMS Music"                               -->
+<title>{{ seoTitulo if seoTitulo else (titulo + " | " + site.nombre) }}</title>
+
+<!-- META DESCRIPTION -->
+<!-- seoDescripcion: definido por página. Sin esto Google inventa la descripción -->
+<meta name="description" content="{{ seoDescripcion if seoDescripcion else site.descripcion }}" />
+
+<!-- ROBOTS -->
+<!-- DESARROLLO: noindex activo. Cambiar a 'index, follow' el día del launch -->
+<meta name="robots" content="{{ robots if robots else 'noindex, nofollow' }}" />
+
+<!-- CANONICAL -->
+<!-- Evita contenido duplicado si la página es accesible por múltiples URLs -->
+<link rel="canonical" href="{{ site.url }}{{ page.url }}" />
+
+<!-- OPEN GRAPH — controla cómo se ve el link en WhatsApp, Facebook, etc. -->
+<meta property="og:type" content="{{ ogType if ogType else 'website' }}" />
+<meta property="og:title" content="{{ seoTitulo if seoTitulo else titulo }}" />
+<meta property="og:description" content="{{ seoDescripcion if seoDescripcion else site.descripcion }}" />
+<meta property="og:url" content="{{ site.url }}{{ page.url }}" />
+<meta property="og:image" content="{{ site.url }}{{ ogImagen if ogImagen else site.imagenDefault }}" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:site_name" content="{{ site.nombre }}" />
+<meta property="og:locale" content="es_GT" />
+
+<!-- TWITTER CARD -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="{{ seoTitulo if seoTitulo else titulo }}" />
+<meta name="twitter:description" content="{{ seoDescripcion if seoDescripcion else site.descripcion }}" />
+<meta name="twitter:image" content="{{ site.url }}{{ ogImagen if ogImagen else site.imagenDefault }}" />

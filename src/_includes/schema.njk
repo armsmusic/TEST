@@ -1,0 +1,20 @@
+{# ===============================================================
+   ARMS Music — schema.njk
+   Datos estructurados (Schema.org JSON-LD) para resultados
+   enriquecidos en Google (precio, disponibilidad, breadcrumbs, etc.)
+
+   QUÉ PUEDES CAMBIAR AQUÍ:
+   - Si quieres agregar un schema que aplique a TODO el sitio
+     (ej. Organization, WebSite con sitelinks search box), agrégalo
+     aquí como un bloque <script> adicional, fuera del {% if %}.
+
+   QUÉ NO se controla aquí (va en el frontmatter de cada página):
+   - schemaJson: cada página (producto, categoría, artículo, etc.)
+     define su propio JSON-LD en el frontmatter según su tipo
+     (Product, BreadcrumbList, FAQPage...). Este archivo solo lo
+     imprime si existe — no inventa ni valida su contenido.
+================================================================ #}
+
+{% if schemaJson %}
+<script type="application/ld+json">{{ schemaJson | safe }}</script>
+{% endif %}

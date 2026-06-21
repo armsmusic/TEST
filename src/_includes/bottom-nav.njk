@@ -1,0 +1,33 @@
+{# ===============================================================
+   ARMS Music — bottom-nav.njk
+   Barra de navegación inferior móvil. Extraído de base.njk
+   sin modificar contenido/comportamiento — solo modularización.
+================================================================ #}
+
+<nav id="bottom-nav" aria-label="Navegación inferior" style="display:none; position:fixed; bottom:0; left:0; right:0; z-index:1020; background:rgba(18,18,18,0.97); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-top:1px solid rgba(255,255,255,0.08); padding:0.5rem 0; padding-bottom:calc(0.5rem + env(safe-area-inset-bottom)); will-change:transform;">
+  <div style="display:flex; align-items:center; justify-content:space-around;">
+    <a href="/" style="display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;color:rgba(255,255,255,0.5);font-size:10px;font-weight:500;padding:0.25rem 1rem;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Inicio
+    </a>
+    <button id="btn-cart-bottom" onclick="abrirCarrito()" aria-label="Abrir carrito" style="position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;background:var(--bs-primary);border:none;border-radius:1rem;padding:0.5rem 1.25rem;color:#fff;font-size:10px;font-weight:700;cursor:pointer;margin-top:-1rem;box-shadow:0 4px 20px rgba(102,0,255,0.5);transition:transform .2s ease, box-shadow .2s ease;">
+      <span id="cart-pulse" style="display:none;position:absolute;inset:0;border-radius:1rem;background:var(--bs-primary);animation:cart-pulse 2s ease-out infinite;z-index:-1;"></span>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      Carrito
+      <span id="cart-count-bottom" style="display:none;position:absolute;top:-6px;right:-6px;background:#ef4444;color:#fff;border-radius:50%;width:18px;height:18px;font-size:10px;font-weight:700;align-items:center;justify-content:center;">0</span>
+    </button>
+    <div style="position:relative;">
+      <button id="btn-categorias-bottom" onclick="toggleCategoriasMenu()" aria-label="Categorías" style="display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;color:rgba(255,255,255,0.5);font-size:10px;font-weight:500;padding:0.25rem 1rem;cursor:pointer;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Categorías
+      </button>
+      <div id="categorias-menu" style="display:none;position:absolute;bottom:calc(100% + 8px);right:0;background:rgba(22,22,30,0.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:0.5rem 0;min-width:190px;box-shadow:0 -8px 32px rgba(0,0,0,0.5);z-index:2000;">
+        <a href="/in-ears/"            onclick="cerrarCategoriasMenu()" style="display:flex;align-items:center;gap:10px;padding:0.65rem 1.1rem;color:rgba(255,255,255,0.85);font-size:13px;font-weight:500;text-decoration:none;width:100%;"><span style="font-size:16px;">🎧</span> In-Ears</a>
+        <a href="/audio/sistemas/"     onclick="cerrarCategoriasMenu()" style="display:flex;align-items:center;gap:10px;padding:0.65rem 1.1rem;color:rgba(255,255,255,0.85);font-size:13px;font-weight:500;text-decoration:none;width:100%;"><span style="font-size:16px;">🎚️</span> Monitoreo</a>
+        <a href="/audio/"              onclick="cerrarCategoriasMenu()" style="display:flex;align-items:center;gap:10px;padding:0.65rem 1.1rem;color:rgba(255,255,255,0.85);font-size:13px;font-weight:500;text-decoration:none;width:100%;"><span style="font-size:16px;">🎙️</span> Audio y Accesorios</a>
+        <a href="/in-ears/accesorios/" onclick="cerrarCategoriasMenu()" style="display:flex;align-items:center;gap:10px;padding:0.65rem 1.1rem;color:rgba(255,255,255,0.85);font-size:13px;font-weight:500;text-decoration:none;width:100%;"><span style="font-size:16px;">⚡</span> Accesorios In-Ears</a>
+      </div>
+    </div>
+  </div>
+</nav>
+<div id="bottom-nav-spacer" style="display:none; height:70px;"></div>

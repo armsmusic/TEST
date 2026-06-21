@@ -1,0 +1,19 @@
+{# ===============================================================
+   ARMS Music — search-panel.njk
+   Panel de búsqueda con autocomplete. Extraído de base.njk
+   sin modificar contenido/comportamiento — solo modularización.
+================================================================ #}
+
+<div id="search-panel" aria-label="Buscar productos" style="display:none; position:fixed; top:0; left:0; right:0; z-index:1028; padding-top:80px;">
+  <div style="background:rgba(14,13,20,0.97); backdrop-filter:blur(28px) saturate(180%); -webkit-backdrop-filter:blur(28px) saturate(180%); border-bottom:1px solid rgba(139,120,255,0.18); box-shadow:0 8px 32px rgba(0,0,0,0.55); padding:0.75rem 0 0.85rem;">
+    <div class="container">
+      <div style="position:relative;">
+        <svg style="position:absolute;left:0.75rem;top:50%;transform:translateY(-50%);color:rgba(255,255,255,0.35);pointer-events:none;" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="search-input-panel" type="search" placeholder="Buscar producto..." autocomplete="off" autocorrect="off" spellcheck="false" aria-label="Buscar productos" style="width:100%; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.12); border-radius:2rem; padding:0.5rem 2.2rem 0.5rem 2.3rem; color:#fff; font-family:'Lexend',sans-serif; font-size:0.9rem; outline:none; -webkit-appearance:none; transition:border-color .2s, box-shadow .2s;" />
+        <button id="search-clear-panel" aria-label="Limpiar" style="position:absolute;right:0.55rem;top:50%;transform:translateY(-50%);display:none;background:rgba(255,255,255,0.14);border:none;border-radius:50%;width:18px;height:18px;align-items:center;justify-content:center;cursor:pointer;color:rgba(255,255,255,0.7);font-size:9px;padding:0;">✕</button>
+      </div>
+      <!-- Autocomplete dropdown -->
+      <div id="search-dropdown" style="display:none; margin-top:0.5rem; max-height:60vh; overflow-y:auto; border-radius:0.75rem; border:1px solid rgba(139,120,255,0.18); background:rgba(22,21,30,0.98);"></div>
+    </div>
+  </div>
+</div>
