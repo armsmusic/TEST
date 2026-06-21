@@ -1207,10 +1207,21 @@ custom-cursor {
 }
 
 height-observer[variable="header"] {
-  position: sticky;
+  position: relative;
   top: 0;
   z-index: 10;
   display: block;
+}
+
+/* ── Sticky real de Impact: el header NO es sticky mientras está
+   transparente (se desplaza con el contenido como cualquier
+   elemento normal) — solo se "engancha" como sticky después de
+   cruzar el umbral de scroll (STICKY_THRESHOLD=500px en
+   arms-header.js), momento en que gana la clase .is-filled.
+   Antes de este fix, el header era sticky desde el primer pixel
+   de scroll, distinto al comportamiento real de Impact. ── */
+height-observer[variable="header"]:has(.header.is-filled) {
+  position: sticky;
 }
 
 .header {
