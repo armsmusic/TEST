@@ -146,6 +146,7 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/assets");
   eleventyConfig.addPassthroughCopy({ "src/favicon.svg":     "favicon.svg" });
   eleventyConfig.addPassthroughCopy({ "src/logo-navbar.svg": "logo-navbar.svg" });
+  eleventyConfig.addPassthroughCopy({ "src/logo-navbar-light.svg": "logo-navbar-light.svg" });
   eleventyConfig.addPassthroughCopy({ "src/logo-footer.svg": "logo-footer.svg" });
 
   // ── Filtros ───────────────────────────────────────────────────
