@@ -148,8 +148,11 @@
   function abrirSearchPanel() {
     if (!searchPanel) return;
     searchPanelOpen = true;
-    const navbar = document.querySelector('.navbar-floating');
-    const navH   = navbar ? navbar.offsetHeight : 56;
+    // FIX: el header ya migró a Impact (.header), .navbar-floating
+    // ya no existe en el DOM — antes esto caía siempre al fallback
+    // de 56px, desalineando el panel respecto al header real.
+    const header = document.querySelector('.header');
+    const navH   = header ? header.offsetHeight : 58;
     searchPanel.style.paddingTop = (6 + navH) + 'px';
     searchPanel.style.display = 'block';
     setTimeout(() => searchInputPanel && searchInputPanel.focus(), 80);

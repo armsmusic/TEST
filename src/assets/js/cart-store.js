@@ -359,23 +359,25 @@ function verTodo(sectionId) {
 }
 
 function verMenos(sectionId) {
-  document.querySelectorAll(`.extra-card[data-section="${sectionId}"]`).forEach(el => {
-    el.style.display = 'none';
-  });
-  const wrap      = document.getElementById('ver-todo-wrap-' + sectionId);
-  const menosWrap = document.getElementById('ver-menos-wrap-' + sectionId);
-  if (wrap)      wrap.style.display      = '';
-  if (menosWrap) menosWrap.style.display = 'none';
-  const section = document.getElementById(sectionId);
-  if (section) {
-    const navbar = document.querySelector('.navbar-floating');
-    const bar    = document.getElementById('cat-tabs-bar');
-    const navH   = navbar ? navbar.offsetHeight : 56;
-    const barH   = bar    ? bar.offsetHeight    : 48;
-    const top    = section.getBoundingClientRect().top + window.scrollY - navH - barH - 8;
-    window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+    document.querySelectorAll(`.extra-card[data-section="${sectionId}"]`).forEach(el => {
+      el.style.display = 'none';
+    });
+    const wrap      = document.getElementById('ver-todo-wrap-' + sectionId);
+    const menosWrap = document.getElementById('ver-menos-wrap-' + sectionId);
+    if (wrap)      wrap.style.display      = '';
+    if (menosWrap) menosWrap.style.display = 'none';
+    const section = document.getElementById(sectionId);
+    if (section) {
+      // FIX: mismo bug que #cat-tabs-bar — .navbar-floating ya no
+      // existe (header migrado a Impact, clase real es .header).
+      const header = document.querySelector('.header');
+      const bar    = document.getElementById('cat-tabs-bar');
+      const navH   = header ? header.offsetHeight : 58;
+      const barH   = bar    ? bar.offsetHeight    : 48;
+      const top    = section.getBoundingClientRect().top + window.scrollY - navH - barH - 8;
+      window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+    }
   }
-}
 
 // ── INIT ──────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {

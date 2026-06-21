@@ -1,10 +1,30 @@
 {# ===============================================================
    ARMS Music — header.njk
-   Header con comportamiento transparente-sobre-hero / sólido al
-   hacer scroll, igual a Impact. Estructura real confirmada:
-   height-observer > store-header[sticky][allow-transparency]
-   Mantiene las funciones JS existentes (abrirMenuNav, abrirCarrito,
-   búsqueda) — solo cambia la estructura visual, no la lógica.
+   Reescrito desde cero basado en el HTML/CSS real de Impact
+   (index.html y theme.css del demo, verificados línea por línea).
+
+   Estructura real confirmada:
+   height-observer > store-header[sticky][allow-transparency] >
+   header__wrapper (grid: main-nav | logo | secondary-nav)
+     - header__main-nav (IZQUIERDA): hamburguesa (mobile) + link de
+       búsqueda (mobile) + nav desktop con dropdown simple de Audio
+     - header__logo (CENTRO): logo dual claro/oscuro
+     - header__secondary-nav > header__icon-list (DERECHA): búsqueda
+       (desktop) + carrito — sin selector de país ni cuenta de usuario
+       (no aplican a este negocio)
+
+   CONEXIONES preservadas a sistemas existentes (sin tocar su JS):
+   - Hamburguesa → abrirMenuNav() (site-ui.js)
+   - Carrito → abrirCarrito() (cart-drawer.js), #cart-count-desktop
+     sigue siendo el id que cart-store.js actualiza
+   - Búsqueda (mobile y desktop) → mismos ids #navbar-search-btn /
+     #navbar-search-btn-mobile que buscar.js ya escucha — PERO sin
+     el CSS legacy de main.css (ese padding de 0.35rem era la causa
+     real de que el header midiera 69.1875px en vez de los 58px
+     correctos: confirmado matemáticamente, 0.35rem × 2 = 11.2px de
+     diferencia). Aquí los botones usan SOLO .header__icon-button.
+   - Logo dual claro/oscuro → mismo mecanismo CSS ya existente
+     (.header__logo-image / .header__logo-image--transparent)
 ================================================================ #}
 
 <height-observer variable="header">
@@ -13,15 +33,22 @@
 
       <div class="header__main-nav">
         <div class="header__icon-list">
-          <!-- Hamburguesa mobile -->
-          <button class="tap-area header__icon-button" onclick="abrirMenuNav()" aria-label="Abrir menú">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          <button type="button" class="tap-area header__icon-button" onclick="abrirMenuNav()" aria-label="Abrir menú">
+            <svg role="presentation" stroke-width="2" focusable="false" width="22" height="22" class="icon icon-hamburger" viewBox="0 0 22 22">
+              <path d="M1 5h20M1 11h20M1 17h20" stroke="currentColor" stroke-linecap="round"></path>
+            </svg>
+          </button>
+
+          <button type="button" id="navbar-search-btn-mobile" class="tap-area header__icon-button sm:hidden" aria-label="Buscar productos">
+            <svg role="presentation" stroke-width="2" focusable="false" width="22" height="22" class="icon icon-search" viewBox="0 0 22 22">
+              <circle cx="11" cy="10" r="7" fill="none" stroke="currentColor"></circle>
+              <path d="m16 15 3 3" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
           </button>
         </div>
 
-        <!-- Nav desktop -->
-        <nav class="header__link-list">
-          <ul class="contents">
+        <nav class="header__link-list" role="navigation">
+          <ul class="contents" role="list">
             <li>
               <a href="/in-ears/" class="header__link">In-Ears</a>
             </li>
@@ -34,7 +61,9 @@
             <li class="header__link-list-item--dropdown">
               <button class="header__link header__link--dropdown" onclick="toggleAudioDropdown()" aria-label="Audio">
                 Audio
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                <svg role="presentation" focusable="false" width="10" height="7" class="icon icon-chevron-bottom" viewBox="0 0 10 7">
+                  <path d="m1 1 4 4 4-4" fill="none" stroke="currentColor" stroke-width="2"></path>
+                </svg>
               </button>
               <div id="audio-dropdown" class="header__dropdown">
                 <a href="/audio/sistemas/" class="header__dropdown-link">Sistemas</a>
@@ -47,7 +76,6 @@
         </nav>
       </div>
 
-      <!-- Logo centrado/izquierda según breakpoint -->
       <h1 class="header__logo">
         <a href="/" aria-label="ARMS Music">
           <span class="sr-only">ARMS Music</span>
@@ -56,18 +84,28 @@
         </a>
       </h1>
 
-      <!-- Búsqueda + Carrito -->
-      <div class="header__icon-list header__icon-list--secondary">
-        <div class="navbar-search-wrap" id="navbar-search-wrap-desktop">
-          <button id="navbar-search-btn" class="tap-area header__icon-button" aria-label="Buscar productos">
-            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="10" r="7"/><path d="m16 15 3 3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-        </div>
-
-        <button onclick="abrirCarrito()" class="tap-area header__icon-button header__cart-button" aria-label="Ver carrito">
-          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 7H3.577A2 2 0 0 0 1.64 9.497l2.051 8A2 2 0 0 0 5.63 19H16.37a2 2 0 0 0 1.937-1.503l2.052-8A2 2 0 0 0 18.422 7H11Zm0 0V1"/></svg>
-          <span id="cart-count-desktop" class="header__cart-count">0</span>
-        </button>
+      <div class="header__secondary-nav">
+        <ul class="header__icon-list" role="list">
+          <li>
+            <button type="button" id="navbar-search-btn" class="tap-area header__icon-button hidden sm:block" aria-label="Buscar productos">
+              <svg role="presentation" stroke-width="2" focusable="false" width="22" height="22" class="icon icon-search" viewBox="0 0 22 22">
+                <circle cx="11" cy="10" r="7" fill="none" stroke="currentColor"></circle>
+                <path d="m16 15 3 3" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </button>
+          </li>
+          <li>
+            <button type="button" onclick="abrirCarrito()" class="relative tap-area header__icon-button" aria-label="Ver carrito">
+              <span class="sr-only">Carrito</span>
+              <svg role="presentation" stroke-width="2" focusable="false" width="22" height="22" class="icon icon-cart" viewBox="0 0 22 22">
+                <path d="M11 7H3.577A2 2 0 0 0 1.64 9.497l2.051 8A2 2 0 0 0 5.63 19H16.37a2 2 0 0 0 1.937-1.503l2.052-8A2 2 0 0 0 18.422 7H11Zm0 0V1" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+              <div class="header__cart-count">
+                <span id="cart-count-desktop" class="count-bubble">0</span>
+              </div>
+            </button>
+          </li>
+        </ul>
       </div>
 
     </div>

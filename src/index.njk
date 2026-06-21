@@ -55,24 +55,6 @@ schemaJson: |
          PANEL DE BÚSQUEDA FIXED + FILTRO DE PRECIO
       ============================================================ */
 
-      /* — Lupas del navbar — */
-      #navbar-search-btn,
-      #navbar-search-btn-mobile {
-        background: none; border: none;
-        color: rgba(255,255,255,0.55);
-        cursor: pointer; padding: 0.35rem; border-radius: 0.5rem;
-        display: flex; align-items: center; justify-content: center;
-        transition: color .15s ease, background .15s ease;
-        flex-shrink: 0;
-      }
-      #navbar-search-btn:hover,
-      #navbar-search-btn-mobile:hover { color: #fff; background: rgba(255,255,255,0.08); }
-
-      /* El input desktop original en el navbar — oculto, solo queda la lupa */
-      .navbar-search-wrap { position: relative; display: flex; align-items: center; }
-      #search-input       { display: none; }
-      #search-clear       { display: none !important; }
-
       /* — Animación de entrada del panel — */
       @keyframes panelSlideDown {
         from { opacity: 0; transform: translateY(-10px); }

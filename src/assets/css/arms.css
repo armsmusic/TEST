@@ -1218,6 +1218,9 @@ height-observer[variable="header"] {
   --text-color: var(--header-text);
   --header-grid-template: "main-nav logo secondary-nav" / minmax(0, 1fr) auto minmax(0, 1fr);
   --header-padding-block: var(--spacing-4-5);
+  --header-part-gap: var(--spacing-3);
+  --header-icon-list-spacing: var(--spacing-4);
+  --header-link-list-spacing: var(--spacing-6);
   position: relative;
   z-index: 1;
   display: block;
@@ -1229,12 +1232,21 @@ height-observer[variable="header"] {
 @media screen and (min-width: 700px) {
   .header {
     --header-padding-block: var(--spacing-8-5);
+    --header-part-gap: var(--spacing-6);
+    --header-icon-list-spacing: var(--spacing-6);
   }
 }
 
 @media screen and (min-width: 1150px) {
   .header {
     --header-grid-template: "logo main-nav secondary-nav" / minmax(0, 1fr) fit-content(55%) minmax(0, 1fr);
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .header {
+    --header-part-gap: var(--spacing-10);
+    --header-link-list-spacing: var(--spacing-10);
   }
 }
 
@@ -1272,11 +1284,19 @@ height-observer[variable="header"] {
   display: flex;
   align-items: center;
   gap: var(--header-icon-list-spacing, var(--spacing-4));
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-.header__icon-list--secondary {
+.header__secondary-nav {
   grid-area: secondary-nav;
+  justify-content: flex-end;
   justify-self: end;
+  align-items: center;
+  gap: var(--spacing-3) var(--header-part-gap);
+  flex-wrap: wrap;
+  display: flex;
 }
 
 .header__icon-button {
@@ -1292,19 +1312,9 @@ height-observer[variable="header"] {
 }
 
 .header__cart-count {
-  display: none;
+  top: -.3125rem;
+  left: .875rem;
   position: absolute;
-  top: -6px;
-  right: -6px;
-  background: #ef4444;
-  color: #fff;
-  border-radius: 50%;
-  width: 16px;
-  height: 16px;
-  font-size: 10px;
-  font-weight: 700;
-  align-items: center;
-  justify-content: center;
 }
 
 .header__link-list {
@@ -1400,6 +1410,26 @@ height-observer[variable="header"] {
   position: absolute;
   top: 0;
   left: 0;
+}
+
+/* ── count-bubble — usado dentro de .header__cart-count para el
+   número de items del carrito (reemplaza el badge rojo custom
+   anterior, que no coincidía con el diseño real de Impact) ── */
+.count-bubble {
+  --size: var(--spacing-4);
+  width: var(--size);
+  height: var(--size);
+  min-width: min-content;
+  border-radius: var(--rounded-full);
+  background: rgb(var(--button-background-primary));
+  color: rgb(var(--button-text-primary));
+  place-items: center;
+  padding-inline-start: var(--spacing-1);
+  padding-inline-end: var(--spacing-1);
+  font-size: 9px;
+  font-weight: bold;
+  line-height: 1;
+  display: grid;
 }
 
 .subheading {
@@ -1607,6 +1637,15 @@ x-slideshow[allow-transparent-header] {
 /* ── Flex/grid stacks ── */
 .v-stack {
   display: grid;
+}
+
+/* ── reset de list-style solo cuando v-stack se usa en un <ul>
+   (footer.njk: <ul class="v-stack gap-3" role="list">) — no afecta
+   los <div class="v-stack"> usados en el resto del proyecto ── */
+ul.v-stack {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .h-stack {
@@ -3242,6 +3281,9 @@ summary::-webkit-details-marker {
 .social-media {
   gap: var(--spacing-3) var(--spacing-6);
   flex-wrap: wrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: flex;
 }
 
@@ -3294,5 +3336,149 @@ summary::-webkit-details-marker {
 
   .footer__block-list {
     flex-wrap: nowrap;
+  }
+}
+
+/* ============================================================
+   UTILIDADES DE VISIBILIDAD/DISPLAY RESPONSIVE — Impact
+   CRÍTICO: estas faltaban por completo en arms.css. Sin ellas,
+   cualquier clase "hidden", "sm:hidden", "md:block", etc. usada
+   en cualquier .njk del proyecto no tiene ningún efecto — el
+   elemento queda SIEMPRE visible sin importar el viewport.
+   Esto causó el bug real de "2 lupas visibles a la vez" en el
+   header (la de mobile y la de desktop, ambas mostrándose juntas
+   porque sm:hidden / hidden sm:block nunca se aplicaban).
+   ============================================================ */
+
+.hidden {
+  display: none;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.block {
+  display: block;
+}
+
+.contents {
+  display: contents;
+}
+
+@media screen and (min-width: 700px) {
+  .sm\:hidden {
+    display: none;
+  }
+
+  .sm\:block {
+    display: block;
+  }
+
+  .sm\:flex {
+    display: flex;
+  }
+
+  .sm\:grid {
+    display: grid;
+  }
+
+  .sm\:table-cell {
+    display: table-cell;
+  }
+
+  .sm\:contents {
+    display: contents;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .md\:hidden {
+    display: none;
+  }
+
+  .md\:block {
+    display: block;
+  }
+
+  .md\:flex {
+    display: flex;
+  }
+
+  .md\:grid {
+    display: grid;
+  }
+
+  .md\:table-cell {
+    display: table-cell;
+  }
+
+  .md\:contents {
+    display: contents;
+  }
+}
+
+@media screen and (min-width: 1150px) {
+  .lg\:hidden {
+    display: none;
+  }
+
+  .lg\:block {
+    display: block;
+  }
+
+  .lg\:flex {
+    display: flex;
+  }
+
+  .lg\:grid {
+    display: grid;
+  }
+
+  .lg\:table-cell {
+    display: table-cell;
+  }
+
+  .lg\:contents {
+    display: contents;
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .xl\:hidden {
+    display: none;
+  }
+
+  .xl\:block {
+    display: block;
+  }
+
+  .xl\:flex {
+    display: flex;
+  }
+
+  .xl\:grid {
+    display: grid;
+  }
+}
+
+/* ── max-width inverso (oculta DESDE ese breakpoint hacia ABAJO,
+   lo opuesto a sm:/md:/lg: que ocultan desde ahí hacia ARRIBA).
+   Ya usado antes en timeline.njk (md-max:hidden) ── */
+@media screen and (max-width: 699px) {
+  .sm-max\:hidden {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 999px) {
+  .md-max\:hidden {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 1149px) {
+  .lg-max\:hidden {
+    display: none;
   }
 }
