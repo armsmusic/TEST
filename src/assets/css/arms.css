@@ -2614,7 +2614,7 @@ video-media[loaded] > img {
 }
 
 .arms-popover[open] {
-  display: grid;
+  display: block;
 }
 
 .arms-popover__overlay {
@@ -2648,11 +2648,11 @@ video-media[loaded] > img {
   bottom: var(--spacing-4);
   left: var(--spacing-2);
   right: var(--spacing-2);
-  flex-direction: column;
-  display: flex;
+  display: block;
 }
 
 .arms-popover__body {
+  width: 100%;
   overscroll-behavior-y: contain;
   padding: var(--spacing-6);
   text-align: start;
@@ -2703,10 +2703,9 @@ video-media[loaded] > img {
   }
 
   .arms-popover__content {
-    width: max-content;
+    width: 380px;
     max-width: 380px;
     max-height: 350px;
-    height: 100%;
     border-radius: var(--rounded-input);
     box-shadow: var(--shadow-md);
     border: 1px solid rgb(var(--border-color));
