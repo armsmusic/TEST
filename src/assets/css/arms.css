@@ -1623,6 +1623,18 @@ x-slideshow[allow-transparent-header] {
   --calculated-section-spacing-inline: min(48px, var(--section-spacing-inline, var(--context-section-spacing-inline)));
 }
 
+/* ── section--no-top-gap — fusiona visualmente el espacio entre dos
+   secciones consecutivas que comparten el mismo color de fondo
+   (equivalente adaptado de --background-differs-from-previous en
+   Impact real, que ahí se calcula automático vía hash de color
+   generado por el editor de temas de Shopify). Aquí se marca a
+   mano, sección por sección, cuando se sabe que el fondo coincide
+   con el de la sección inmediatamente anterior — más simple y
+   predecible que intentar detección automática en CSS puro. ── */
+.section--no-top-gap {
+  padding-block-start: 0;
+}
+
 .section--narrow {
   --container-max-width: var(--container-narrow-max-width);
 }
