@@ -1074,6 +1074,22 @@ custom-cursor {
   place-self: center end;
 }
 
+.place-self-end-start {
+  place-self: end start;
+}
+
+.place-self-end-end {
+  place-self: end end;
+}
+
+.place-self-start-start {
+  place-self: start start;
+}
+
+.place-self-start-end {
+  place-self: start end;
+}
+
 .arms-text-start {
   text-align: start;
 }
