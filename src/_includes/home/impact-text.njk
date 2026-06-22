@@ -5,7 +5,19 @@
 ================================================================= #}
 
 <div class="section">
-  <div class="impact-text impact-text--center">
+  <style>
+  #impact-text-zsx {
+    --impact-text-font-size: min(28vw, 110px);
+  }
+
+  @media screen and (min-width: 700px) {
+    #impact-text-zsx {
+      --impact-text-font-size: min(18vw, 220px);
+    }
+  }
+</style>
+
+  <div class="impact-text impact-text--center" id="impact-text-zsx">
     <div class="snap-center">
       <h2 class="impact-text__text heading break-all">
         <impact-text reveal-js>
