@@ -93,6 +93,21 @@ class BaseCarousel extends HTMLElement {
   }
 }
 
+// ── Subclases vacías de BaseCarousel, una por tag ───────────────
+// BUG REAL RESUELTO: customElements.define() no permite que una
+// misma clase (constructor) se registre bajo dos tags distintos —
+// el navegador lanza "NotSupportedError: this constructor has
+// already been used with this registry" y DETIENE la ejecución de
+// todo el script a partir de ese punto (no es un error silencioso).
+// Esto rompía initRevealJs() más abajo en este mismo archivo, lo
+// que hacía que collection-card (y cualquier [reveal-js]) se
+// quedara en opacity:0 para siempre — síntoma real: "las tarjetas
+// no se ven pero la imagen sí existe si la inspecciono". Cada tag
+// necesita su propia clase, aunque sea funcionalmente idéntica. ──
+class ImageLinkBlocksEl extends BaseCarousel {}
+class CollectionListEl extends BaseCarousel {}
+class ScrollCarouselEl extends BaseCarousel {}
+
 // ── PrevButton / NextButton — comparten contrato con arms-slideshow.js ──
 // (mismo patrón: dispatchean control:prev/control:next al elemento
 // referenciado por aria-controls). Se registran aquí solo si todavía
@@ -504,9 +519,9 @@ class AccordionDisclosureEl extends HTMLDetailsElement {
 }
 
 // ── Registrar Web Components ──────────────────────────────────
-if (!customElements.get('image-link-blocks')) customElements.define('image-link-blocks', BaseCarousel);
-if (!customElements.get('collection-list'))   customElements.define('collection-list',   BaseCarousel);
-if (!customElements.get('scroll-carousel'))   customElements.define('scroll-carousel',   BaseCarousel);
+if (!customElements.get('image-link-blocks')) customElements.define('image-link-blocks', ImageLinkBlocksEl);
+if (!customElements.get('collection-list'))   customElements.define('collection-list',   CollectionListEl);
+if (!customElements.get('scroll-carousel'))   customElements.define('scroll-carousel',   ScrollCarouselEl);
 if (!customElements.get('impact-text'))  customElements.define('impact-text',  ImpactTextEl);
 if (!customElements.get('video-media'))  customElements.define('video-media',  VideoMediaEl);
 if (!customElements.get('split-cursor')) customElements.define('split-cursor', SplitCursorEl);
