@@ -2565,12 +2565,13 @@ video-media[loaded] > img {
    HOT-SPOTS — puntos clickeables sobre imagen de producto
    ============================================================ */
 
-.hot-spot {
+.content-over-media > .hot-spot {
   --hot-spot-dot-size: var(--spacing-8);
   --hot-spot-dot-shadow-size: var(--spacing-2-5);
   top: var(--hot-spot-vertical-position);
   left: var(--hot-spot-horizontal-position);
-  position: absolute;
+  max-width: none;
+  position: absolute !important;
 }
 
 .hot-spot__dot {
@@ -2609,6 +2610,7 @@ video-media[loaded] > img {
    anclado junto al punto, sin overlay. ── */
 .arms-popover {
   display: none;
+  position: relative;
 }
 
 .arms-popover[open] {
@@ -2618,25 +2620,71 @@ video-media[loaded] > img {
 .arms-popover__overlay {
   background: rgb(0 0 0 / .4);
   cursor: pointer;
-  z-index: 999;
+  z-index: 1030;
   position: fixed;
   inset: 0;
 }
 
+/* ── Estructura real de Impact (verificada contra theme.css):
+   .arms-popover__content = equivalente a ::part(content) — SIN
+   overflow ni padding propio, solo define el tamaño máximo del
+   cuadro completo (height:100% de su max-height en desktop).
+   .arms-popover__body = equivalente a ::part(body) — AQUÍ vive el
+   overflow-y:auto y el padding real. Esta separación es la causa
+   real de por qué el cuadro mostraba scroll innecesario: antes,
+   .arms-popover__content tenía overflow-y:auto directo, sin la capa
+   intermedia que Impact usa para que el padding/scroll se calculen
+   correctamente respecto al espacio disponible real, no al cuadro
+   completo. ── */
 .arms-popover__content {
-  width: min(380px, calc(100vw - var(--spacing-8)));
+  width: auto;
+  max-width: calc(100% - var(--spacing-4));
   max-height: 75vh;
   background: rgb(var(--hot-spot-content-background, 255 255 255) / var(--hot-spot-content-opacity, 1));
   color: rgb(var(--hot-spot-content-text-color, 0 0 0));
   border-radius: var(--rounded-input);
+  z-index: 1031;
+  position: fixed;
+  bottom: var(--spacing-4);
+  left: var(--spacing-2);
+  right: var(--spacing-2);
+  flex-direction: column;
+  display: flex;
+}
+
+.arms-popover__body {
+  overscroll-behavior-y: contain;
   padding: var(--spacing-6);
   text-align: start;
-  z-index: 1000;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   overflow-y: auto;
+}
+
+/* ── Botón de cerrar flotante. En DESKTOP (≥1000px) se posiciona
+   con CSS puro: position:absolute respecto a .arms-popover__content
+   (esquina superior derecha, ver media query abajo). En MOBILE, su
+   posición real (arriba del cuadro) la calcula JS en initHotSpots()
+   con getBoundingClientRect() — igual que el theme.js real de
+   Impact, que tampoco resuelve esto con CSS puro (el botón vive
+   fuera de .content en el Shadow DOM real, y su anclaje depende de
+   medición en tiempo de ejecución, no de un valor fijo como
+   bottom:100%, que falla cuando el padre no tiene un contexto de
+   posicionamiento predecible). Los valores base de abajo (bottom,
+   left) son solo fallback visual para el primer frame antes de que
+   el JS corra — en la práctica siempre quedan sobreescritos inline. ── */
+.arms-popover__close {
+  width: var(--spacing-12);
+  height: var(--spacing-12);
+  border-radius: var(--rounded-full);
+  background: rgb(255 255 255);
+  color: rgb(0 0 0);
+  box-shadow: var(--shadow-md);
+  place-items: center;
+  display: grid;
+  position: absolute;
+  bottom: 100%;
+  left: calc(50% - var(--spacing-6));
+  margin-block-end: var(--spacing-4);
+  z-index: 1032;
 }
 
 @media screen and (min-width: 1000px) {
@@ -2658,6 +2706,8 @@ video-media[loaded] > img {
     width: max-content;
     max-width: 380px;
     max-height: 350px;
+    height: 100%;
+    border-radius: var(--rounded-input);
     box-shadow: var(--shadow-md);
     border: 1px solid rgb(var(--border-color));
     -webkit-backdrop-filter: blur(var(--hot-spot-content-blur-radius, 0px));
@@ -2666,6 +2716,16 @@ video-media[loaded] > img {
     top: 50%;
     left: calc(100% + var(--spacing-4-5));
     transform: translateY(-50%);
+  }
+
+  .arms-popover__close {
+    width: calc(var(--spacing-6) * 1.2);
+    height: calc(var(--spacing-6) * 1.2);
+    top: var(--spacing-3);
+    bottom: auto;
+    left: auto;
+    right: var(--spacing-3);
+    margin-block-end: 0;
   }
 }
 

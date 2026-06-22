@@ -1,11 +1,19 @@
 {# ================================================================
    HOT-SPOTS — puntos clickeables sobre foto de producto
-   Impact style. Producto destacado: KZ Castor Pro.
+   Impact style. Producto destacado: KZ AZ15 (módulo Bluetooth
+   Qualcomm aptX).
    Requiere: arms.css (.hot-spot*, .arms-popover*, .content-over-media)
    y la función initHotSpots() en arms-home.js (abre/cierra popover
    sin Shadow DOM — versión propia simplificada, ver arms.css).
 
-   Imagen: src/assets/img/home/hot-spots/castor-pro.webp
+   Imagen: src/assets/img/home/hot-spots/az15.webp (debe ser SIN
+   FONDO — el verde del gradiente es el fondo real, igual que en
+   Impact. Confirmado: la foto real de Impact tampoco tiene fondo).
+
+   --section-spacing-block: 0 — fix real verificado contra el HTML
+   de Impact (#shopify-section...hot-spots tiene --section-spacing-block: 0
+   en su <style> inline), elimina el espacio en blanco entre esta
+   sección y la siguiente (impact-text-2).
 ================================================================= #}
 
 <div class="section section-blends section-full" style="--section-spacing-block: 0;">
@@ -13,9 +21,9 @@
 
     <div class="section-header md:hidden">
       <div class="prose">
-        <h2 class="h2">KZ Castor Pro: control total sobre tu sonido</h2>
-        <p>Doble driver dinámico, 16 perfiles de afinación y compatibilidad Bluetooth — todo en un in-ear diseñado para músicos exigentes.</p>
-        <a class="button button--lg" href="{{ 'kz-castor-pro' | productoUrl }}">Ver KZ Castor Pro</a>
+        <h2 class="h2">KZ AZ15: Bluetooth sin perder calidad</h2>
+        <p>Chip Qualcomm con aptX sin pérdidas, 3 modos de uso y hasta 54 horas de batería total — convierte tu in-ear KZ en inalámbrico sin sacrificar sonido.</p>
+        <a class="button button--lg" href="{{ 'kz-az15' | productoUrl }}">Ver KZ AZ15</a>
       </div>
     </div>
 
@@ -24,8 +32,8 @@
       style="--gradient: linear-gradient(90deg, rgba(77, 82, 60, 1), rgba(133, 141, 103, 1) 100%); --text-color: 255 255 255; overflow: visible;"
     >
       <img
-        src="/assets/img/home/hot-spots/castor-pro.webp"
-        alt="KZ Castor Pro"
+        src="/assets/img/home/hot-spots/az15.webp"
+        alt="KZ AZ15"
         width="2500" height="1200"
         loading="lazy"
         sizes="100vw"
@@ -33,67 +41,88 @@
 
       <div class="place-self-start arms-text-start hidden md:block">
         <div class="prose">
-          <h2 class="h2">KZ Castor Pro: control total sobre tu sonido</h2>
-          <p>Doble driver dinámico, 16 perfiles de afinación y compatibilidad Bluetooth — todo en un in-ear diseñado para músicos exigentes.</p>
-          <a class="button button--lg" style="--button-background: 255 255 255 / var(--button-background-opacity, 1); --button-outline-color: 255 255 255; --button-text-color: 77 82 60;" href="{{ 'kz-castor-pro' | productoUrl }}">Ver KZ Castor Pro</a>
+          <h2 class="h2">KZ AZ15: Bluetooth sin perder calidad</h2>
+          <p>Chip Qualcomm con aptX sin pérdidas, 3 modos de uso y hasta 54 horas de batería total — convierte tu in-ear KZ en inalámbrico sin sacrificar sonido.</p>
+          <a class="button button--lg" style="--button-background: 255 255 255 / var(--button-background-opacity, 1); --button-outline-color: 255 255 255; --button-text-color: 77 82 60;" href="{{ 'kz-az15' | productoUrl }}">Ver KZ AZ15</a>
         </div>
       </div>
 
-      {# ── Hot-spot 1: doble driver ── #}
-      <div class="hot-spot" style="--hot-spot-horizontal-position: 37%; --hot-spot-vertical-position: 88%;">
-        <button type="button" aria-controls="popover-castor-pro-0" aria-expanded="false" class="hot-spot__dot tap-area">
+      {# ── Hot-spot 1: chip Qualcomm aptX ── #}
+      <div class="hot-spot" style="--hot-spot-horizontal-position: 26%; --hot-spot-vertical-position: 22%;">
+        <button type="button" aria-controls="popover-az15-0" aria-expanded="false" class="hot-spot__dot tap-area">
           <span class="sr-only">Leer más</span>
           <svg role="presentation" focusable="false" stroke-width="2" width="8" height="8" class="icon icon-plus" viewBox="0 0 12 12">
             <path d="M6 0V12" fill="none" stroke="currentColor"></path>
             <path d="M0 6L12 6" fill="none" stroke="currentColor"></path>
           </svg>
         </button>
-        <div id="popover-castor-pro-0" class="arms-popover">
+        <div id="popover-az15-0" class="arms-popover">
           <div class="arms-popover__overlay"></div>
           <div class="arms-popover__content">
-            <div class="prose">
-              <p class="h6">Doble driver dinámico 10mm + 10mm</p>
-              <p>Dos drivers de igual tamaño — uno para graves, otro dedicado a medios y agudos — para mayor sensibilidad y claridad en todo el espectro.</p>
+            <button type="button" class="arms-popover__close" data-close-popover aria-label="Cerrar">
+            <svg role="presentation" focusable="false" width="16" height="16" viewBox="0 0 14 14">
+              <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+            </svg>
+          </button>
+            <div class="arms-popover__body">
+              <div class="prose">
+              <p class="h6">Chip Qualcomm QCC3046</p>
+              <p>Transmisión aptX sin pérdidas reales — la diferencia se nota en la separación de instrumentos y la estabilidad de la conexión.</p>
+            </div>
             </div>
           </div>
         </div>
       </div>
 
-      {# ── Hot-spot 2: switches de afinación ── #}
-      <div class="hot-spot" style="--hot-spot-horizontal-position: 43%; --hot-spot-vertical-position: 24%;">
-        <button type="button" aria-controls="popover-castor-pro-1" aria-expanded="false" class="hot-spot__dot tap-area">
+      {# ── Hot-spot 2: 3 modos seleccionables ── #}
+      <div class="hot-spot" style="--hot-spot-horizontal-position: 22%; --hot-spot-vertical-position: 86.7%;">
+        <button type="button" aria-controls="popover-az15-1" aria-expanded="false" class="hot-spot__dot tap-area">
           <span class="sr-only">Leer más</span>
           <svg role="presentation" focusable="false" stroke-width="2" width="8" height="8" class="icon icon-plus" viewBox="0 0 12 12">
             <path d="M6 0V12" fill="none" stroke="currentColor"></path>
             <path d="M0 6L12 6" fill="none" stroke="currentColor"></path>
           </svg>
         </button>
-        <div id="popover-castor-pro-1" class="arms-popover">
+        <div id="popover-az15-1" class="arms-popover">
           <div class="arms-popover__overlay"></div>
           <div class="arms-popover__content">
-            <div class="prose">
-              <p class="h6">4 switches — 16 perfiles de sonido</p>
-              <p>Ajusta graves y agudos en tiempo real sin apps ni software. Cambia de jazz a EDM sin cambiar de in-ear.</p>
+            <button type="button" class="arms-popover__close" data-close-popover aria-label="Cerrar">
+            <svg role="presentation" focusable="false" width="16" height="16" viewBox="0 0 14 14">
+              <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+            </svg>
+          </button>
+            <div class="arms-popover__body">
+              <div class="prose">
+              <p class="h6">3 modos seleccionables</p>
+              <p>Música, gaming con 40ms de latencia, o potencia máxima — cambia de modo según lo que estés haciendo, sin apps externas.</p>
+            </div>
             </div>
           </div>
         </div>
       </div>
 
-      {# ── Hot-spot 3: compatibilidad Bluetooth ── #}
-      <div class="hot-spot" style="--hot-spot-horizontal-position: 47%; --hot-spot-vertical-position: 56%;">
-        <button type="button" aria-controls="popover-castor-pro-2" aria-expanded="false" class="hot-spot__dot tap-area">
+      {# ── Hot-spot 3: host dual ── #}
+      <div class="hot-spot" style="--hot-spot-horizontal-position: 64.6%; --hot-spot-vertical-position: 66.9%;">
+        <button type="button" aria-controls="popover-az15-2" aria-expanded="false" class="hot-spot__dot tap-area">
           <span class="sr-only">Leer más</span>
           <svg role="presentation" focusable="false" stroke-width="2" width="8" height="8" class="icon icon-plus" viewBox="0 0 12 12">
             <path d="M6 0V12" fill="none" stroke="currentColor"></path>
             <path d="M0 6L12 6" fill="none" stroke="currentColor"></path>
           </svg>
         </button>
-        <div id="popover-castor-pro-2" class="arms-popover">
+        <div id="popover-az15-2" class="arms-popover">
           <div class="arms-popover__overlay"></div>
           <div class="arms-popover__content">
-            <div class="prose">
-              <p class="h6">Compatible con módulos Bluetooth KZ</p>
-              <p>Conviértelo en inalámbrico sin cambiar el audífono — solo actualizas el cable.</p>
+            <button type="button" class="arms-popover__close" data-close-popover aria-label="Cerrar">
+            <svg role="presentation" focusable="false" width="16" height="16" viewBox="0 0 14 14">
+              <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+            </svg>
+          </button>
+            <div class="arms-popover__body">
+              <div class="prose">
+              <p class="h6">Host dual — cada módulo independiente</p>
+              <p>Conecta cada módulo a un dispositivo distinto al mismo tiempo. Comparte audio sin pasar el celular de mano en mano.</p>
+            </div>
             </div>
           </div>
         </div>

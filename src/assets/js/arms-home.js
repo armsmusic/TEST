@@ -304,29 +304,93 @@ function initHotSpots() {
   const dots = document.querySelectorAll('.hot-spot__dot');
   if (!dots.length) return;
 
+  const isMobile = () => window.matchMedia('(max-width: 999px)').matches;
+
   dots.forEach((dot) => {
     const popoverId = dot.getAttribute('aria-controls');
     const popover = popoverId ? document.getElementById(popoverId) : null;
     if (!popover) return;
 
+    const content = popover.querySelector('.arms-popover__content');
+    const closeButton = popover.querySelector('.arms-popover__close');
+
+    // Guardamos dónde vive el popover originalmente en el DOM, para
+    // poder devolverlo a su lugar al cerrar (necesario porque en
+    // mobile lo movemos a document.body — ver comentario en open()).
+    const originalParent = popover.parentElement;
+    const originalNextSibling = popover.nextSibling;
+
+    // BUG REAL RESUELTO (verificado contra theme.js/theme.css real de
+    // Impact: el botón "outside-close-button" es hermano de .content
+    // dentro del Shadow DOM de <x-popover>, y su posición en mobile la
+    // calcula JS, no CSS puro — por eso los intentos anteriores con
+    // bottom:100%/top:0 fallaban en distintos casos). Aquí medimos la
+    // posición REAL de .arms-popover__content después de abrirlo, y
+    // posicionamos el botón con coordenadas fixed calculadas a mano,
+    // justo arriba de su borde superior — sin depender de ningún
+    // contexto de posicionamiento heredado que pueda romperse.
+    const positionCloseButton = () => {
+      if (!closeButton || !content) return;
+      if (!isMobile()) {
+        // En desktop el botón vive en la esquina superior derecha del
+        // cuadro vía CSS normal (position:absolute respecto a
+        // .arms-popover__content, que tiene position:absolute en ese
+        // breakpoint) — no necesita cálculo JS.
+        closeButton.style.position = '';
+        closeButton.style.top = '';
+        closeButton.style.left = '';
+        closeButton.style.bottom = '';
+        return;
+      }
+      const rect = content.getBoundingClientRect();
+      const buttonSize = closeButton.offsetWidth || 48;
+      closeButton.style.position = 'fixed';
+      closeButton.style.top = `${rect.top - buttonSize / 2}px`;
+      closeButton.style.left = `${rect.left + rect.width / 2 - buttonSize / 2}px`;
+      closeButton.style.bottom = 'auto';
+    };
+
     const close = () => {
       popover.removeAttribute('open');
       dot.setAttribute('aria-expanded', 'false');
+      // Devuelve el popover a su lugar original en el DOM.
+      if (popover.parentElement === document.body) {
+        originalParent.insertBefore(popover, originalNextSibling);
+      }
     };
 
     const open = () => {
+      // BUG REAL RESUELTO: .content-over-media tiene transform:
+      // translateZ(0), lo que convierte ese contenedor en el
+      // "viewport" efectivo para cualquier descendiente con
+      // position:fixed (comportamiento estándar de CSS: cualquier
+      // transform distinto de none en un ancestro crea un nuevo
+      // contenedor de posicionamiento). Por eso, en mobile, el
+      // popover no se anclaba al fondo real de la pantalla — se
+      // anclaba al fondo de .content-over-media, que está a media
+      // altura de la página. Solución: en mobile, movemos el
+      // popover a document.body (fuera de ese contenedor) ANTES de
+      // abrirlo, así su position:fixed se ancla al viewport real.
+      // En desktop esto no aplica — ahí el popover debe seguir
+      // siendo hijo de .hot-spot para anclarse junto al punto.
+      if (isMobile() && popover.parentElement !== document.body) {
+        document.body.appendChild(popover);
+      }
       popover.setAttribute('open', '');
       dot.setAttribute('aria-expanded', 'true');
+      // Posicionar el botón DESPUÉS de que el navegador pintó el
+      // popover en su lugar real (requestAnimationFrame asegura que
+      // getBoundingClientRect() ya refleje la posición final, no la
+      // de un frame intermedio de la transición).
+      requestAnimationFrame(positionCloseButton);
     };
 
     dot.addEventListener('click', () => {
       const isOpen = dot.getAttribute('aria-expanded') === 'true';
       // Cierra cualquier otro popover abierto antes de abrir este
       dots.forEach((other) => {
-        if (other !== dot) {
-          const otherPopover = document.getElementById(other.getAttribute('aria-controls'));
-          otherPopover?.removeAttribute('open');
-          other.setAttribute('aria-expanded', 'false');
+        if (other !== dot && other.getAttribute('aria-expanded') === 'true') {
+          other.click();
         }
       });
       isOpen ? close() : open();
@@ -335,8 +399,29 @@ function initHotSpots() {
     const overlay = popover.querySelector('.arms-popover__overlay');
     overlay?.addEventListener('click', close);
 
+    // Botón X real dentro de la tarjeta del popover (distinto del
+    // punto +/X que rota — ese sigue siendo el disparador de abrir).
+    closeButton?.addEventListener('click', close);
+
+    // Cierre al hacer clic fuera del dot/popover — necesario en
+    // desktop, donde .arms-popover__overlay está oculto (display:none)
+    // y por tanto no genera ningún clic que cerrar.
+    document.addEventListener('click', (e) => {
+      const isOpen = dot.getAttribute('aria-expanded') === 'true';
+      if (!isOpen) return;
+      const clickedInside = dot.contains(e.target) || popover.contains(e.target) || e.target === closeButton;
+      if (!clickedInside) close();
+    });
+
     popover.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') close();
+    });
+
+    // Recalcular la posición del botón si la ventana cambia de
+    // tamaño mientras el popover está abierto (rotación de pantalla,
+    // resize de ventana en desktop, etc.).
+    window.addEventListener('resize', () => {
+      if (dot.getAttribute('aria-expanded') === 'true') positionCloseButton();
     });
   });
 
