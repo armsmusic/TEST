@@ -2719,24 +2719,32 @@ video-media[loaded] > img {
    estado inicial vía CSS puro (no esperan a que cargue el JS), con
    resiliencia: si scripting está deshabilitado, se muestran de
    inmediato; si el usuario pide reducir movimiento, no se ocultan. ── */
-.reveal {
-  opacity: 0;
-}
-
 .reveal-invisible {
   opacity: 0;
   visibility: hidden;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  [reveal-js], [reveal-on-scroll="true"] {
+  [reveal-js], [reveal-on-scroll="true"], .reveal {
     opacity: 0;
   }
 }
 
 @media (scripting: none) {
-  [reveal-js], [reveal-on-scroll="true"] {
+  [reveal-js], [reveal-on-scroll="true"], .reveal {
     opacity: 1;
+  }
+  /* sin JS no hay animación que aplique el rotate final; lo damos por CSS */
+  .multiple-images-with-text__image-list img.reveal {
+    transform: rotate(var(--image-rotation, 0deg));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* con reduced-motion el JS no anima; la imagen nace visible y
+     necesita su ángulo final aplicado por CSS */
+  .multiple-images-with-text__image-list img.reveal {
+    transform: rotate(var(--image-rotation, 0deg));
   }
 }
 

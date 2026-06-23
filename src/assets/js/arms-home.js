@@ -673,9 +673,37 @@ function initRevealOnScroll() {
   });
 }
 
+// ── Reveal-on-scroll (Motion One) — clase .reveal ──────────────
+// Distinto de [reveal-js]/[reveal-on-scroll]: el HTML original de
+// Impact aplica la clase .reveal a las imágenes de secciones como
+// multiple-images-with-text. La imagen entra recta (rotate 0) con
+// fade, y al cruzar el viewport gira a su ángulo final definido por
+// --image-rotation (inline en cada <img>). El opacity inicial (0) lo
+// pone arms.css vía .reveal { opacity: 0 }. Se excluyen los que ya
+// tengan atributo reveal-js/reveal-on-scroll para no doblar animación.
+function initRevealClass() {
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReducedMotion) return;
+
+  const items = document.querySelectorAll('.reveal:not([reveal-js]):not([reveal-on-scroll="true"])');
+  if (!items.length) return;
+
+  items.forEach((item) => {
+    const rotation = getComputedStyle(item).getPropertyValue('--image-rotation').trim() || '0deg';
+    inView(item, () => {
+      animate(
+        item,
+        { opacity: [0, 1], transform: [`rotate(0deg)`, `rotate(${rotation})`] },
+        { duration: 0.6, easing: 'ease-out' }
+      );
+    }, { margin: '0px 0px -10% 0px' });
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initRevealJs();
   initRevealOnScroll();
+  initRevealClass();
   initHotSpots();
 });
 
