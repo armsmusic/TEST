@@ -2681,11 +2681,13 @@ video-media[loaded] > img {
     width: 380px;
     max-width: 380px;
     max-height: none;
+    overflow-y: visible;
     border-radius: var(--rounded-input);
     box-shadow: var(--shadow-md);
     border: 1px solid rgb(var(--border-color));
     position: absolute;
     top: 50%;
+    bottom: auto;
     left: calc(100% + var(--spacing-4-5));
     transform: translateY(-50%);
   }
