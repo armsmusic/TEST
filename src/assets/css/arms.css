@@ -2604,13 +2604,15 @@ video-media[loaded] > img {
   transform: rotate(45deg);
 }
 
-/* ── arms-popover — versión propia simplificada (sin Shadow DOM),
-   visualmente equivalente al ::part(content)/::part(body) de Impact.
-   Móvil: modal fullscreen con overlay. Desktop (≥1000px): popover
-   anclado junto al punto, sin overlay. ── */
+/* ── arms-popover — REESCRITO desde cero, versión simplificada al
+   máximo. Se eliminó la separación content/body (no resolvió el
+   problema real y añadió complejidad) — todo vive ahora en un solo
+   nivel: .arms-popover__content, con isolation:isolate + un
+   background-color explícito (no via variable con fallback) para
+   garantizar que el fondo se pinte sin ambigüedad de stacking
+   context, sin importar qué esté detrás (gradiente, imagen, etc). ── */
 .arms-popover {
   display: none;
-  position: relative;
 }
 
 .arms-popover[open] {
@@ -2625,58 +2627,31 @@ video-media[loaded] > img {
   inset: 0;
 }
 
-/* ── Estructura real de Impact (verificada contra theme.css):
-   .arms-popover__content = equivalente a ::part(content) — SIN
-   overflow ni padding propio, solo define el tamaño máximo del
-   cuadro completo (height:100% de su max-height en desktop).
-   .arms-popover__body = equivalente a ::part(body) — AQUÍ vive el
-   overflow-y:auto y el padding real. Esta separación es la causa
-   real de por qué el cuadro mostraba scroll innecesario: antes,
-   .arms-popover__content tenía overflow-y:auto directo, sin la capa
-   intermedia que Impact usa para que el padding/scroll se calculen
-   correctamente respecto al espacio disponible real, no al cuadro
-   completo. ── */
 .arms-popover__content {
+  isolation: isolate;
   width: auto;
   max-width: calc(100% - var(--spacing-4));
   max-height: 75vh;
-  background: rgb(var(--hot-spot-content-background, 255 255 255) / var(--hot-spot-content-opacity, 1));
-  color: rgb(var(--hot-spot-content-text-color, 0 0 0));
+  background-color: #ffffff;
+  color: #1a1a1a;
   border-radius: var(--rounded-input);
+  padding: var(--spacing-6);
+  text-align: start;
   z-index: 1031;
   position: fixed;
   bottom: var(--spacing-4);
   left: var(--spacing-2);
   right: var(--spacing-2);
+  overflow-y: auto;
   display: block;
 }
 
-.arms-popover__body {
-  width: 100%;
-  overscroll-behavior-y: contain;
-  padding: var(--spacing-6);
-  text-align: start;
-  overflow-y: auto;
-}
-
-/* ── Botón de cerrar flotante. En DESKTOP (≥1000px) se posiciona
-   con CSS puro: position:absolute respecto a .arms-popover__content
-   (esquina superior derecha, ver media query abajo). En MOBILE, su
-   posición real (arriba del cuadro) la calcula JS en initHotSpots()
-   con getBoundingClientRect() — igual que el theme.js real de
-   Impact, que tampoco resuelve esto con CSS puro (el botón vive
-   fuera de .content en el Shadow DOM real, y su anclaje depende de
-   medición en tiempo de ejecución, no de un valor fijo como
-   bottom:100%, que falla cuando el padre no tiene un contexto de
-   posicionamiento predecible). Los valores base de abajo (bottom,
-   left) son solo fallback visual para el primer frame antes de que
-   el JS corra — en la práctica siempre quedan sobreescritos inline. ── */
 .arms-popover__close {
   width: var(--spacing-12);
   height: var(--spacing-12);
   border-radius: var(--rounded-full);
-  background: rgb(255 255 255);
-  color: rgb(0 0 0);
+  background-color: #ffffff;
+  color: #1a1a1a;
   box-shadow: var(--shadow-md);
   place-items: center;
   display: grid;
@@ -2705,12 +2680,10 @@ video-media[loaded] > img {
   .arms-popover__content {
     width: 380px;
     max-width: 380px;
-    max-height: 350px;
+    max-height: none;
     border-radius: var(--rounded-input);
     box-shadow: var(--shadow-md);
     border: 1px solid rgb(var(--border-color));
-    -webkit-backdrop-filter: blur(var(--hot-spot-content-blur-radius, 0px));
-    backdrop-filter: blur(var(--hot-spot-content-blur-radius, 0px));
     position: absolute;
     top: 50%;
     left: calc(100% + var(--spacing-4-5));
