@@ -1472,6 +1472,11 @@ height-observer[variable="header"]:has(.header.is-filled) {
   overflow-wrap: anywhere;
 }
 
+.h0 {
+  font-size: var(--text-h0);
+  line-height: 1;
+}
+
 .h1, .prose h1:not(.h0, .h1, .h2, .h3, .h4, .h5, .h6) {
   font-size: var(--text-h1);
   line-height: 1.1;
