@@ -1615,6 +1615,12 @@ x-slideshow[allow-transparent-header] {
   padding-inline-end: max(var(--calculated-section-spacing-inline), 50% - var(--container-max-width) / 2);
   padding-block-start: var(--calculated-section-spacing-block-start);
   padding-block-end: var(--calculated-section-spacing-block-end);
+  /* fondo opaco + position relative: replica [role="main"]
+     .shopify-section de Impact. Necesario para que cada sección
+     tape la revealed-image (z-index:-1) al avanzar el scroll.
+     Hereda --background del body (o el propio si tiene bg-custom). */
+  position: relative;
+  background: rgb(var(--background, var(--background-primary)));
 }
 
 .section--tight {
@@ -2997,7 +3003,7 @@ video-media[loaded] > img {
 
 .revealed-image__wrapper > .revealed-image__image-clipper,
 .revealed-image__wrapper > .revealed-image__content--inside {
-  clip-path: inset(var(--reveal-inset, 37% 37% 41%));
+  clip-path: inset(37% 37% 41%);
   width: 100%;
   height: 100%;
 }
@@ -3008,7 +3014,7 @@ video-media[loaded] > img {
   padding-inline: max(var(--container-gutter), 50% - var(--container-max-width) / 2);
   text-align: center;
   z-index: 1;
-  opacity: var(--reveal-content-opacity, 0);
+  opacity: 0;
   place-content: center;
   display: grid;
 }

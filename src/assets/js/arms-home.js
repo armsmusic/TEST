@@ -484,19 +484,44 @@ class MultipleImagesWithTextEl extends HTMLElement {
   }
 }
 
-// ── RevealedImage — anima el clip-path de la imagen interior según
-// el progreso de scroll dentro del .revealed-image__scroll-tracker
-// (que mide 100% de la altura del .revealed-image, 180vh definido
-// en arms.css). Progreso 0 = imagen pequeña recortada al centro;
-// progreso 1 = imagen completa, texto "inside" visible. Usa
-// requestAnimationFrame + IntersectionObserver para no calcular
-// nada fuera de vista (mejor performance que un scroll listener
-// global sin throttle). ──
+// ── RevealedImage — réplica del componente revealed-image de Impact
+// (theme.js → revealed-image-on-scroll.js), con los valores EXACTOS
+// del original pero implementada con un scroll-listener + rAF en vez
+// de scroll() de Motion (que en esta combinación de Motion v12 +
+// navegador dejaba la animación WAAPI en un estado fijo que no se
+// recorría). El efecto, ligado al progreso de scroll del tracker:
+//   1. clip-path (image-clipper + content--inside): de
+//      inset(37% 37% 41% 37%) a inset(sticky/2 px, 0) — la franja
+//      central se abre a ancho completo.
+//   2. img/svg: de scale(1.4) translate(-10%,-1.5%) a scale(1)
+//      translate(0) — zoom-out de la imagen.
+//   3. content (ambos textos): opacity 0→1 dentro del primer 25%
+//      del scroll, y se quedan visibles.
+// Progreso: 0 cuando el tracker entra (start start), 1 cuando sale
+// por arriba (end start) — replica el offset de Impact. La altura
+// del tracker se fija al clientHeight real del scroller. ──
 class RevealedImageEl extends HTMLElement {
   connectedCallback() {
     this._tracker = this.querySelector('.revealed-image__scroll-tracker');
     this._scroller = this.querySelector('.revealed-image__scroller');
     if (!this._tracker || !this._scroller) return;
+
+    this._clippers = this.querySelectorAll('.revealed-image__image-clipper, .revealed-image__content--inside');
+    this._images = this.querySelectorAll('img, svg');
+    this._contents = this.querySelectorAll('.revealed-image__content');
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      // sin animación: imagen completa y texto visible de una vez
+      this._apply(1);
+      return;
+    }
+
+    // el tracker mide la altura real del scroller (recorrido del efecto)
+    this._tracker.style.height = `${this._scroller.clientHeight}px`;
+    this._resizeObserver = new ResizeObserver((entries) => {
+      this._tracker.style.height = `${entries[0].contentRect.height}px`;
+    });
+    this._resizeObserver.observe(this._scroller);
 
     this._ticking = false;
     this._onScroll = () => {
@@ -508,39 +533,64 @@ class RevealedImageEl extends HTMLElement {
       });
     };
 
+    // solo escucha scroll cuando la sección está cerca del viewport
     this._observer = new IntersectionObserver((entries) => {
-      const isVisible = entries[0]?.isIntersecting;
-      window[isVisible ? 'addEventListener' : 'removeEventListener']('scroll', this._onScroll, { passive: true });
-      if (isVisible) this._updateProgress();
-    });
+      const visible = entries[0]?.isIntersecting;
+      window[visible ? 'addEventListener' : 'removeEventListener']('scroll', this._onScroll, { passive: true });
+      if (visible) this._updateProgress();
+    }, { rootMargin: '200px' });
     this._observer.observe(this);
+
+    this._updateProgress();
+  }
+
+  _updateProgress() {
+    // El revelado debe completarse mientras la imagen está centrada y
+    // bien visible (no cuando ya sale de pantalla). Se mapea el
+    // recorrido completo del tracker y luego se "acelera" para que el
+    // clip llegue a 0 a ~0.72 del recorrido — ahí la imagen está
+    // pegada (sticky) y plenamente visible. El resto del scroll queda
+    // como margen de salida con la imagen completa.
+    const rect = this._tracker.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const totalTravel = rect.height + vh;
+    const scrolled = vh - rect.top;
+    const raw = totalTravel > 0
+      ? Math.min(1, Math.max(0, scrolled / totalTravel))
+      : 0;
+    const progress = Math.min(1, raw / 0.63);
+    this._apply(progress);
+  }
+
+  // aplica el estado visual para un progreso 0..1 con los valores de Impact
+  _apply(p) {
+    // 1. clip-path: interpola de inset(37% 37% 41% 37%) a inset(0% 0% 0% 0%).
+    //    (El destino de Impact deja un margen vertical = sticky/2, pero
+    //     si no hay header sticky ese margen es 0 y queda a pantalla
+    //     completa — el caso normal de este sitio.)
+    const side = 37 * (1 - p);     // izq/der: 37% → 0
+    const topPct = 37 * (1 - p);   // arriba:  37% → 0
+    const bottom = 41 * (1 - p);   // abajo:   41% → 0
+    const clip = `inset(${topPct}% ${side}% ${bottom}% ${side}%)`;
+    this._clippers.forEach((el) => { el.style.clipPath = clip; });
+
+    // 2. imagen: scale 1.4 → 1, translate (-10%,-1.5%) → (0,0)
+    const scale = 1.4 + (1 - 1.4) * p;
+    const tx = -10 + 10 * p;
+    const ty = -1.5 + 1.5 * p;
+    this._images.forEach((el) => {
+      el.style.transform = `translate(${tx}%, ${ty}%) scale(${scale})`;
+    });
+
+    // 3. texto: opacity 0 → 1 dentro del primer 25% del scroll
+    const opacity = Math.min(1, p / 0.25);
+    this._contents.forEach((el) => { el.style.opacity = `${opacity}`; });
   }
 
   disconnectedCallback() {
     window.removeEventListener('scroll', this._onScroll);
     this._observer?.disconnect();
-  }
-
-  _updateProgress() {
-    const rect = this._tracker.getBoundingClientRect();
-    const viewportHeight = window.innerHeight;
-    // progreso 0 cuando el tracker entra por abajo, 1 cuando termina
-    // de pasar por arriba — recorrido total = altura del tracker + viewport
-    const total = rect.height + viewportHeight;
-    const scrolled = viewportHeight - rect.top;
-    const progress = Math.min(1, Math.max(0, scrolled / total));
-
-    // inset() de 37%/37%/41% (pequeño) a 0 (pantalla completa)
-    const insetValue = 37 * (1 - progress);
-    const insetBottom = 41 * (1 - progress);
-    this.style.setProperty('--reveal-inset', `${insetValue}% ${insetValue}% ${insetBottom}%`);
-
-    // el texto "outside" se desvanece, el "inside" aparece cuando
-    // el progreso supera ~60% (la imagen ya cubre la mayor parte)
-    const outside = this.querySelector('.revealed-image__content--outside');
-    const inside = this.querySelector('.revealed-image__content--inside');
-    if (outside) outside.style.setProperty('--reveal-content-opacity', progress < 0.5 ? 1 - progress * 2 : 0);
-    if (inside) inside.style.setProperty('--reveal-content-opacity', progress > 0.6 ? Math.min(1, (progress - 0.6) / 0.3) : 0);
+    this._resizeObserver?.disconnect();
   }
 }
 
