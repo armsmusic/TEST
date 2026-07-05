@@ -250,6 +250,30 @@ class EffectCarousel extends BaseCarousel {
   get player()     { return this._player; }
   get loop()       { return true; }
   get swipeable()  { return !this.hasAttribute('swipeable') || this.getAttribute('swipeable') !== 'false'; }
+
+  // Cross-fade entre slides. EffectCarousel de Impact implementa su
+  // propio _transitionTo (theme.js ~1097); en BaseCarousel está vacío.
+  // Sin esto, select() cambia el índice pero no hace cambio visual —
+  // por eso el timeline no deslizaba. Replica el fade de Impact
+  // (opacity + visibility + zIndex, 0.3s) con .animate() nativo, igual
+  // que el _fade del hero (SlideshowCarousel), sin importar timeline.
+  _transitionTo(fromSlide, toSlide, { animate: shouldAnimate = true } = {}) {
+    fromSlide.classList.remove('is-selected');
+    toSlide.classList.add('is-selected');
+
+    const duration = shouldAnimate ? 300 : 0;
+
+    const aFrom = fromSlide.animate(
+      [{ opacity: 1, visibility: 'visible', zIndex: 1 }, { opacity: 0, visibility: 'hidden', zIndex: 0 }],
+      { duration, easing: 'ease-in', fill: 'forwards' }
+    );
+    toSlide.animate(
+      [{ opacity: 0, visibility: 'hidden', zIndex: 0 }, { opacity: 1, visibility: 'visible', zIndex: 1 }],
+      { duration, easing: 'ease-out', fill: 'forwards' }
+    );
+
+    return aFrom.finished;
+  }
 }
 
 // ── PageDots ──────────────────────────────────────────────────

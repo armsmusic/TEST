@@ -2360,29 +2360,30 @@ video-media[loaded] > img {
    BEFORE-AFTER-IMAGE — comparador deslizable de 2 imágenes
    ============================================================ */
 
-/* ── section-stack--center / --horizontal / __intro / __main
-   (solo aplica en desktop ≥1150px; en mobile el stack normal
-   ya los apila) ── */
+/* ── section-stack--center / --horizontal / --reverse / __intro
+   / __main (solo aplica en desktop ≥1150px; en mobile el stack
+   normal ya los apila) — sistema flexbox fiel a Impact: cada
+   sección declara su proporción vía --section-stack-intro/main
+   en su propio HTML (default 50/50). ── */
 @media screen and (min-width: 1150px) {
+  .section-stack--horizontal {
+    justify-content: center;
+    display: flex;
+  }
+
   .section-stack--center {
     justify-items: center;
   }
 
-  /* layout horizontal: intro y main lado a lado en una sola fila.
-     Proporción por defecto 40/60 (intro angosto, main ancho),
-     sobreescribible vía --section-stack-intro / --section-stack-main. */
-  .section-stack--horizontal {
-    grid-template-columns: var(--section-stack-intro, 40fr) var(--section-stack-main, 60fr);
-    align-items: start;
+  .section-stack--reverse {
+    flex-direction: row-reverse;
   }
 
-  /* en stacks no-horizontales (ej. --center) los hijos siguen usando
-     ancho explícito; en --horizontal el grid-template-columns manda */
-  .section-stack:not(.section-stack--horizontal) .section-stack__intro {
+  .section-stack__intro {
     width: var(--section-stack-intro, 50%);
   }
 
-  .section-stack:not(.section-stack--horizontal) .section-stack__main {
+  .section-stack__main {
     width: var(--section-stack-main, 50%);
   }
 }

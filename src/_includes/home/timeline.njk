@@ -4,20 +4,24 @@
    arms-slideshow.js (hero) — no necesita ningún Web Component nuevo.
    Requiere: arms.css (.timeline*, .relative)
 
-   ⚠️ TODO — PLACEHOLDERS: los 3 hitos de abajo son de relleno
+   ⚠️ TODO — PLACEHOLDERS: los 6 hitos de abajo son de relleno
    temporal (años y descripciones genéricas). Reemplázalos con la
    historia real de ARMS Music cuando la tengas. Busca "TODO: hito
    real" en cada bloque.
 
-   Imágenes: src/assets/img/home/timeline/1.webp, 2.webp, 3.webp
+   Estructura fiel a Impact: 6 hitos + 6 puntos, nav scrollable
+   horizontalmente (se ven ~4 en pantalla, el resto al deslizar el
+   nav). --timeline-nav-item-count debe coincidir con el nº de slides.
+
+   Imágenes: src/assets/img/home/timeline/1.webp … 6.webp
 ================================================================= #}
 
 <div class="section section-blends section-full">
-  <div class="timeline" style="--timeline-nav-item-count: 3;">
+  <div class="timeline" style="--timeline-nav-item-count: 6;">
 
     <effect-carousel class="timeline__slider" id="timeline-carousel-armsmusic">
 
-      {# TODO: hito real — año, foto y descripción del primer hito #}
+      {# TODO: hito real — año, foto y descripción del hito 1 #}
       <div class="timeline__slide">
         <div class="timeline__image-wrapper">
           <img src="/assets/img/home/timeline/1.webp" alt="" width="1500" height="1500" loading="lazy" class="timeline__image arms-rounded" sizes="(max-width: 700px) 100vw, min(700px, 50vw)">
@@ -28,25 +32,58 @@
         </div>
       </div>
 
-      {# TODO: hito real — año, foto y descripción del segundo hito #}
+      {# TODO: hito real — año, foto y descripción del hito 2 #}
       <div class="timeline__slide reveal-invisible">
         <div class="timeline__image-wrapper">
           <img src="/assets/img/home/timeline/2.webp" alt="" width="1500" height="1500" loading="lazy" class="timeline__image arms-rounded" sizes="(max-width: 700px) 100vw, min(700px, 50vw)">
         </div>
         <div class="prose">
-          <p class="subheading text-base">Crecimiento</p>
-          <p class="h2">Ampliamos el catálogo con cables, interfaces y micrófonos para cubrir todo lo que un músico necesita.</p>
+          <p class="subheading text-base">Primer catálogo</p>
+          <p class="h2">Lanzamos nuestra primera selección de IEMs KZ y QKZ, pensada para quienes buscan gran sonido a precio justo.</p>
         </div>
       </div>
 
-      {# TODO: hito real — año, foto y descripción del tercer hito #}
+      {# TODO: hito real — año, foto y descripción del hito 3 #}
       <div class="timeline__slide reveal-invisible">
         <div class="timeline__image-wrapper">
           <img src="/assets/img/home/timeline/3.webp" alt="" width="1500" height="1500" loading="lazy" class="timeline__image arms-rounded" sizes="(max-width: 700px) 100vw, min(700px, 50vw)">
         </div>
         <div class="prose">
+          <p class="subheading text-base">Expansión</p>
+          <p class="h2">Ampliamos el catálogo con cables e interfaces de audio, cubriendo más necesidades de cada músico.</p>
+        </div>
+      </div>
+
+      {# TODO: hito real — año, foto y descripción del hito 4 #}
+      <div class="timeline__slide reveal-invisible">
+        <div class="timeline__image-wrapper">
+          <img src="/assets/img/home/timeline/4.webp" alt="" width="1500" height="1500" loading="lazy" class="timeline__image arms-rounded" sizes="(max-width: 700px) 100vw, min(700px, 50vw)">
+        </div>
+        <div class="prose">
+          <p class="subheading text-base">Audio profesional</p>
+          <p class="h2">Sumamos micrófonos y accesorios profesionales para grabación, streaming y producción en casa.</p>
+        </div>
+      </div>
+
+      {# TODO: hito real — año, foto y descripción del hito 5 #}
+      <div class="timeline__slide reveal-invisible">
+        <div class="timeline__image-wrapper">
+          <img src="/assets/img/home/timeline/5.webp" alt="" width="1500" height="1500" loading="lazy" class="timeline__image arms-rounded" sizes="(max-width: 700px) 100vw, min(700px, 50vw)">
+        </div>
+        <div class="prose">
+          <p class="subheading text-base">Envíos nacionales</p>
+          <p class="h2">Habilitamos envíos a toda Guatemala, llevando audio de calidad a cada rincón del país.</p>
+        </div>
+      </div>
+
+      {# TODO: hito real — año, foto y descripción del hito 6 #}
+      <div class="timeline__slide reveal-invisible">
+        <div class="timeline__image-wrapper">
+          <img src="/assets/img/home/timeline/6.webp" alt="" width="1500" height="1500" loading="lazy" class="timeline__image arms-rounded" sizes="(max-width: 700px) 100vw, min(700px, 50vw)">
+        </div>
+        <div class="prose">
           <p class="subheading text-base">Hoy</p>
-          <p class="h2">Seguimos creciendo, con envíos a toda Guatemala y atención directa por WhatsApp en cada compra.</p>
+          <p class="h2">Seguimos creciendo como comunidad, con atención directa por WhatsApp y asesoría en cada compra.</p>
         </div>
       </div>
 
@@ -58,14 +95,26 @@
         <page-dots align-selected=".timeline__controls" class="timeline__nav" aria-controls="timeline-carousel-armsmusic">
           <button class="timeline__nav-item" type="button" aria-current="true">
             <span class="sr-only">Ir al hito 1</span>
-            <span class="timeline__nav-label text-sm bold">Inicio</span>
+            <span class="timeline__nav-label text-sm bold">Nuestra historia</span>
           </button>
           <button class="timeline__nav-item" type="button" aria-current="false">
             <span class="sr-only">Ir al hito 2</span>
-            <span class="timeline__nav-label text-sm bold">Crecimiento</span>
+            <span class="timeline__nav-label text-sm bold">Primer catálogo</span>
           </button>
           <button class="timeline__nav-item" type="button" aria-current="false">
             <span class="sr-only">Ir al hito 3</span>
+            <span class="timeline__nav-label text-sm bold">Expansión</span>
+          </button>
+          <button class="timeline__nav-item" type="button" aria-current="false">
+            <span class="sr-only">Ir al hito 4</span>
+            <span class="timeline__nav-label text-sm bold">Audio profesional</span>
+          </button>
+          <button class="timeline__nav-item" type="button" aria-current="false">
+            <span class="sr-only">Ir al hito 5</span>
+            <span class="timeline__nav-label text-sm bold">Envíos nacionales</span>
+          </button>
+          <button class="timeline__nav-item" type="button" aria-current="false">
+            <span class="sr-only">Ir al hito 6</span>
             <span class="timeline__nav-label text-sm bold">Hoy</span>
           </button>
         </page-dots>
