@@ -735,5 +735,6 @@ if (!customElements.get('custom-cursor'))      customElements.define('custom-cur
 if (!customElements.get('prev-button'))        customElements.define('prev-button',        PrevButton,        { extends: 'button' });
 if (!customElements.get('next-button'))        customElements.define('next-button',        NextButton,        { extends: 'button' });
 if (!customElements.get('split-lines'))        customElements.define('split-lines',        SplitLines);
+if (!customElements.get('effect-carousel'))    customElements.define('effect-carousel',    EffectCarousel);
 if (!customElements.get('slideshow-carousel')) customElements.define('slideshow-carousel', SlideshowCarousel);
 if (!customElements.get('x-slideshow'))        customElements.define('x-slideshow',        Slideshow);

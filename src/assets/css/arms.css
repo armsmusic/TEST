@@ -1018,26 +1018,6 @@ custom-cursor {
   left: var(--spacing-14);
 }
 
-.timeline__slide > .prose {
-  padding-inline-start: var(--spacing-14);
-    padding-inline-end: var(--spacing-14);
-}
-
-.timeline__slide > .prose {
-  z-index: 1;
-    padding-inline-start: 0;
-    padding-inline-end: 0;
-    position: relative;
-}
-
-.timeline__slide > .prose {
-  padding-inline-end: 16.5%;
-}
-
-.timeline__slide > .prose {
-  max-width: 85%;
-}
-
 .rounded-xs {
   border-radius: var(--rounded-xs);
 }
@@ -3196,6 +3176,18 @@ video-media[loaded] > img {
 @media screen and (max-width: 999px) {
   .md-max\:hidden {
     display: none;
+  }
+}
+
+@media screen and (min-width: 1150px) {
+  .timeline__slide > .prose {
+    padding-inline-end: 16.5%;
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .timeline__slide > .prose {
+    max-width: 85%;
   }
 }
 
