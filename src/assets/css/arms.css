@@ -418,6 +418,14 @@ button, label, summary, [role="button"], [type="checkbox"], [type="radio"], [typ
 }
 
 /* ── Reset de img/picture (Impact) — sin esto el img conserva su tamaño intrínseco ── */
+/* display:block elimina el espacio fantasma bajo imágenes inline
+   (que se sientan sobre la línea base tipográfica y dejan un hueco
+   de ~4-7px debajo). De Impact theme.css 166. */
+img, video, iframe, object {
+  vertical-align: middle;
+  display: block;
+}
+
 img {
   color: transparent;
   max-width: min(var(--image-mobile-max-width, var(--image-max-width, 100%)), 100%);
@@ -807,10 +815,16 @@ x-slideshow[allow-transparent-header] .content-over-media--fill {
   left: var(--spacing-5);
 }
 
-.floating-controls-container:hover .is-scrollable ~ .circle-button:not([disabled]) {
-  opacity: 1;
+/* Solo en dispositivos con mouse (pointer: fine). En mobile
+   (pointer: coarse) el :hover se dispara al mantener presionado, lo
+   que mostraría los botones flotantes indebidamente. Fiel a Impact
+   theme.css 4124 — el carrusel se navega por swipe en táctil. */
+@media screen and (pointer: fine) {
+  .floating-controls-container:hover .is-scrollable ~ .circle-button:not([disabled]) {
+    opacity: 1;
     visibility: visible;
     transform: scale(1);
+  }
 }
 
 split-lines {
@@ -2568,6 +2582,15 @@ video-media[loaded] > img {
    HOT-SPOTS — puntos clickeables sobre imagen de producto
    ============================================================ */
 
+/* El content-over-media base tiene overflow:hidden, que recorta los
+   dots posicionados cerca del borde (ej. vertical-position 86.7%).
+   Impact sobrescribe esto para hot-spots — comentario original:
+   "allows dot to show outside". :has(.hot-spot) apunta solo a esta
+   sección sin depender del ID de sección. */
+.content-over-media:has(.hot-spot) {
+  overflow: visible;
+}
+
 .content-over-media > .hot-spot {
   --hot-spot-dot-size: var(--spacing-8);
   --hot-spot-dot-shadow-size: var(--spacing-2-5);
@@ -3589,4 +3612,34 @@ summary::-webkit-details-marker {
 
 .snap-center {
   scroll-snap-align: center;
+}
+
+/* ── object-fit utilities — sistema de imágenes de Impact.
+   .object-fill posiciona la imagen en absolute llenando su
+   contenedor: es el mecanismo que APILA la imagen secundaria del
+   product-card sobre la primaria (hover-swap). Sin esto la
+   secundaria fluye debajo. De Impact theme.css 10039. ── */
+.object-fill {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.object-fill, .object-fill-safe, .object-cover {
+  object-fit: cover;
+  object-position: center;
+}
+
+.object-contain {
+  object-fit: contain;
+  object-position: center;
+}
+
+/* el <a> del product-card debe ser contexto de posicionamiento para
+   que la imagen secundaria (.object-fill, absolute) se apile sobre la
+   primaria respetando el aspect-ratio del enlace. */
+.product-card__figure > a {
+  position: relative;
 }

@@ -23,7 +23,7 @@
     width="800" height="800"
     loading="lazy"
     onerror="this.replaceWith(document.getElementById('svg-tmpl-{{ prod.id }}').content.cloneNode(true))"
-    class="product-card__image product-card__image--primary"
+    class="product-card__image product-card__image--primary aspect-natural"
   >
 
   {% if prod.imagenes.length > 1 %}
@@ -33,7 +33,7 @@
     width="800" height="800"
     loading="lazy"
     fetchpriority="low"
-    class="product-card__image product-card__image--secondary"
+    class="product-card__image product-card__image--secondary object-fill"
     aria-hidden="true"
   >
   {% endif %}
