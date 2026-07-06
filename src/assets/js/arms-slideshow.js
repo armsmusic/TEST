@@ -29,6 +29,27 @@ function prefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
+// ── throttle — limita ejecución a un frame de animación (rAF) ──
+// Requerido por ScrollArea y ScrollCarousel. Portado de Impact.
+function throttle(callback) {
+  let requestId = null, lastArgs;
+  const later = (context) => () => {
+    requestId = null;
+    callback.apply(context, lastArgs);
+  };
+  const throttled = (...args) => {
+    lastArgs = args;
+    if (requestId === null) {
+      requestId = requestAnimationFrame(later(this));
+    }
+  };
+  throttled.cancel = () => {
+    cancelAnimationFrame(requestId);
+    requestId = null;
+  };
+  return throttled;
+}
+
 // ── Player — maneja el autoplay ───────────────────────────────
 class Player extends EventTarget {
   constructor(duration) {
@@ -92,6 +113,77 @@ class GestureArea {
       }
       this._startX = null;
     }, { signal });
+  }
+}
+
+// ── ScrollArea — detecta dirección de scroll y despacha eventos
+// de borde (edge-nearing/leaving) + scrollend polyfill. Requerida
+// por ScrollCarousel. Portada de Impact. ──────────────────────
+class ScrollArea {
+  constructor(element, abortController = null) {
+    this._element = element;
+    this._allowTriggerNearingStartEvent = false;
+    this._allowTriggerLeavingStartEvent = true;
+    this._allowTriggerNearingEndEvent = true;
+    this._allowTriggerLeavingEndEvent = false;
+    new ResizeObserver(this._checkIfScrollable.bind(this)).observe(element);
+    this._element.addEventListener('scroll', throttle(this._onScroll.bind(this)), { signal: abortController?.signal });
+  }
+  get scrollNearingThreshold() {
+    return 125;
+  }
+  get scrollDirection() {
+    if (this._element.scrollWidth > this._element.clientWidth) {
+      return 'inline';
+    } else if (this._element.scrollHeight - this._element.clientHeight > 1) {
+      return 'block';
+    } else {
+      return 'none';
+    }
+  }
+  _checkIfScrollable() {
+    this._element.classList.toggle('is-scrollable', this.scrollDirection !== 'none');
+  }
+  _onScroll() {
+    clearTimeout(this._scrollTimeout);
+    this._lastScrollPosition = this._lastScrollPosition ?? (this.scrollDirection === 'inline' ? Math.abs(this._element.scrollLeft) : Math.abs(this._element.scrollTop));
+    let direction;
+    if (this.scrollDirection === 'inline') {
+      direction = this._lastScrollPosition > Math.abs(this._element.scrollLeft) ? 'start' : 'end';
+      this._lastScrollPosition = Math.abs(this._element.scrollLeft);
+    } else {
+      direction = this._lastScrollPosition > Math.abs(this._element.scrollTop) ? 'start' : 'end';
+      this._lastScrollPosition = Math.abs(this._element.scrollTop);
+    }
+    const scrollPosition = Math.round(Math.abs(this.scrollDirection === 'inline' ? this._element.scrollLeft : this._element.scrollTop)),
+      scrollMinusSize = Math.round(this.scrollDirection === 'inline' ? this._element.scrollWidth - this._element.clientWidth : this._element.scrollHeight - this._element.clientHeight);
+    if (direction === 'start' && this._allowTriggerNearingStartEvent && scrollPosition <= this.scrollNearingThreshold) {
+      this._allowTriggerNearingStartEvent = false;
+      this._allowTriggerLeavingStartEvent = true;
+      this._element.dispatchEvent(new CustomEvent('scroll:edge-nearing', { bubbles: true, detail: { position: 'start' } }));
+    } else if (direction === 'end' && scrollPosition > this.scrollNearingThreshold) {
+      this._allowTriggerNearingStartEvent = true;
+      if (this._allowTriggerLeavingStartEvent) {
+        this._allowTriggerLeavingStartEvent = false;
+        this._element.dispatchEvent(new CustomEvent('scroll:edge-leaving', { bubbles: true, detail: { position: 'start' } }));
+      }
+    }
+    if (direction === 'end' && this._allowTriggerNearingEndEvent && scrollMinusSize <= scrollPosition + this.scrollNearingThreshold) {
+      this._allowTriggerNearingEndEvent = false;
+      this._allowTriggerLeavingEndEvent = true;
+      this._element.dispatchEvent(new CustomEvent('scroll:edge-nearing', { bubbles: true, detail: { position: 'end' } }));
+    } else if (direction === 'start' && scrollMinusSize > scrollPosition + this.scrollNearingThreshold) {
+      this._allowTriggerNearingEndEvent = true;
+      if (this._allowTriggerLeavingEndEvent) {
+        this._allowTriggerLeavingEndEvent = false;
+        this._element.dispatchEvent(new CustomEvent('scroll:edge-leaving', { bubbles: true, detail: { position: 'end' } }));
+      }
+    }
+    if (window.onscrollend === void 0) {
+      this._scrollTimeout = setTimeout(() => {
+        this._element.dispatchEvent(new CustomEvent('scrollend', { bubbles: true, composed: true }));
+      }, 75);
+    }
   }
 }
 
@@ -197,6 +289,15 @@ class BaseCarousel extends HTMLElement {
 
   _transitionTo(fromSlide, toSlide, options = {}) {}
 
+  // Ajusta la altura del carrusel al slide activo — solo si tiene el
+  // atributo adaptive-height (hero/timeline NO lo usan, así que este
+  // método no les afecta). ScrollCarousel lo extiende vía super.
+  _adjustHeight() {
+    if (this.hasAttribute('adaptive-height') && this.selectedSlide.clientHeight !== this.clientHeight) {
+      this.style.maxHeight = `${this.selectedSlide.clientHeight}px`;
+    }
+  }
+
   _filterItems(event) {
     this.items.forEach((item, i) => item.hidden = event.detail.filteredIndexes.includes(i));
   }
@@ -273,6 +374,91 @@ class EffectCarousel extends BaseCarousel {
     );
 
     return aFrom.finished;
+  }
+}
+
+// ── ScrollCarousel — carrusel con scroll horizontal nativo +
+// snap (para text-with-icons, colecciones, productos relacionados).
+// A diferencia de EffectCarousel (cambia por opacidad), este navega
+// por scrollTo. Usa ScrollArea. Portado de Impact. ───────────────
+class ScrollCarousel extends BaseCarousel {
+  constructor() {
+    super();
+    if (window.ResizeObserver) {
+      new ResizeObserver(throttle(this._adjustHeight.bind(this))).observe(this);
+    }
+  }
+  connectedCallback() {
+    this._hasPendingProgrammaticScroll = false;
+    this._scrollArea = new ScrollArea(this, this._abortController);
+    super.connectedCallback();
+    this.addEventListener('scroll', throttle(this._onCarouselScroll.bind(this)), { signal: this._abortController.signal });
+    this.addEventListener('scrollend', this._onScrollSettled, { signal: this._abortController.signal });
+  }
+  get itemOffset() {
+    return this.visibleItems.length < 2 ? 0 : this.visibleItems[1].offsetLeft - this.visibleItems[0].offsetLeft;
+  }
+  get slidesPerPage() {
+    return this.visibleItems.length < 2 ? 1 : Math.floor((this.clientWidth - this.visibleItems[0].offsetLeft) / (Math.abs(this.itemOffset) - (parseInt(getComputedStyle(this).gap) || 0)));
+  }
+  get totalPages() {
+    return this.visibleItems.length < 2 ? 1 : this.visibleItems.length - this.slidesPerPage + 1;
+  }
+  select(index, { animate: shouldAnimate = true, force = false } = {}) {
+    const indexBeforeChange = this.selectedIndex;
+    if (!this.offsetParent || this._scrollArea.scrollDirection === 'none') {
+      return this._selectedIndex = index;
+    }
+    const indexAmongVisible = this.visibleItems.indexOf(this.items[index]);
+    index = this.items.indexOf(this.visibleItems[Math.min(this.totalPages, indexAmongVisible)]);
+    this._selectedIndex = index;
+    this._dispatchEvent('carousel:select', index);
+    if (index !== indexBeforeChange || force) {
+      const [fromSlide, toSlide] = [this.items[indexBeforeChange], this.items[index]];
+      this._dispatchEvent('carousel:change', index);
+      this._transitionTo(fromSlide, toSlide, { animate: shouldAnimate });
+    }
+  }
+  _transitionTo(fromSlide, toSlide, { animate: shouldAnimate = true } = {}) {
+    fromSlide.classList.remove('is-selected');
+    toSlide.classList.add('is-selected');
+    let slideAlign = this._extractSlideAlign(toSlide), scrollAmount = 0;
+    switch (slideAlign) {
+      case 'start':
+        scrollAmount = this.itemOffset * this.visibleItems.indexOf(toSlide);
+        break;
+      case 'center':
+        scrollAmount = toSlide.offsetLeft - (this.clientWidth / 2 - (parseInt(getComputedStyle(this).scrollPaddingInline) || 0)) + toSlide.clientWidth / 2;
+        break;
+    }
+    this._hasPendingProgrammaticScroll = shouldAnimate;
+    this.scrollTo({ left: scrollAmount, behavior: shouldAnimate ? 'smooth' : 'auto' });
+  }
+  _onCarouselScroll() {
+    if (this._hasPendingProgrammaticScroll || this._scrollArea.scrollDirection === 'none') {
+      return;
+    }
+    const newIndex = this.items.indexOf(this.visibleItems[Math.round(this.scrollLeft / this.itemOffset)]);
+    if (newIndex !== this.selectedIndex) {
+      this._selectedIndex = newIndex;
+      this._dispatchEvent('carousel:select', this.selectedIndex);
+      this._dispatchEvent('carousel:change', this.selectedIndex);
+    }
+  }
+  _onScrollSettled() {
+    this.items.forEach((item) => item.classList.remove('is-selected'));
+    this.selectedSlide.classList.add('is-selected');
+    this._hasPendingProgrammaticScroll = false;
+    this._dispatchEvent('carousel:settle', this.selectedIndex);
+  }
+  _adjustHeight() {
+    this.style.maxHeight = null;
+    if (this._scrollArea?.scrollDirection !== 'none') {
+      super._adjustHeight();
+    }
+  }
+  _extractSlideAlign(slide) {
+    return getComputedStyle(slide).scrollSnapAlign === 'center' ? 'center' : 'start';
   }
 }
 
@@ -760,5 +946,6 @@ if (!customElements.get('prev-button'))        customElements.define('prev-butto
 if (!customElements.get('next-button'))        customElements.define('next-button',        NextButton,        { extends: 'button' });
 if (!customElements.get('split-lines'))        customElements.define('split-lines',        SplitLines);
 if (!customElements.get('effect-carousel'))    customElements.define('effect-carousel',    EffectCarousel);
+if (!customElements.get('scroll-carousel'))    customElements.define('scroll-carousel',    ScrollCarousel);
 if (!customElements.get('slideshow-carousel')) customElements.define('slideshow-carousel', SlideshowCarousel);
 if (!customElements.get('x-slideshow'))        customElements.define('x-slideshow',        Slideshow);

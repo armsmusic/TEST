@@ -3579,3 +3579,14 @@ summary::-webkit-details-marker {
     display: none;
   }
 }
+
+/* ── snap utilities — scroll-snap-align para ítems de carruseles
+   con scroll horizontal (text-with-icons, colecciones). Sin esto
+   los ítems no se enganchan al deslizar. De Impact theme.css 9440. ── */
+.snap-start {
+  scroll-snap-align: start;
+}
+
+.snap-center {
+  scroll-snap-align: center;
+}
