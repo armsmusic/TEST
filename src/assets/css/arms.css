@@ -2582,6 +2582,15 @@ video-media[loaded] > img {
    HOT-SPOTS — puntos clickeables sobre imagen de producto
    ============================================================ */
 
+/* La sección hot-spots necesita z-index:1 (como Impact:
+   .shopify-section--hot-spots { z-index: 1 }, theme.css 6699) para
+   elevarse sobre el fondo opaco de las .section vecinas. Sin esto, el
+   background de .section tapa la porción de los dots que sobresale
+   del content-over-media (dots cerca del borde, ej. 86.7%). */
+.section:has(.hot-spot) {
+  z-index: 1;
+}
+
 /* El content-over-media base tiene overflow:hidden, que recorta los
    dots posicionados cerca del borde (ej. vertical-position 86.7%).
    Impact sobrescribe esto para hot-spots — comentario original:
