@@ -2796,6 +2796,10 @@ video-media[loaded] > img {
    ============================================================ */
 
 .multiple-images-with-text {
+  /* max-width responsive (Impact): 580px mobile → 690px ≥1000px →
+     none ≥1150px. Definido aquí (no inline en el .njk) para que el
+     valor de desktop no sea pisado por la especificidad del inline. */
+  --multiple-images-with-text-max-width: 580px;
   grid-template-columns: var(--multiple-images-with-text-grid-template-columns, none);
   gap: var(--section-stack-spacing-block, var(--spacing-8)) var(--multiple-images-with-text-column-gap, 0px);
   max-width: var(--multiple-images-with-text-max-width);
@@ -2862,9 +2866,22 @@ video-media[loaded] > img {
   }
 }
 
+@media screen and (min-width: 1000px) {
+  .multiple-images-with-text {
+    --multiple-images-with-text-max-width: 690px;
+  }
+}
+
 @media screen and (min-width: 1150px) {
   .multiple-images-with-text {
     --multiple-images-with-text-image-max-width: 500px;
+    /* activa el layout de 2 columnas (imágenes | texto) en desktop.
+       Sin estas variables grid-template-columns es "none" y el texto
+       se apila debajo. Valores de Impact index.html @media 1150px. */
+    --multiple-images-with-text-max-width: none;
+    --multiple-images-with-text-grid-template-columns: minmax(0, 1fr) minmax(0, 0.7fr);
+    --multiple-images-with-text-column-gap: var(--spacing-24);
+    --multiple-images-with-text-alignment: start;
   }
 }
 
