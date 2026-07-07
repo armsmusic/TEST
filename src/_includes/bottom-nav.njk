@@ -8,20 +8,38 @@
    componente. No depende de CSS externo — sobrevive a cambios en
    la hoja de estilos global y es portable a cualquier página.
    El color migró de var(--bs-primary) (Bootstrap, desconectado) a
-   una variable local --arms-cart-accent (verde-olivo Impact activo;
-   morado ARMS #6600FF comentado y reactivable — ver <style>).
+   una variable local --arms-cart-accent (gradiente coral→durazno
+   activo; verde-olivo Impact y morado ARMS comentados y
+   reactivables — ver <style>).
 ================================================================ #}
 
 <style>
-  /* ── Color de acento del botón carrito (bottom-nav) ──────────────
-     Para VOLVER al morado ARMS original: comenta las 2 líneas
-     "verde-olivo Impact (ACTUAL)" y descomenta las 2 de
-     "morado ARMS (anterior)". Un solo punto de cambio. */
+  /* ── Colores del botón carrito (bottom-nav) ──────────────────────
+     Se separan dos conceptos independientes:
+     · el RELLENO/borde del botón (actual: blanco con borde negro,
+       igual que el navbar)
+     · el PULSE que irradia al agregar (actual: gradiente coral→durazno)
+     Para cambiar cualquiera, edita solo su bloque. Sets alternativos
+     comentados abajo para reactivar. */
   #bottom-nav {
-    --arms-cart-accent: #4D523C;                       /* verde-olivo Impact (ACTUAL) */
-    --arms-cart-accent-shadow: rgba(77, 82, 60, 0.5);  /* verde-olivo Impact (ACTUAL) */
-    /* --arms-cart-accent: #6600FF; */                 /* morado ARMS (anterior) */
-    /* --arms-cart-accent-shadow: rgba(102, 0, 255, 0.5); */ /* morado ARMS (anterior) */
+    /* relleno del botón (ACTUAL: mismo color que el fondo de la página
+       + borde negro). Usa --background-primary, el token de fondo base
+       del sitio, para que el botón herede el color de fondo del tema. */
+    --arms-cart-bg: rgb(var(--background-primary, 240 240 240));
+    --arms-cart-fg: #1A1A1A;
+    --arms-cart-border: 1.5px solid #1A1A1A;
+    --arms-cart-shadow: rgba(0, 0, 0, 0.15);
+
+    /* color del PULSE al agregar (ACTUAL: gradiente coral→durazno) */
+    --arms-cart-accent: linear-gradient(90deg, #ff3131, #ff914d);  /* coral→durazno */
+    /* --arms-cart-accent: #4D523C; */   /* verde-olivo Impact */
+    /* --arms-cart-accent: #6600FF; */   /* morado ARMS */
+
+    /* — Set alternativo: botón relleno coral (diseño anterior) —
+    --arms-cart-bg: linear-gradient(90deg, #ff3131, #ff914d);
+    --arms-cart-fg: #fff;
+    --arms-cart-border: none;
+    --arms-cart-shadow: rgba(255, 74, 59, 0.5); */
   }
 
   /* Parpadeo del botón carrito al agregar un artículo. Recuperado
@@ -30,13 +48,13 @@
   @keyframes cart-pulse { 0% { transform: scale(1); opacity: 0.6; } 100% { transform: scale(1.5); opacity: 0; } }
 </style>
 
-<nav id="bottom-nav" aria-label="Navegación inferior" style="display:none; position:fixed; bottom:0; left:0; right:0; z-index:1020; background:rgba(18,18,18,0.97); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-top:1px solid rgba(255,255,255,0.08); padding:0.5rem 0; padding-bottom:calc(0.5rem + env(safe-area-inset-bottom)); will-change:transform;">
+<nav id="bottom-nav" aria-label="Navegación inferior" style="display:none; position:fixed; bottom:0; left:0; right:0; z-index:1020; background:#1A1A1A; backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-top:1px solid rgba(255,255,255,0.08); padding:0.5rem 0; padding-bottom:calc(0.5rem + env(safe-area-inset-bottom)); will-change:transform;">
   <div style="display:flex; align-items:center; justify-content:space-around;">
     <a href="/" style="display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;color:rgba(255,255,255,0.5);font-size:10px;font-weight:500;padding:0.25rem 1rem;">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       Inicio
     </a>
-    <button id="btn-cart-bottom" onclick="abrirCarrito()" aria-label="Abrir carrito" style="position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;background:var(--arms-cart-accent);border:none;border-radius:1rem;padding:0.5rem 1.25rem;color:#fff;font-size:10px;font-weight:700;cursor:pointer;margin-top:-1rem;box-shadow:0 4px 20px var(--arms-cart-accent-shadow);transition:transform .2s ease, box-shadow .2s ease;">
+    <button id="btn-cart-bottom" onclick="abrirCarrito()" aria-label="Abrir carrito" style="position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;background:var(--arms-cart-bg);border:var(--arms-cart-border);border-radius:1rem;padding:0.5rem 1.25rem;color:var(--arms-cart-fg);font-size:10px;font-weight:700;cursor:pointer;margin-top:-1rem;box-shadow:0 4px 20px var(--arms-cart-shadow);transition:transform .2s ease, box-shadow .2s ease;">
       <span id="cart-pulse" style="display:none;position:absolute;inset:0;border-radius:1rem;background:var(--arms-cart-accent);animation:cart-pulse 2s ease-out infinite;z-index:-1;"></span>
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
       Carrito

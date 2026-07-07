@@ -1,12 +1,45 @@
 {# ===============================================================
    ARMS Music — floating-ui.njk
    Toast de confirmación + botón flotante de WhatsApp.
-   Extraído de base.njk sin modificar contenido/comportamiento —
-   solo modularización.
+   Extraído de base.njk sin modificar contenido/comportamiento.
+
+   Componente autocontenido: el CSS del botón WhatsApp (.whatsapp-float,
+   su hover, su pulse y el @keyframes) vive en el <style> de abajo, no
+   en una hoja externa. Se recuperó de main.css (líneas 550-562) tras
+   desconectar el CSS general — así el componente sobrevive a cambios
+   en el CSS global y es portable a cualquier página.
+   El toast usaba var(--bs-border-radius-pill) (Bootstrap, desconectado);
+   migrado a 50rem (su valor real) para cortar esa dependencia.
 ================================================================ #}
 
+<style>
+  /* ── Botón flotante de WhatsApp (recuperado de main.css) ──────── */
+  .whatsapp-float {
+    position: fixed; bottom: 1.5rem; left: 1.5rem; z-index: 9999;
+    width: 48px; height: 48px; background: #25D366; color: #fff;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  /* en móvil sube para no chocar con el bottom-nav */
+  @media (max-width: 991.98px) {
+    .whatsapp-float { bottom: 90px; }
+  }
+  .whatsapp-float:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 28px rgba(37, 211, 102, 0.5);
+    color: #fff;
+  }
+  /* pulse (parpadeo) detrás del botón */
+  .whatsapp-float::before {
+    content: ''; position: absolute; inset: 0; border-radius: 50%;
+    background: #25D366; animation: whatsapp-pulse 2s ease-out infinite; z-index: -1;
+  }
+  @keyframes whatsapp-pulse { 0% { transform: scale(1); opacity: 0.6; } 100% { transform: scale(1.6); opacity: 0; } }
+</style>
+
 <!-- TOAST -->
-<div id="toast-add" style="position:fixed; bottom:7rem; left:50%; transform:translateX(-50%) translateY(200px); background:#10B981; color:#fff; padding:0.75rem 1.5rem; border-radius:var(--bs-border-radius-pill); font-size:0.9rem; font-weight:600; z-index:3000; transition:transform .3s ease; white-space:nowrap; box-shadow:0 8px 24px rgba(16,185,129,0.4);">
+<div id="toast-add" style="position:fixed; bottom:7rem; left:50%; transform:translateX(-50%) translateY(200px); background:#10B981; color:#fff; padding:0.75rem 1.5rem; border-radius:50rem; font-size:0.9rem; font-weight:600; z-index:3000; transition:transform .3s ease; white-space:nowrap; box-shadow:0 8px 24px rgba(16,185,129,0.4);">
   ✅ Producto agregado al carrito
 </div>
 
