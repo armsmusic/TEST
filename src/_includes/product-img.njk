@@ -1,12 +1,32 @@
+{# ================================================================
+   product-img.njk — imagen de la tarjeta de catálogo, con hover-swap
+   condicional al estilo Impact (primary + secondary).
+
+   ⚠️ FUNCIONAMIENTO INTACTO: mismo fallback a SVG (onerror →
+   svg-tmpl-{id}), misma data (prod.imagenes, prod.svgTipo, prod.id).
+
+   · imagen PRIMARIA: siempre. Clase Impact aspect-natural.
+   · imagen SECUNDARIA (hover): SOLO si el producto tiene 2+ imágenes.
+     Usa object-fill (posición absoluta apilada) — el CSS del cross-fade
+     ya vive en arms.css (@media pointer:fine) desde "Más Vendidos".
+     Productos con 1 sola imagen no muestran hover (a prueba de fallos).
+================================================================ #}
 {% set svgPartial = "svgs/" + prod.svgTipo + ".njk" %}
 {% if prod.imagenes and prod.imagenes.length > 0 %}
-<img src="/assets/img/productos/{{ prod.imagenes[0] }}" alt="{{ prod.nombre }}"
-  loading="lazy"
-  onerror="this.replaceWith(document.getElementById('svg-tmpl-{{ prod.id }}').content.cloneNode(true))"
-  style="width:100%; height:100%; object-fit:contain;">
-<template id="svg-tmpl-{{ prod.id }}">
-  {% include svgPartial %}
-</template>
+  <img src="/assets/img/productos/{{ prod.imagenes[0] }}" alt="{{ prod.nombre }}"
+    width="800" height="800"
+    loading="lazy"
+    onerror="this.replaceWith(document.getElementById('svg-tmpl-{{ prod.id }}').content.cloneNode(true))"
+    class="product-card__image product-card__image--primary aspect-natural">
+  {% if prod.imagenes.length > 1 %}
+  <img src="/assets/img/productos/{{ prod.imagenes[1] }}" alt="{{ prod.nombre }}"
+    width="800" height="800"
+    loading="lazy" fetchpriority="low" aria-hidden="true"
+    class="product-card__image product-card__image--secondary object-fill">
+  {% endif %}
+  <template id="svg-tmpl-{{ prod.id }}">
+    {% include svgPartial %}
+  </template>
 {% else %}
-{% include svgPartial %}
+  {% include svgPartial %}
 {% endif %}

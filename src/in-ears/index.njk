@@ -7,52 +7,113 @@ ogType: "website"
 permalink: /in-ears/index.html
 ---
 
-<div class="categoria-page">
+{# ================================================================
+   PÁGINA PILAR — In-Ears. Estructura 100% fiel a Impact:
+   1. collection-banner (banner con imagen + título + featured product)
+   2. image-link-blocks (subcategorías: accesorios, cables, etc.)
+   3. main-collection (grid product-list, sin toolbar de filtros)
 
-  <!-- HERO DE CATEGORÍA -->
-  <section class="categoria-hero">
-    <div class="container">
-      <nav aria-label="Ruta de navegación" style="margin-bottom:1rem;">
-        <ol class="breadcrumb-arms">
-          <li><a href="/">Inicio</a></li>
-          <li><span aria-hidden="true">›</span></li>
-          <li aria-current="page">In-Ears</li>
-        </ol>
-      </nav>
-      <div class="categoria-hero-inner">
-        <div>
-          <h1 class="categoria-titulo">In-Ears</h1>
-          <p class="categoria-subtitulo">Audífonos KZ y QKZ de alta fidelidad para monitoreo y uso cotidiano</p>
-        </div>
-        <div class="categoria-stats">
-          <span class="categoria-count">{{ productos.inears | length }} productos</span>
+   Lógica de datos INTACTA: for prod in productos.inears, varId,
+   btnId, prodUrl (filtro productoUrl), include card-producto.njk.
+   El toolbar/facets de Impact se omite por completo (decisión ARMS).
+================================================================= #}
+
+<main>
+
+  {# ── 1. COLLECTION-BANNER ─────────────────────────────────── #}
+  <div class="section section-blends section-full text-custom" style="--text-color: 255 255 255;">
+    <image-banner reveal-on-scroll="true" parallax="0.3" class="collection-banner content-over-media content-over-media--md full-bleed text-custom" style="--text-color: 255 255 255;">
+      <picture>
+        {# TODO: imagen de fondo del banner In-Ears (pendiente) #}
+        <source media="(max-width: 699px)" srcset="/assets/img/categorias/inears/banner-mobile.jpg" width="1300" height="1500">
+        <img src="/assets/img/categorias/inears/banner.jpg" alt="" width="3200" height="1600" fetchpriority="high">
+      </picture>
+      <div class="place-self-center arms-text-center sm:place-self-center-start sm:arms-text-start">
+        <div class="v-stack gap-4 sm:gap-6">
+          <h1 class="h0" reveal-on-scroll="true"><split-lines>In-Ears</split-lines></h1>
+          <div class="prose">
+            <span>Monitores in-ear KZ, QKZ y CCA al mejor precio de Guatemala. Sonido de alta fidelidad, construcción premium y pago contra entrega en todo el país.</span>
+          </div>
         </div>
       </div>
-      <!-- Banner accesorios -->
-      <a href="/in-ears/accesorios/" class="categoria-banner-accesorio">
-        <span>⚡</span>
-        <span>¿Buscas cables, tips o estuches? Ver <strong>Accesorios In-Ears</strong></span>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-      </a>
-    </div>
-  </section>
+      <div class="place-self-end hidden md:block">
+        {# FEATURED PRODUCT: KZ Castor Pro — se busca en la data por id.
+           TODO: si el id real del Castor Pro no contiene "castor",
+           ajusta la condición de abajo. #}
+        {% set fp = null %}
+        {% for p in productos.inears %}
+          {% if "castor" in p.id %}{% set fp = p %}{% endif %}
+        {% endfor %}
+        {% if fp %}
+        {% set fpUrl = fp.id | productoUrl %}
+        <div class="collection-featured-product">
+          <p class="collection-featured-product__title text-xs bold">Producto destacado</p>
+          <div class="horizontal-product horizontal-product--sm rounded-xs snap-start">
+            <a href="{{ fpUrl }}" class="collection-featured-product__content"></a>
+            <a href="{{ fpUrl }}">
+              <img src="/assets/img/productos/{{ fp.imagenes[0] }}" alt="{{ fp.nombre }}" width="800" height="800" loading="lazy" class="horizontal-product__image rounded-xs"
+                onerror="this.replaceWith(document.getElementById('svg-tmpl-fp-{{ fp.id }}').content.cloneNode(true))">
+            </a>
+            <div class="horizontal-product__info">
+              <div class="v-stack gap-0.5">
+                <span class="text-sm bold">{{ fp.nombre }}</span>
+                <price-list class="price-list">
+                  {% if fp.precioOriginal %}<s class="text-subdued text-sm">{{ fp.precioOriginal | gtq }}</s>{% endif %}
+                  <span class="text-sm{% if fp.precioOriginal %} text-on-sale{% endif %}">{{ fp.precio | gtq }}</span>
+                </price-list>
+              </div>
+            </div>
+            <template id="svg-tmpl-fp-{{ fp.id }}">{% include "svgs/" + fp.svgTipo + ".njk" %}</template>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </image-banner>
+  </div>
 
-  <!-- GRID DE PRODUCTOS -->
-  <section class="categoria-grid-section">
+  {# ── 2. IMAGE-LINK-BLOCKS (subcategorías) ─────────────────── #}
+  <div class="section section-blends">
+    <image-link-blocks class="image-link-blocks scroll-area bleed md:unbleed">
+
+      {% set subcats = [
+        { titulo: "Accesorios In-Ears", url: "/accesorios-inears/", img: "accesorios-inears" },
+        { titulo: "Cables", url: "/audio-cables/", img: "cables" },
+        { titulo: "Interfaces", url: "/audio-interfaces/", img: "interfaces" },
+        { titulo: "Micrófonos", url: "/audio-microfonos/", img: "microfonos" }
+      ] %}
+
+      {% for sc in subcats %}
+      <div class="image-link-blocks__item group arms-rounded bg-secondary text-custom" style="--text-color: 255 255 255;">
+        <a href="{{ sc.url }}" class="content-over-media arms-rounded" style="--content-over-media-overlay: 0 0 0 / 0.0">
+          {# TODO: imagen de subcategoría (pendiente) #}
+          <img src="/assets/img/categorias/subcats/{{ sc.img }}.jpg" alt="{{ sc.titulo }}" width="1200" height="1200" loading="lazy" class="zoom-image">
+          <div class="place-self-end-start w-full bold">
+            <div class="h-stack justify-between gap-2">
+              {{ sc.titulo }}
+              <svg role="presentation" focusable="false" width="24" height="24" class="icon icon-circle-button-right-clipped reverse-icon" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12ZM10.47 9.53 12.94 12l-2.47 2.47 1.06 1.06 3-3 .53-.53-.53-.53-3-3-1.06 1.06Z" fill="currentColor"></path>
+              </svg>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+
+    </image-link-blocks>
+  </div>
+
+  {# ── 3. MAIN-COLLECTION (grid de productos, sin toolbar) ──── #}
+  <div class="section section-blends">
     <div class="container">
-
-      <div class="row g-3" id="row-categoria-inears">
+      <product-list class="product-list">
         {% for prod in productos.inears %}
         {% set varId = ("var-cat-" + prod.nombre) | replace(" ", "-") | replace("/", "-") %}
         {% set btnId = ("btn-cat-" + prod.nombre) | replace(" ", "-") | replace("/", "-") %}
         {% set prodUrl = prod.id | productoUrl %}
-        <div class="col-6 col-lg-3">
-            {% include "card-producto.njk" %}
-        </div>
+        {% include "card-producto.njk" %}
         {% endfor %}
-      </div>
-
+      </product-list>
     </div>
-  </section>
+  </div>
 
-</div>
+</main>

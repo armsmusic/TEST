@@ -3669,3 +3669,137 @@ summary::-webkit-details-marker {
 .product-card__figure > a {
   position: relative;
 }
+
+/* ================================================================
+   Card de catálogo (card-producto.njk) — utilidades del reskin a
+   product-card de Impact. Estas visten el card manteniendo su
+   funcionamiento (variantes, stock, botón agregar). Van al final
+   para ganar la cascada (patrón utilidades).
+   ================================================================ */
+
+/* subtítulo bajo el nombre del producto */
+.product-card__subtitle {
+  display: block;
+  font-size: var(--text-xs);
+  font-weight: 400;
+  color: rgb(var(--text-color) / 0.55);
+  margin-top: 2px;
+}
+
+/* cuerpo del card: padding interno como Impact */
+.arms-card-body {
+  padding: var(--spacing-4);
+}
+
+/* contenedor de botones de variante (flex wrap) */
+.arms-card-variantes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-1-5);
+  margin-block: var(--spacing-1);
+}
+
+/* botones de variante — chips pequeños */
+.arms-var-btn {
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--rounded-xs);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .15s ease;
+  line-height: 1.3;
+}
+
+/* indicador de stock (lo llena el JS) */
+.arms-card-stock {
+  font-size: var(--text-xs);
+  min-height: 1em;
+}
+
+/* el botón "Agregar" del card: ocupa todo el ancho, tamaño pequeño */
+.product-card__info .button.btn-cat-agregar {
+  width: 100%;
+  font-size: var(--text-xs);
+  padding-block: var(--spacing-2);
+  margin-top: var(--spacing-1);
+}
+
+/* ================================================================
+   Página PILAR (colección) — componentes del collection-banner
+   portados de Impact theme.css. El collection-banner en sí usa
+   content-over-media + full-bleed (ya existentes). Estos son los
+   sub-componentes que faltaban: featured product + horizontal-product.
+   ================================================================ */
+
+/* producto horizontal (usado en el featured product del banner) */
+.horizontal-product {
+  --horizontal-product-image-size: var(--spacing-16);
+  align-items: flex-start;
+  gap: var(--spacing-4);
+  padding: var(--spacing-4);
+  min-width: 0;
+  display: flex;
+}
+
+.horizontal-product__image {
+  width: var(--horizontal-product-image-size);
+  flex: 0 0 var(--horizontal-product-image-size);
+}
+
+.horizontal-product__info {
+  gap: var(--spacing-2);
+  flex-grow: 1;
+  justify-content: space-between;
+  align-items: center;
+  display: grid;
+}
+
+@media screen and (min-width: 700px) {
+  .horizontal-product {
+    --horizontal-product-image-size: var(--spacing-20);
+    gap: var(--spacing-5);
+    align-items: center;
+  }
+  .horizontal-product--sm {
+    --horizontal-product-image-size: var(--spacing-16);
+  }
+  .horizontal-product__info {
+    gap: var(--spacing-4);
+    display: flex;
+  }
+}
+
+/* producto destacado del banner de colección */
+.collection-featured-product {
+  max-width: 290px;
+  display: grid;
+}
+
+.collection-featured-product > * {
+  background: rgb(var(--text-primary) / .2);
+  -webkit-backdrop-filter: blur(80px);
+  backdrop-filter: blur(80px);
+}
+
+.collection-featured-product__title {
+  padding: var(--spacing-1-5) var(--spacing-4);
+  border-top-left-radius: var(--rounded-xs);
+  border-top-right-radius: var(--rounded-xs);
+  justify-self: end;
+}
+
+.collection-featured-product__content {
+  border-radius: var(--rounded-xs);
+  border-top-right-radius: 0;
+}
+
+/* zoom en hover de las imágenes de image-link-blocks */
+@media (pointer: fine) {
+  .zoom-image--enabled .zoom-image {
+    transform-origin: center;
+    transition: transform 1.5s cubic-bezier(.22, 1, .36, 1);
+  }
+  .zoom-image--enabled .group:hover .zoom-image {
+    transform: scale(1.06);
+  }
+}
