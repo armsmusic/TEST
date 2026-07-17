@@ -28,7 +28,7 @@
 ================================================================ #}
 
 <height-observer variable="header">
-  <store-header class="header" sticky allow-transparency>
+  <store-header class="header" sticky {% if headerTransparente %}allow-transparency{% endif %}>
     <div class="header__wrapper">
 
       <div class="header__main-nav">
