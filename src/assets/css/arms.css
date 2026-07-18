@@ -3860,3 +3860,44 @@ summary::-webkit-details-marker {
   align-content: stretch;
   padding-top: var(--spacing-1);
 }
+
+/* ================================================================
+   Indicador de stock bajo/agotado (recuperado de main.css 448).
+   Lo inserta cart-store.js en el contenedor .card-categoria-body
+   cuando quedan ≤5 unidades. Estaba en main.css (desconectado). ── */
+.stock-indicator {
+  display: none;
+  align-items: center;
+  gap: .3rem;
+  margin-bottom: .4rem;
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .01em;
+}
+.stock-indicator.stock-low {
+  display: flex;
+  color: #d97706;
+}
+.stock-indicator.stock-low .stock-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #f59e0b;
+  flex-shrink: 0;
+  animation: stock-pulse 1.8s ease-in-out infinite;
+}
+.stock-indicator.stock-out {
+  display: flex;
+  color: #ef4444;
+}
+.stock-indicator.stock-out .stock-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ef4444;
+  flex-shrink: 0;
+}
+@keyframes stock-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .5; transform: scale(.75); }
+}
