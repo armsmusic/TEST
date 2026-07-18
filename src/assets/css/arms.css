@@ -3704,28 +3704,35 @@ summary::-webkit-details-marker {
   margin-top: 2px;
 }
 
-/* cuerpo del card: padding compacto */
+/* cuerpo del card: flex column de altura completa para poder anclar
+   el botón "Agregar" abajo (margin-top:auto) — así queda alineado
+   entre todas las cards sin importar cuántas filas ocupen las
+   variantes. El .product-card__info ya aporta el padding (16px). */
 .arms-card-body {
-  padding: var(--spacing-3);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 /* contenedor de botones de variante (flex wrap, lado a lado) */
 .arms-card-variantes {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-1);
-  margin-block: var(--spacing-0-5);
+  gap: 4px;
+  margin-block: 0;
 }
 
-/* botones de variante — chips compactos para que quepan en fila */
+/* botones de variante — compactos para que quepan 3 por fila */
 .arms-var-btn {
-  padding: 0.15rem 0.4rem;
+  padding: 0.15rem 0.3rem;
   border-radius: var(--rounded-xs);
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 600;
   cursor: pointer;
   transition: all .15s ease;
-  line-height: 1.25;
+  line-height: 1.2;
   white-space: nowrap;
 }
 
@@ -3735,12 +3742,20 @@ summary::-webkit-details-marker {
   min-height: 0;
 }
 
-/* el botón "Agregar" del card: ancho completo, compacto */
+/* el botón "Agregar" del card: ancho completo, compacto, anclado
+   al fondo (margin-top:auto) para alinearse entre todas las cards. */
 .product-card__info .button.btn-cat-agregar {
   width: 100%;
   font-size: var(--text-xs);
   padding-block: var(--spacing-1-5);
-  margin-top: var(--spacing-1);
+  margin-top: auto;
+}
+
+/* separación mínima garantizada entre las variantes (o lo que haya
+   encima) y el botón, aunque la card esté llena y margin-top:auto
+   colapse. Se aplica al contenedor de variantes por abajo. */
+.product-card.card-categoria .arms-card-variantes {
+  margin-bottom: var(--spacing-2);
 }
 
 /* reducir el margen lateral del grid de productos en mobile
@@ -3828,4 +3843,20 @@ summary::-webkit-details-marker {
   .zoom-image--enabled .group:hover .zoom-image {
     transform: scale(1.06);
   }
+}
+
+/* ── Alineación del botón "Agregar" al fondo del card de catálogo.
+   Solo aplica a cards de catálogo (.card-categoria), no a las del
+   home. La cadena de altura: el grid del product-list da igual
+   altura a las cards de una fila; el card estira su fila de info
+   (1fr) para llenar; info y body propagan height:100%; el botón
+   usa margin-top:auto (definido arriba) para irse al fondo. ── */
+.product-card.card-categoria {
+  grid-template-rows: auto 1fr;
+  align-content: stretch;
+}
+.product-card.card-categoria .product-card__info {
+  height: 100%;
+  align-content: stretch;
+  padding-top: var(--spacing-1);
 }

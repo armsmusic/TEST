@@ -104,16 +104,14 @@ permalink: /in-ears/index.html
 
   {# ── 3. MAIN-COLLECTION (grid de productos, sin toolbar) ──── #}
   <div class="section section-blends">
-    <div class="container">
-      <product-list class="product-list">
-        {% for prod in productos.inears %}
-        {% set varId = ("var-cat-" + prod.nombre) | replace(" ", "-") | replace("/", "-") %}
-        {% set btnId = ("btn-cat-" + prod.nombre) | replace(" ", "-") | replace("/", "-") %}
-        {% set prodUrl = prod.id | productoUrl %}
-        {% include "card-producto.njk" %}
-        {% endfor %}
-      </product-list>
-    </div>
+    <product-list class="product-list">
+      {% for prod in productos.inears %}
+      {% set varId = ("var-cat-" + prod.nombre) | replace(" ", "-") | replace("/", "-") %}
+      {% set btnId = ("btn-cat-" + prod.nombre) | replace(" ", "-") | replace("/", "-") %}
+      {% set prodUrl = prod.id | productoUrl %}
+      {% include "card-producto.njk" %}
+      {% endfor %}
+    </product-list>
   </div>
 
 </main>
