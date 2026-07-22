@@ -577,9 +577,18 @@ x-slideshow[allow-transparent-header] .content-over-media--fill {
   stroke-dasharray: calc(var(--circumference) * var(--progress, 1)), var(--circumference);
 }
 
-.product-list:not(:has(.product-card--blends)) .product-list__promo .content-over-media {
-  grid-row: span 2;
-      min-height: 300px;
+/* En Impact esta regla vive dentro de @media (min-width: 700px)
+   (theme.css 2753). Suelta, forzaba min-height:300px también en
+   mobile y el promo salía cuadrado en vez de 16:9. */
+@media screen and (min-width: 700px) {
+  .product-list:not(:has(.product-card--blends)) .product-list__promo .content-over-media {
+    grid-row: span 2;
+    min-height: 300px;
+  }
+
+  .product-list__promo :is(img, video-media) {
+    position: absolute;
+  }
 }
 
 .prose ol, .list-decimal {
