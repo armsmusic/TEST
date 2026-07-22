@@ -3901,3 +3901,26 @@ summary::-webkit-details-marker {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: .5; transform: scale(.75); }
 }
+
+/* ================================================================
+   Bloque promocional dentro del grid de productos (Impact:
+   .product-list__promo, theme.css 2747). Ocupa 2 columnas del grid.
+   ================================================================ */
+.product-list__promo {
+  grid-column: var(--product-list-promo-grid-column, span 2);
+  min-height: 200px;
+  display: grid;
+}
+
+/* utilidades que usa el promo (van al final para ganar cascada) */
+.h-full {
+  height: 100%;
+}
+
+.justify-items-center {
+  justify-items: safe center;
+}
+
+.ring-current {
+  box-shadow: 0 0 0 1px rgb(var(--text-color));
+}

@@ -37,12 +37,10 @@ permalink: /in-ears/index.html
         </div>
       </div>
       <div class="place-self-end hidden md:block">
-        {# FEATURED PRODUCT: KZ Castor Pro — se busca en la data por id.
-           TODO: si el id real del Castor Pro no contiene "castor",
-           ajusta la condición de abajo. #}
+        {# FEATURED PRODUCT: KZ Castor Pro (id verificado: kz-castor-pro) #}
         {% set fp = null %}
         {% for p in productos.inears %}
-          {% if "castor" in p.id %}{% set fp = p %}{% endif %}
+          {% if p.id == "kz-castor-pro" %}{% set fp = p %}{% endif %}
         {% endfor %}
         {% if fp %}
         {% set fpUrl = fp.id | productoUrl %}
@@ -76,10 +74,10 @@ permalink: /in-ears/index.html
     <image-link-blocks class="image-link-blocks scroll-area bleed md:unbleed">
 
       {% set subcats = [
-        { titulo: "Accesorios In-Ears", url: "/accesorios-inears/", img: "accesorios-inears" },
-        { titulo: "Cables", url: "/audio-cables/", img: "cables" },
-        { titulo: "Interfaces", url: "/audio-interfaces/", img: "interfaces" },
-        { titulo: "Micrófonos", url: "/audio-microfonos/", img: "microfonos" }
+        { titulo: "Accesorios In-Ears", url: "/in-ears/accesorios/", img: "accesorios-inears" },
+        { titulo: "Cables", url: "/audio/cables/", img: "cables" },
+        { titulo: "Interfaces", url: "/audio/interfaces/", img: "interfaces" },
+        { titulo: "Micrófonos", url: "/audio/microfonos/", img: "microfonos" }
       ] %}
 
       {% for sc in subcats %}
@@ -110,6 +108,33 @@ permalink: /in-ears/index.html
       {% set btnId = ("btn-cat-" + prod.nombre) | replace(" ", "-") | replace("/", "-") %}
       {% set prodUrl = prod.id | productoUrl %}
       {% include "card-producto.njk" %}
+
+      {# bloque promocional dentro del grid (Impact: product-list__promo).
+         Va después del 4º producto y ocupa 2 columnas. #}
+      {% if loop.index == 4 %}
+      <div class="product-list__promo group text-custom" style="--text-color: 255 255 255;">
+        <a href="/in-ears/accesorios/" class="content-over-media h-full rounded-sm" style="--content-over-media-overlay: 0 0 0 / 0.1">
+          {# una sola imagen 16:9 — Impact no fuerza proporción en mobile
+             (su <source> va sin width/height), por eso el promo es
+             rectangular y no cuadrado. #}
+          <img src="/assets/img/pilar/promo-accesorios.webp" alt="" width="1600" height="900" loading="lazy" class="zoom-image">
+          <div class="place-self-center arms-text-center">
+            <div class="v-stack gap-4 sm:gap-6 justify-items-center">
+              <div class="prose">
+                <p class="h2">Accesorios para tus In-Ears</p>
+              </div>
+              <div class="h-stack gap-4">
+                <span class="bold">Ver accesorios</span>
+                <div class="circle-button circle-button--sm ring-current">
+                  <span class="sr-only">Ver accesorios</span>
+                  <span class="animated-arrow"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% endif %}
       {% endfor %}
     </product-list>
   </div>
