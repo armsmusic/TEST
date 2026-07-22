@@ -1,0 +1,126 @@
+{# ================================================================
+   FEATURED-COLLECTION para páginas PILAR
+   Réplica de la sección featured-collection del pilar de Impact
+   (Headphones.html): fondo con degradado, section-header SIN enlace
+   "ver todo" (Impact no lo pone en el pilar) y carrusel horizontal
+   con botones prev/next.
+
+   PARÁMETROS (definir con {% set %} ANTES del include):
+     fcTitulo      → texto del <h2>
+     fcIds         → lista ordenada de ids de producto
+     fcCarouselId  → id único del scroll-area (uno por página)
+     fcFuente      → lista de productos donde buscar los ids
+
+   CARDS: simplificadas (imagen + badge + título + precio), igual
+   que las de Impact en esta sección. NO llevan botones de variante
+   ni "Agregar", así que NO generan ids var-cat-*/btn-cat-* — esto
+   evita ids duplicados con las cards del grid de la misma página
+   (cart-store.js resuelve el botón con getElementById y apuntaría
+   a la card equivocada si se duplicaran).
+================================================================= #}
+
+<div class="section section-full bg-gradient text-custom"
+  style="--gradient: linear-gradient(90deg, rgba(93, 48, 25, 1) 3%, rgba(133, 69, 35, 1) 100%); --background: 133 69 35; --text-color: 255 255 255;">
+
+  <style>
+    #{{ fcCarouselId }} .product-list {
+      --product-list-gap: var(--product-list-row-gap) var(--product-list-column-gap);
+      --product-list-items-per-row: 2;
+      --product-list-carousel-item-width: 74vw;
+      --product-list-grid: auto / auto-flow var(--product-list-carousel-item-width);
+    }
+
+    @media screen and (min-width: 700px) {
+      #{{ fcCarouselId }} .product-list {
+        --product-list-carousel-item-width: 36vw;
+      }
+    }
+
+    @media screen and (min-width: 1000px) {
+      #{{ fcCarouselId }} .product-list {
+        --product-list-items-per-row: 4;
+        --product-list-carousel-item-width: calc(var(--container-inner-width) / 4 - (var(--product-list-column-gap) / 4 * 3));
+      }
+    }
+  </style>
+
+  <div class="section-stack">
+
+    <section-header class="section-header">
+      <div class="prose">
+        <h2 class="h2" reveal-on-scroll="true"><split-lines>{{ fcTitulo }}</split-lines></h2>
+      </div>
+    </section-header>
+
+    <div class="floating-controls-container">
+      <scroll-carousel
+        selector="product-card"
+        id="{{ fcCarouselId }}"
+        class="scroll-area bleed"
+      >
+        <product-list class="product-list">
+
+          {% for id in fcIds %}
+            {% for prod in fcFuente %}
+              {% if prod.id == id %}
+
+                {% set tieneSegundaFoto = prod.imagenes and prod.imagenes.length > 1 %}
+                {% set prodUrl = prod.id | productoUrl %}
+
+                <product-card
+                  handle="{{ prod.id }}"
+                  class="product-card {% if tieneSegundaFoto %}product-card--show-secondary-media{% endif %} bg-custom text-custom"
+                  style="--background: 255 255 255; --text-color: 26 26 26;"
+                >
+                  {% if prod.descuento %}
+                  <div class="product-card__badge-list">
+                    <span class="badge badge--on-sale">{{ prod.descuento }}</span>
+                  </div>
+                  {% endif %}
+
+                  <div class="product-card__figure">
+                    <a href="{{ prodUrl }}" style="background:linear-gradient(135deg,{{ prod.g1 }},{{ prod.g2 }}); display:block; aspect-ratio:1;">
+                      {% include "home/product-img-hover.njk" %}
+                    </a>
+                  </div>
+
+                  <div class="product-card__info">
+                    <div class="v-stack gap-0.5 w-full">
+
+                      <span class="product-card__title">
+                        <a href="{{ prodUrl }}" class="bold">{{ prod.nombre }}</a>
+                      </span>
+
+                      <div class="price-list">
+                        {% if prod.precioOriginal %}
+                          <span class="text-subdued" style="text-decoration: line-through;">{{ prod.precioOriginal | gtq }}</span>
+                          <span class="text-on-sale bold">{{ prod.precio | gtq }}</span>
+                        {% else %}
+                          <span class="bold">{{ prod.precio | gtq }}</span>
+                        {% endif %}
+                      </div>
+
+                    </div>
+                  </div>
+                </product-card>
+
+              {% endif %}
+            {% endfor %}
+          {% endfor %}
+
+        </product-list>
+      </scroll-carousel>
+
+      <button is="prev-button" class="circle-button circle-button--lg circle-button--fill border group" aria-controls="{{ fcCarouselId }}" disabled>
+        <span class="sr-only">Anterior</span>
+        <span class="animated-arrow animated-arrow--reverse"></span>
+      </button>
+
+      <button is="next-button" class="circle-button circle-button--lg circle-button--fill border group" aria-controls="{{ fcCarouselId }}">
+        <span class="sr-only">Siguiente</span>
+        <span class="animated-arrow"></span>
+      </button>
+    </div>
+
+  </div>
+</div>

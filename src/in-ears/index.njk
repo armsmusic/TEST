@@ -139,4 +139,25 @@ permalink: /in-ears/index.html
     </product-list>
   </div>
 
+  {# ── 4. FEATURED-COLLECTION ("Los más vendidos") ──────────── #}
+  {% set fcTitulo = "Los más vendidos" %}
+  {% set fcCarouselId = "scroll-area-pilar-inears" %}
+  {% set fcIds = [
+    "kz-castor-pro",
+    "kz-zsn-pro-2",
+    "kz-edx-pro",
+    "kz-edx-lite",
+    "kz-castor",
+    "kz-zsn-pro-x",
+    "kz-ae01",
+    "kz-terminator-zsx",
+    "kz-az09",
+    "amplificador-ha-800",
+    "p2-monitor-personal"
+  ] %}
+  {% set fcFuente = productos.inears
+    .concat(productos["accesorios-inears"])
+    .concat(productos.monitores) %}
+  {% include "pilar/featured-collection.njk" %}
+
 </main>
