@@ -160,4 +160,44 @@ permalink: /in-ears/index.html
     .concat(productos.monitores) %}
   {% include "pilar/featured-collection.njk" %}
 
+  {# ── 5. IMAGE-LINK-BLOCKS #2 ("Explora las colecciones") ───── #}
+  <div class="section section-stack">
+    <section-header class="section-header">
+      <div class="prose">
+        <h2 class="h2" reveal-on-scroll="true"><split-lines>Explora las colecciones</split-lines></h2>
+      </div>
+    </section-header>
+
+    <image-link-blocks class="image-link-blocks scroll-area bleed md:unbleed">
+
+      {% set colecciones = [
+        { titulo: "In-Ears", url: "/in-ears/", img: "col-inears" },
+        { titulo: "Audio Profesional", url: "/audio/", img: "col-audio" },
+        { titulo: "Sistemas de Monitoreo", url: "/audio/sistemas/", img: "col-sistemas" },
+        { titulo: "Accesorios In-Ears", url: "/in-ears/accesorios/", img: "col-accesorios" }
+      ] %}
+
+      {% for col in colecciones %}
+      <div class="image-link-blocks__item group arms-rounded bg-secondary text-custom" style="--text-color: 255 255 255;">
+        <a href="{{ col.url }}" class="content-over-media arms-rounded" style="--content-over-media-overlay: 0 0 0 / 0.0">
+          <img src="/assets/img/subpilar/{{ col.img }}.webp" alt="{{ col.titulo }}" width="1200" height="1200" loading="lazy" class="zoom-image">
+          <div class="place-self-end-start w-full bold">
+            <div class="h-stack justify-between gap-2">
+              {{ col.titulo }}
+              <svg role="presentation" focusable="false" width="24" height="24" class="icon icon-circle-button-right-clipped reverse-icon" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12ZM10.47 9.53 12.94 12l-2.47 2.47 1.06 1.06 3-3 .53-.53-.53-.53-3-3-1.06 1.06Z" fill="currentColor"></path>
+              </svg>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+
+    </image-link-blocks>
+  </div>
+
+  {# ── 6. TEXT-WITH-ICONS (garantías / beneficios) ──────────── #}
+  {% set twiCarouselId = "carousel-twi-pilar-inears" %}
+  {% include "pilar/text-with-icons.njk" %}
+
 </main>
