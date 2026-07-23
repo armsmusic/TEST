@@ -1,0 +1,127 @@
+{# ================================================================
+   CUERPO COMPLETO DE UNA PÁGINA SUBPILAR (estructura Impact)
+     1. collection-banner (con producto destacado)
+     2. main-collection   (grid + bloque promo)
+     3. image-link-blocks (otras colecciones, excluye la actual)
+     4. text-with-icons   (garantías)
+
+   PARÁMETROS (definir con {% set %} ANTES del include):
+     spTitulo        → título del banner (h1)
+     spDescripcion   → texto descriptivo del banner
+     spProductos     → lista de productos del subpilar
+     spDestacadoId   → id del producto destacado del banner
+     spBannerImg     → nombre del archivo del banner (sin ruta ni .webp)
+     spPromoTexto    → título del bloque promo
+     spPromoUrl      → destino del promo (normalmente el pilar padre)
+     spPromoCta      → texto del enlace del promo
+     spPromoImg      → nombre del archivo del promo (sin ruta ni .webp)
+     spUrlActual     → url de esta página (para excluirla de los bloques)
+     spTwiId         → id único del carrusel de garantías
+
+   NOTA sobre el promo: aparece después del 4º producto (posición de
+   Impact). Si el subpilar tiene menos de 4 productos, se coloca al
+   final para que siempre sea visible; en cuanto el catálogo crezca a
+   4+ vuelve solo a su posición correcta, sin tocar código.
+================================================================= #}
+
+<main>
+
+  {# ── 1. COLLECTION-BANNER ─────────────────────────────────── #}
+  <div class="section section-blends section-full text-custom section--no-top-gap" style="--text-color: 255 255 255;">
+    <image-banner reveal-on-scroll="true" parallax="0.3" class="collection-banner content-over-media content-over-media--md full-bleed text-custom" style="--text-color: 255 255 255;">
+      <picture>
+        <source media="(max-width: 699px)" srcset="/assets/img/subpilar/{{ spBannerImg }}-banner-mobile.webp" width="1300" height="1500">
+        <img src="/assets/img/subpilar/{{ spBannerImg }}-banner.webp" alt="" width="3200" height="1600" fetchpriority="high">
+      </picture>
+      <div class="place-self-center arms-text-center sm:place-self-center-start sm:arms-text-start">
+        <div class="v-stack gap-4 sm:gap-6">
+          <h1 class="h0" reveal-on-scroll="true"><split-lines>{{ spTitulo }}</split-lines></h1>
+          <div class="prose">
+            <span>{{ spDescripcion }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="place-self-end hidden md:block">
+        {% set fp = null %}
+        {% for p in spProductos %}
+          {% if p.id == spDestacadoId %}{% set fp = p %}{% endif %}
+        {% endfor %}
+        {% if fp %}
+        {% set fpUrl = fp.id | productoUrl %}
+        <div class="collection-featured-product">
+          <p class="collection-featured-product__title text-xs bold">Producto destacado</p>
+          <div class="horizontal-product horizontal-product--sm rounded-xs snap-start">
+            <a href="{{ fpUrl }}" class="collection-featured-product__content"></a>
+            <a href="{{ fpUrl }}">
+              <img src="/assets/img/productos/{{ fp.imagenes[0] }}" alt="{{ fp.nombre }}" width="800" height="800" loading="lazy" class="horizontal-product__image rounded-xs"
+                onerror="this.replaceWith(document.getElementById('svg-tmpl-fp-{{ fp.id }}').content.cloneNode(true))">
+            </a>
+            <div class="horizontal-product__info">
+              <div class="v-stack gap-0.5">
+                <span class="text-sm bold">{{ fp.nombre }}</span>
+                <price-list class="price-list">
+                  {% if fp.precioOriginal %}<s class="text-subdued text-sm">{{ fp.precioOriginal | gtq }}</s>{% endif %}
+                  <span class="text-sm{% if fp.precioOriginal %} text-on-sale{% endif %}">{{ fp.precio | gtq }}</span>
+                </price-list>
+              </div>
+            </div>
+            <template id="svg-tmpl-fp-{{ fp.id }}">{% include "svgs/" + fp.svgTipo + ".njk" %}</template>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </image-banner>
+  </div>
+
+  {# ── 2. MAIN-COLLECTION (grid + promo) ────────────────────── #}
+  <div class="section section-blends">
+    <product-list class="product-list">
+      {% for prod in spProductos %}
+      {% set varId = ("var-cat-" + prod.nombre) | replace(" ", "-") | replace("/", "-") %}
+      {% set btnId = ("btn-cat-" + prod.nombre) | replace(" ", "-") | replace("/", "-") %}
+      {% set prodUrl = prod.id | productoUrl %}
+      {% include "card-producto.njk" %}
+
+      {% if loop.index == 4 or (loop.last and spProductos.length < 4) %}
+      <div class="product-list__promo group text-custom" style="--text-color: 255 255 255;">
+        <a href="{{ spPromoUrl }}" class="content-over-media h-full rounded-sm" style="--content-over-media-overlay: 0 0 0 / 0.1">
+          <img src="/assets/img/pilar/{{ spPromoImg }}.webp" alt="" width="1600" height="900" loading="lazy" class="zoom-image">
+          <div class="place-self-center arms-text-center">
+            <div class="v-stack gap-4 sm:gap-6 justify-items-center">
+              <div class="prose">
+                <p class="h2">{{ spPromoTexto }}</p>
+              </div>
+              <div class="h-stack gap-4">
+                <span class="bold">{{ spPromoCta }}</span>
+                <div class="circle-button circle-button--sm ring-current">
+                  <span class="sr-only">{{ spPromoCta }}</span>
+                  <span class="animated-arrow"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </product-list>
+  </div>
+
+  {# ── 3. IMAGE-LINK-BLOCKS (otras colecciones) ─────────────── #}
+  {% set ilbItems = [
+    { titulo: "In-Ears", url: "/in-ears/", img: "col-inears" },
+    { titulo: "Accesorios In-Ears", url: "/in-ears/accesorios/", img: "accesorios-inears" },
+    { titulo: "Sistemas de Monitoreo", url: "/audio/sistemas/", img: "sistemas" },
+    { titulo: "Interfaces", url: "/audio/interfaces/", img: "interfaces" },
+    { titulo: "Micrófonos", url: "/audio/microfonos/", img: "microfonos" },
+    { titulo: "Cables", url: "/audio/cables/", img: "cables" }
+  ] %}
+  {% set ilbExcluirUrl = spUrlActual %}
+  {% set ilbTitulo = "Explora las colecciones" %}
+  {% include "pilar/image-link-blocks.njk" %}
+
+  {# ── 4. TEXT-WITH-ICONS (garantías) ───────────────────────── #}
+  {% set twiCarouselId = spTwiId %}
+  {% include "pilar/text-with-icons.njk" %}
+
+</main>

@@ -7,54 +7,26 @@ ogType: "website"
 permalink: /in-ears/accesorios/index.html
 ---
 
-<div class="categoria-page">
+{# ================================================================
+   SUBPILAR — Accesorios In-Ears
+   Estructura Impact (banner + grid con promo + otras colecciones +
+   garantías) delegada al partial pilar/subpilar.njk. Aquí solo se
+   definen los parámetros de esta página.
 
-  <!-- HERO DE CATEGORÍA -->
-  <section class="categoria-hero">
-    <div class="container">
-      <nav aria-label="Ruta de navegación" style="margin-bottom:1rem;">
-        <ol class="breadcrumb-arms">
-          <li><a href="/">Inicio</a></li>
-          <li><span aria-hidden="true">›</span></li>
-          <li><a href="/in-ears/">In-Ears</a></li>
-          <li><span aria-hidden="true">›</span></li>
-          <li aria-current="page">Accesorios</li>
-        </ol>
-      </nav>
-      <div class="categoria-hero-inner">
-        <div>
-          <h1 class="categoria-titulo">Accesorios In-Ears</h1>
-          <p class="categoria-subtitulo">Cables, tips, estuches y más para tus audífonos KZ y QKZ</p>
-        </div>
-        <div class="categoria-stats">
-          <span class="categoria-count">{{ productos["accesorios-inears"] | length }} productos</span>
-        </div>
-      </div>
-      <!-- Banner volver a in-ears -->
-      <a href="/in-ears/" class="categoria-banner-accesorio">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-        <span>Ver todos los <strong>In-Ears KZ y QKZ</strong></span>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-      </a>
-    </div>
-  </section>
+   Lógica de datos PRESERVADA: usa productos["accesorios-inears"], igual
+   que la versión anterior, con el include card-producto.njk.
+================================================================= #}
 
-  <!-- GRID DE PRODUCTOS -->
-  <section class="categoria-grid-section">
-    <div class="container">
+{% set spProductos   = productos["accesorios-inears"] %}
+{% set spTitulo      = "Accesorios In-Ears" %}
+{% set spDescripcion = "Módulos bluetooth, cables de actualización, tips, estuches y adaptadores para tus in-ears KZ y QKZ. Pago contra entrega en toda Guatemala." %}
+{% set spDestacadoId = "kz-az09" %}
+{% set spBannerImg   = "accesorios-inears" %}
+{% set spPromoTexto  = "Encuentra tus In-Ears" %}
+{% set spPromoUrl    = "/in-ears/" %}
+{% set spPromoCta    = "Ver todo" %}
+{% set spPromoImg    = "promo-inears" %}
+{% set spUrlActual   = "/in-ears/accesorios/" %}
+{% set spTwiId       = "carousel-twi-sub-accesorios" %}
 
-      <div class="row g-3" id="row-categoria-accesorios">
-        {% for prod in productos["accesorios-inears"] %}
-        {% set varId = ("var-cat-" + prod.nombre) | replace(" ", "-") | replace("/", "-") %}
-        {% set btnId = ("btn-cat-" + prod.nombre) | replace(" ", "-") | replace("/", "-") %}
-        {% set prodUrl = prod.id | productoUrl %}
-        <div class="col-6 col-lg-3">
-            {% include "card-producto.njk" %}
-        </div>
-        {% endfor %}
-      </div>
-
-    </div>
-  </section>
-
-</div>
+{% include "pilar/subpilar.njk" %}

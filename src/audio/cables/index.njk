@@ -8,62 +8,26 @@ permalink: /audio/cables/index.html
 descripcion: "Cables de audio para escenario y estudio — extensiones para in-ears, cables Plug 1/4 y más. Compatibles con consolas, amplificadores e instrumentos. Disponibles en Guatemala con pago contra entrega y envío a todo el país."
 ---
 
-<div class="categoria-page">
+{# ================================================================
+   SUBPILAR — Cables de Audio
+   Estructura Impact (banner + grid con promo + otras colecciones +
+   garantías) delegada al partial pilar/subpilar.njk. Aquí solo se
+   definen los parámetros de esta página.
 
-  <!-- HERO -->
-  <section class="categoria-hero">
-    <div class="container">
-      <nav aria-label="Ruta de navegación" style="margin-bottom:1rem;">
-        <ol class="breadcrumb-arms">
-          <li><a href="/">Inicio</a></li>
-          <li><span aria-hidden="true">›</span></li>
-          <li><a href="/audio/">Audio</a></li>
-          <li><span aria-hidden="true">›</span></li>
-          <li aria-current="page">Cables</li>
-        </ol>
-      </nav>
-      <div class="categoria-hero-inner">
-        <div>
-          <h1 class="categoria-titulo">Cables de Audio</h1>
-          <p class="categoria-subtitulo">Extensiones para in-ears, cables plug 1/4 y conectores profesionales</p>
-        </div>
-        <div class="categoria-stats">
-          <span class="categoria-count">{{ productos["audio-cables"] | length }} productos</span>
-        </div>
-      </div>
-      <a href="/audio/" class="categoria-banner-accesorio">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-        <span>Ver todo <strong>Audio Profesional</strong></span>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-      </a>
-    </div>
-  </section>
+   Lógica de datos PRESERVADA: usa productos["audio-cables"], igual
+   que la versión anterior, con el include card-producto.njk.
+================================================================= #}
 
-  <!-- DESCRIPCIÓN -->
-  <section style="padding-bottom:1.5rem;">
-    <div class="container">
-      <p style="color:rgba(255,255,255,0.5); font-size:0.95rem; max-width:680px; line-height:1.7;">
-        {{ descripcion }}
-      </p>
-    </div>
-  </section>
+{% set spProductos   = productos["audio-cables"] %}
+{% set spTitulo      = "Cables de Audio" %}
+{% set spDescripcion = "Cables para escenario y estudio — extensiones para in-ears y cables Plug 1/4. Compatibles con consolas, amplificadores e instrumentos." %}
+{% set spDestacadoId = "extension-5m-inears" %}
+{% set spBannerImg   = "cables" %}
+{% set spPromoTexto  = "Audio y Accesorios" %}
+{% set spPromoUrl    = "/audio/" %}
+{% set spPromoCta    = "Ver todo" %}
+{% set spPromoImg    = "promo-audio" %}
+{% set spUrlActual   = "/audio/cables/" %}
+{% set spTwiId       = "carousel-twi-sub-cables" %}
 
-  <!-- GRID -->
-  <section class="categoria-grid-section">
-    <div class="container">
-
-      <div class="row g-3" id="row-categoria-audio-cables">
-        {% for prod in productos["audio-cables"] %}
-        {% set varId  = ("var-cat-" + prod.nombre) | replace(" ", "-") | replace("/", "-") %}
-        {% set btnId  = ("btn-cat-" + prod.nombre) | replace(" ", "-") | replace("/", "-") %}
-        {% set prodUrl = prod.id | productoUrl %}
-        <div class="col-6 col-lg-3">
-            {% include "card-producto.njk" %}
-        </div>
-        {% endfor %}
-      </div>
-
-    </div>
-  </section>
-
-</div>
+{% include "pilar/subpilar.njk" %}

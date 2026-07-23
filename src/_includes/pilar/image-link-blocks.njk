@@ -1,0 +1,42 @@
+{# ================================================================
+   IMAGE-LINK-BLOCKS parametrizable (Impact)
+   Bloques con imagen que enlazan a otras colecciones.
+
+   PARÁMETROS (definir con {% set %} ANTES del include):
+     ilbItems      → lista de { titulo, url, img }
+     ilbExcluirUrl → (opcional) url a omitir; sirve para no enlazar
+                     a la página actual desde ella misma
+     ilbTitulo     → (opcional) si se define, añade un section-header
+                     con ese título encima de los bloques
+================================================================= #}
+
+<div class="section {% if ilbTitulo %}section-stack{% else %}section-blends{% endif %}">
+
+  {% if ilbTitulo %}
+  <section-header class="section-header">
+    <div class="prose">
+      <h2 class="h2" reveal-on-scroll="true"><split-lines>{{ ilbTitulo }}</split-lines></h2>
+    </div>
+  </section-header>
+  {% endif %}
+
+  <image-link-blocks class="image-link-blocks scroll-area bleed md:unbleed">
+    {% for item in ilbItems %}
+      {% if item.url != ilbExcluirUrl %}
+      <div class="image-link-blocks__item group arms-rounded bg-secondary text-custom" style="--text-color: 255 255 255;">
+        <a href="{{ item.url }}" class="content-over-media arms-rounded" style="--content-over-media-overlay: 0 0 0 / 0.0">
+          <img src="/assets/img/subpilar/{{ item.img }}.webp" alt="{{ item.titulo }}" width="1200" height="1200" loading="lazy" class="zoom-image">
+          <div class="place-self-end-start w-full bold">
+            <div class="h-stack justify-between gap-2">
+              {{ item.titulo }}
+              <svg role="presentation" focusable="false" width="24" height="24" class="icon icon-circle-button-right-clipped reverse-icon" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12ZM10.47 9.53 12.94 12l-2.47 2.47 1.06 1.06 3-3 .53-.53-.53-.53-3-3-1.06 1.06Z" fill="currentColor"></path>
+              </svg>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% endif %}
+    {% endfor %}
+  </image-link-blocks>
+</div>
