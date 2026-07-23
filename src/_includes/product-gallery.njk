@@ -24,7 +24,7 @@
     {% for img in imagenes %}
     <button
       style="width:64px; height:64px; border-radius:0.5rem; overflow:hidden; padding:0; cursor:pointer;
-             border:2px solid {% if loop.first %}var(--bs-primary){% else %}rgba(255,255,255,0.12){% endif %};
+             border:2px solid {% if loop.first %}rgb(var(--text-primary)){% else %}rgb(var(--text-primary) / 0.15){% endif %};
              background:linear-gradient(135deg,{{ g1 }},{{ g2 }});
              transition:border-color .15s ease; flex-shrink:0;"
       class="thumb-btn {% if loop.first %}thumb-active{% endif %}"
@@ -68,7 +68,7 @@
       imgs.forEach(im => { im.style.transform = ''; im.style.transformOrigin = ''; });
       // Actualizar thumbnails
       thumbs.forEach((t, ti) => {
-        t.style.borderColor = ti === idx ? 'var(--bs-primary)' : 'rgba(255,255,255,0.12)';
+        t.style.borderColor = ti === idx ? 'rgb(var(--text-primary))' : 'rgb(var(--text-primary) / 0.15)';
         t.classList.toggle('thumb-active', ti === idx);
       });
     }

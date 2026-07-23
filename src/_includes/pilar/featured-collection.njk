@@ -10,6 +10,8 @@
      fcIds         → lista ordenada de ids de producto
      fcCarouselId  → id único del scroll-area (uno por página)
      fcFuente      → lista de productos donde buscar los ids
+     fcExcluirId   → (opcional) id a omitir; sirve para que la página
+                     de un producto no lo incluya en su propio carrusel
 
    CARDS: simplificadas (imagen + badge + título + precio), igual
    que las de Impact en esta sección. NO llevan botones de variante
@@ -62,7 +64,7 @@
 
           {% for id in fcIds %}
             {% for prod in fcFuente %}
-              {% if prod.id == id %}
+              {% if prod.id == id and prod.id != fcExcluirId %}
 
                 {% set tieneSegundaFoto = prod.imagenes and prod.imagenes.length > 1 %}
                 {% set prodUrl = prod.id | productoUrl %}

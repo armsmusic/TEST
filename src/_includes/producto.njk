@@ -14,6 +14,9 @@
 {% set relacionados  = prod.relacionados %}
 {% set imagenes      = prod.imagenes %}
 {% set imagenesVariantes = prod.imagenesVariantes %}
+{# el bucle de relacionados hace {% set prod = rel %} y sobrescribe `prod`,
+   así que el id de ESTA página se captura aquí, antes de ese bucle #}
+{% set productoActualId  = prod.id %}
 
 {# Pilar label y URL #}
 {% if pilar == "in-ears" %}
@@ -45,7 +48,7 @@
 <div class="producto-page">
 
   <!-- BREADCRUMB -->
-  <section class="pt-producto pb-0">
+  <section class="pt-producto">
     <div class="container">
       <nav aria-label="Ruta de navegación" style="margin-bottom:1.5rem;">
         <ol class="breadcrumb-arms">
@@ -60,23 +63,23 @@
   </section>
 
   <!-- HERO DEL PRODUCTO -->
-  <section class="pt-0 pb-producto">
+  <section class="pb-producto">
     <div class="container">
-      <div class="row g-4 g-lg-5 align-items-start">
+      <div class="producto-layout">
 
         <!-- Galería -->
-        <div class="col-lg-5">
+        <div>
           {% include "product-gallery.njk" %}
 
           {% if descuento %}
-          <div class="text-center mt-3">
+          <div class="arms-text-center" style="margin-top: var(--spacing-4);">
             <span class="badge-discount-lg">🔥 {{ descuento }} de descuento</span>
           </div>
           {% endif %}
         </div>
 
         <!-- Info -->
-        <div class="col-lg-7">
+        <div>
 
           <h1 class="producto-nombre">{{ nombre }}</h1>
           {% if subtitulo %}<p class="producto-subtitulo">{{ subtitulo }}</p>{% endif %}
@@ -91,9 +94,9 @@
           <div class="stock-indicator" style="margin-bottom:1.25rem;"></div>
 
           {% if variantes %}
-          <div class="mb-4">
+          <div>
             <p class="producto-label-variante">Color / Versión</p>
-            <div class="d-flex flex-wrap gap-2" id="{{ varId }}">
+            <div class="producto-variantes" id="{{ varId }}">
               {% for varName in variantes %}
               <button
                 onclick="seleccionarVariante(this, '{{ nombre }}', '{{ varName }}', {{ precio }})"
@@ -110,7 +113,7 @@
           <div class="producto-acciones">
             {% if variantes %}
             <button
-              class="btn btn-agregar btn-agregar-lg"
+              class="button btn-agregar btn-agregar-lg"
               id="{{ btnId }}"
               data-product-name="{{ nombre }} - {{ variantes[0] }}"
               data-img="/assets/img/productos/{{ imagenesVariantes[variantes[0]] if imagenesVariantes[variantes[0]] else imagenes[0] }}"
@@ -119,7 +122,7 @@
             </button>
             {% else %}
             <button
-              class="btn btn-agregar btn-agregar-lg"
+              class="button btn-agregar btn-agregar-lg"
               data-product-name="{{ nombre }}"
               data-img="/assets/img/productos/{{ imagenes[0] }}"
               onclick="agregarAlCarrito('{{ nombre }}', {{ precio }}, this)">
@@ -128,7 +131,7 @@
             {% endif %}
             <a href="https://wa.me/50234646667?text=Hola%2C%20me%20interesa%3A%20{{ nombre | urlencode }}%20(Q{{ precio }})"
               target="_blank" rel="noopener noreferrer"
-              class="btn btn-whatsapp-producto">
+              class="btn-whatsapp-producto">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
               Consultar por WhatsApp
             </a>
@@ -159,19 +162,17 @@
   {% if relacionados and relacionados.length > 0 %}
   <section class="py-producto-sm">
     <div class="container">
-      <h2 class="producto-section-title mb-4">También te puede interesar</h2>
-      <div class="row g-3">
+      <h2 class="producto-section-title">También te puede interesar</h2>
+      <div class="producto-relacionados">
         {% for rel in relacionados %}
         {% set relVarId = ("var-cat-" + rel.nombre) | replace(" ", "-") | replace("/", "-") %}
         {% set relBtnId = ("btn-cat-" + rel.nombre) | replace(" ", "-") | replace("/", "-") %}
         {% set relUrl   = rel.id | productoUrl %}
-        <div class="col-6 col-lg-3">
-            {% set prod    = rel %}
-            {% set prodUrl = rel.id | productoUrl %}
-            {% set varId   = ("var-cat-" + rel.nombre) | replace(" ", "-") | replace("/", "-") %}
-            {% set btnId   = ("btn-cat-" + rel.nombre) | replace(" ", "-") | replace("/", "-") %}
-            {% include "card-producto.njk" %}
-        </div>
+        {% set prod    = rel %}
+        {% set prodUrl = rel.id | productoUrl %}
+        {% set varId   = ("var-cat-" + rel.nombre) | replace(" ", "-") | replace("/", "-") %}
+        {% set btnId   = ("btn-cat-" + rel.nombre) | replace(" ", "-") | replace("/", "-") %}
+        {% include "card-producto.njk" %}
         {% endfor %}
       </div>
     </div>
@@ -189,14 +190,42 @@
 
 </div>
 
+{# ── FEATURED-COLLECTION ("Los más vendidos") ────────────────── #}
+{% set fcTitulo = "Los más vendidos" %}
+{% set fcCarouselId = "scroll-area-producto" %}
+{% set fcIds = [
+  "kz-castor-pro",
+  "kz-zsn-pro-2",
+  "kz-az09",
+  "amplificador-ha-800",
+  "p2-monitor-personal",
+  "extension-5m-inears",
+  "joyo-momix-cab",
+  "kz-edx-pro",
+  "kz-edx-lite",
+  "amplificador-ha-400",
+  "pm1-monitor-personal"
+] %}
+{% set fcFuente = productos.inears
+  .concat(productos["accesorios-inears"])
+  .concat(productos.monitores)
+  .concat(productos["audio-interfaces"]) %}
+{# no mostrar en el carrusel el producto que se está viendo #}
+{% set fcExcluirId = productoActualId %}
+{% include "pilar/featured-collection.njk" %}
+
+{# ── TEXT-WITH-ICONS (garantías) ─────────────────────────────── #}
+{% set twiCarouselId = "carousel-twi-producto" %}
+{% include "pilar/text-with-icons.njk" %}
+
 <script>
 function cambiarImagen(src, btn) {
   document.getElementById('img-principal').src = src;
   document.querySelectorAll('.thumb-btn').forEach(b => {
-    b.style.borderColor = 'rgba(255,255,255,0.12)';
+    b.style.borderColor = 'rgb(var(--text-primary) / 0.15)';
     b.classList.remove('thumb-active');
   });
-  btn.style.borderColor = 'var(--bs-primary)';
+  btn.style.borderColor = 'rgb(var(--text-primary))';
   btn.classList.add('thumb-active');
 }
 </script>

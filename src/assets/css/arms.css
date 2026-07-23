@@ -3933,3 +3933,240 @@ summary::-webkit-details-marker {
 .ring-current {
   box-shadow: 0 0 0 1px rgb(var(--text-color));
 }
+
+/* ================================================================
+   PÁGINA DE PRODUCTO — migración de producto.css al sistema Impact.
+   Mismas clases que ya usaba producto.njk (no cambia el HTML por
+   este bloque), pero adaptadas al tema claro de Impact: texto
+   oscuro sobre fondo claro, tokens de spacing/rounded del sistema.
+   Sustituye por completo a producto.css, que queda desconectado.
+   ================================================================ */
+
+/* ── Espaciado de secciones ── */
+.pt-producto    { padding-top: var(--spacing-10); }
+.pb-producto    { padding-bottom: var(--spacing-16); }
+.py-producto-sm { padding-block: var(--spacing-10); }
+
+@media screen and (min-width: 1000px) {
+  .pt-producto    { padding-top: var(--spacing-12); }
+  .pb-producto    { padding-bottom: var(--spacing-20); }
+  .py-producto-sm { padding-block: var(--spacing-12); }
+}
+
+/* ── Layout de 2 columnas (galería + info) ── */
+.producto-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--spacing-6);
+  align-items: start;
+}
+
+@media screen and (min-width: 1000px) {
+  .producto-layout {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--spacing-10);
+  }
+}
+
+/* ── Breadcrumb ── */
+.breadcrumb-arms {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-1-5);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: var(--text-sm);
+}
+.breadcrumb-arms li { display: flex; align-items: center; gap: var(--spacing-1-5); }
+.breadcrumb-arms a {
+  color: rgb(var(--text-primary) / 0.55);
+  text-decoration: none;
+  transition: color .15s ease;
+}
+.breadcrumb-arms a:hover { color: rgb(var(--text-primary)); }
+.breadcrumb-arms span { color: rgb(var(--text-primary) / 0.3); font-size: var(--text-xs); }
+.breadcrumb-arms li:last-child { color: rgb(var(--text-primary) / 0.8); font-weight: 500; }
+
+/* ── Imagen principal de la galería ── */
+.producto-imagen-wrap {
+  border-radius: var(--rounded-sm);
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: rgb(255 255 255);
+}
+.producto-imagen-wrap svg {
+  width: 55% !important;
+  height: 55% !important;
+  opacity: .92;
+}
+
+/* ── Info del producto ── */
+.producto-nombre {
+  font-size: var(--text-h2);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: rgb(var(--text-primary));
+  margin: 0 0 var(--spacing-1);
+  line-height: 1.15;
+}
+.producto-subtitulo {
+  color: rgb(var(--text-primary) / 0.55);
+  font-size: var(--text-base);
+  margin: 0 0 var(--spacing-5);
+}
+
+/* ── Precio ── */
+.producto-precio-wrap {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--spacing-3);
+  margin-bottom: var(--spacing-5);
+}
+.producto-precio-actual {
+  font-size: var(--text-h4);
+  font-weight: 700;
+  color: rgb(var(--text-primary));
+  letter-spacing: -0.02em;
+}
+.producto-precio-original {
+  font-size: var(--text-base);
+  color: rgb(var(--text-primary) / 0.4);
+  text-decoration: line-through;
+}
+.badge-discount-lg {
+  display: inline-block;
+  background: rgb(var(--text-primary) / 0.06);
+  color: #dc2626;
+  border: 1px solid rgb(220 38 38 / 0.25);
+  border-radius: var(--rounded-full, 2rem);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  padding: var(--spacing-1-5) var(--spacing-4);
+}
+
+/* ── Label de variante ── */
+.producto-label-variante {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: rgb(var(--text-primary) / 0.5);
+  margin: 0 0 var(--spacing-2);
+}
+
+/* selector de variantes en la página de producto */
+.producto-variantes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+  margin-bottom: var(--spacing-6);
+}
+
+/* ── Botones de acción ── */
+.producto-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-3);
+  margin-bottom: var(--spacing-6);
+}
+.btn-agregar-lg {
+  flex: 1 1 200px;
+  justify-content: center;
+}
+.btn-whatsapp-producto {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3) var(--spacing-5);
+  background: #25D366;
+  color: #fff;
+  border-radius: var(--rounded-button, var(--rounded-xs));
+  text-decoration: none;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  transition: transform .2s ease, box-shadow .2s ease;
+  flex: 1 1 200px;
+}
+.btn-whatsapp-producto:hover {
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgb(37 211 102 / 0.35);
+}
+
+/* ── Chips de garantía ── */
+.producto-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  background: rgb(var(--text-primary) / 0.04);
+  border: 1px solid rgb(var(--text-primary) / 0.1);
+  border-radius: var(--rounded-full, 2rem);
+  padding: var(--spacing-1-5) var(--spacing-3);
+  font-size: var(--text-xs);
+  color: rgb(var(--text-primary) / 0.65);
+  font-weight: 500;
+}
+.chip-icon { color: rgb(var(--text-primary) / 0.45); font-size: var(--text-xs); }
+
+/* ── Descripción ── */
+.producto-descripcion-card {
+  background: rgb(var(--text-primary) / 0.03);
+  border: 1px solid rgb(var(--text-primary) / 0.08);
+  border-radius: var(--rounded-sm);
+  padding: var(--spacing-8);
+}
+.producto-section-title {
+  font-size: var(--text-h6);
+  font-weight: 700;
+  color: rgb(var(--text-primary));
+  margin: 0 0 var(--spacing-4);
+  letter-spacing: -0.01em;
+}
+.producto-descripcion-texto {
+  color: rgb(var(--text-primary) / 0.7);
+  font-size: var(--text-base);
+  line-height: 1.75;
+  margin: 0;
+}
+
+/* ── Botón volver ── */
+.btn-volver {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  color: rgb(var(--text-primary) / 0.55);
+  text-decoration: none;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  padding: var(--spacing-2) 0;
+  transition: color .15s ease;
+}
+.btn-volver:hover { color: rgb(var(--text-primary)); }
+.btn-volver svg { transition: transform .15s ease; }
+.btn-volver:hover svg { transform: translateX(-3px); }
+
+/* ── Grid de relacionados ── */
+.producto-relacionados {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--spacing-2);
+}
+@media screen and (min-width: 1000px) {
+  .producto-relacionados {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--product-list-row-gap) var(--product-list-column-gap);
+  }
+}
